@@ -9,7 +9,7 @@ public class DefenseTower extends Tower {
         super(robot);
     }
 
-    public void turn() throws Exception {
-
+    public void turn() throws GameActionException {
+        super.turn();
     }
 }

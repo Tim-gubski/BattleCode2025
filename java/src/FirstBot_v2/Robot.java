@@ -3,6 +3,9 @@ package FirstBot_v2;
 import battlecode.common.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 abstract public class Robot {
@@ -18,9 +21,22 @@ abstract public class Robot {
             Direction.NORTHWEST,
     };
 
+    static public final UnitType[] towerTypes = {
+            UnitType.LEVEL_ONE_PAINT_TOWER,
+            UnitType.LEVEL_ONE_MONEY_TOWER,
+            //UnitType.LEVEL_ONE_DEFENSE_TOWER,
+    };
+
+    static public final UnitType[] robotTypes = {
+            UnitType.SOLDIER,
+            UnitType.MOPPER,
+            UnitType.SPLASHER
+    };
+
     public RobotController rc;
     public int width;
     public int height;
+    public MapLocation spawnLoc;
 
     public boolean RIGHT;
 
@@ -36,6 +52,7 @@ abstract public class Robot {
         rc = robot;
         width = rc.getMapWidth();
         height = rc.getMapHeight();
+        spawnLoc = rc.getLocation();
     }
 
     abstract public void turn() throws Exception;
@@ -80,6 +97,79 @@ abstract public class Robot {
                 }
             }
         }
+    }
+
+    public static <T> void shuffleArray(T[] array) {
+        List<T> list = Arrays.asList(array);
+        Collections.shuffle(list);
+        list.toArray(array); // This step is optional as the original array will already be modified.
+    }
+
+    // TOWER PATTERN STUFF //
+    public UnitType randomTowerType() throws GameActionException{
+        return towerTypes[(int)(Math.random()*towerTypes.length)];
+    }
+
+    public boolean tryMarkTower(UnitType type, MapLocation loc) throws GameActionException{
+        if(rc.canMarkTowerPattern(type, loc)){
+            rc.markTowerPattern(type, loc);
+            return true;
+        }
+        return false;
+    }
+
+    // RESOURCE PATTERN STUFF //
+    public boolean isResourcePatternCenter(MapLocation loc) throws GameActionException{
+        return (loc.x - 2) % 4 == 0 && (loc.y - 2) % 4 == 0;
+    }
+
+    //TODO: Make this better
+    public MapLocation[] getResourcePatternCenterLocations() throws GameActionException{
+        MapLocation[] locs = rc.getAllLocationsWithinRadiusSquared(rc.getLocation(),-1);
+        ArrayList<MapLocation> centers = new ArrayList<>();
+        for(MapLocation loc : locs){
+            if(isResourcePatternCenter(loc)){
+                centers.add(loc);
+            }
+        }
+        return centers.toArray(new MapLocation[0]);
+    }
+
+    public boolean getTileTargetColor(MapLocation loc) throws GameActionException{
+        if(isResourcePatternCenter(loc)){
+            return false;
+        }
+        return (loc.x + loc.y) % 2 == 0;
+    }
+
+    public boolean tryConfirmResourcePattern(MapLocation loc) throws GameActionException{
+        if(rc.canCompleteResourcePattern(loc)){
+            rc.completeResourcePattern(loc);
+            return true;
+        }
+        return false;
+    }
+    //=================================//
+
+    // MAP HELPER FUNCTIONS //
+    public MapLocation[] senseNearbyTowerlessRuins() throws GameActionException{
+        MapLocation[] nearbyRuins = rc.senseNearbyRuins(-1);
+        int toRemove = 0;
+        for (int i = 0; i < nearbyRuins.length; i++){
+            if(rc.senseRobotAtLocation(nearbyRuins[i]) != null){
+                nearbyRuins[i] = null;
+                toRemove++;
+            }
+        }
+        MapLocation[] newNearbyRuins = new MapLocation[nearbyRuins.length - toRemove];
+        int j = 0;
+        for (int i = 0; i < nearbyRuins.length; i++){
+            if(nearbyRuins[i] != null){
+                newNearbyRuins[j] = nearbyRuins[i];
+                j++;
+            }
+        }
+        return newNearbyRuins;
     }
 
     public MapLocation getClosest(MapLocation[] locs) throws GameActionException{
