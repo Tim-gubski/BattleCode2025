@@ -1,11 +1,11 @@
 package FirstBot_v2;
 
-import InitialStructure_v1.Towers.DefenseTower;
-import InitialStructure_v1.Towers.MoneyTower;
-import InitialStructure_v1.Towers.PaintTower;
-import InitialStructure_v1.Units.Mopper;
-import InitialStructure_v1.Units.Soldier;
-import InitialStructure_v1.Units.Splasher;
+import FirstBot_v2.Towers.DefenseTower;
+import FirstBot_v2.Towers.MoneyTower;
+import FirstBot_v2.Towers.PaintTower;
+import FirstBot_v2.Units.Mopper;
+import FirstBot_v2.Units.Soldier;
+import FirstBot_v2.Units.Splasher;
 import battlecode.common.UnitType;
 import battlecode.common.GameActionException;
 import battlecode.common.RobotController;

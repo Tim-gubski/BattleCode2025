@@ -1,6 +1,6 @@
 package FirstBot_v2.Towers;
 
-import InitialStructure_v1.Tower;
+import FirstBot_v2.Tower;
 import battlecode.common.*;
 
 public class MoneyTower extends Tower {

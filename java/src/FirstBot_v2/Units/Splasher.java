@@ -1,6 +1,6 @@
 package FirstBot_v2.Units;
 
-import InitialStructure_v1.Unit;
+import FirstBot_v2.Unit;
 import battlecode.common.GameActionException;
 import battlecode.common.RobotController;
 
