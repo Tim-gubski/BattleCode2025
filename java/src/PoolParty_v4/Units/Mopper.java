@@ -20,7 +20,7 @@ public class Mopper extends Unit {
                 fuzzyMove(randomDirection());
             }
         } else {
-            refillAlies(rc.senseNearbyRobots(-1, rc.getTeam()));
+            refillAllies(rc.senseNearbyRobots(-1, rc.getTeam()));
 
             RobotInfo tower = inEnemyTowerRange(rc.senseNearbyRobots(-1, rc.getTeam().opponent()));
             if(tower != null) {
@@ -82,7 +82,7 @@ public class Mopper extends Unit {
         return null;
     }
 
-    private void refillAlies(RobotInfo[] allies) throws GameActionException {
+    private void refillAllies(RobotInfo[] allies) throws GameActionException {
         for (RobotInfo robot : allies) {
             // skip if is a tower
             if (robot.getType().isTowerType()) {
@@ -94,7 +94,7 @@ public class Mopper extends Unit {
                 continue;
             }
 
-            int amount = rc.getPaint() - robot.paintAmount - 10; // leave mopper with a little bit
+            int amount = Math.max(0, rc.getPaint() - robot.paintAmount - 10); // leave mopper with a little bit
             if (rc.canTransferPaint(robot.getLocation(), amount)) {
                 rc.transferPaint(robot.getLocation(), amount);
             }

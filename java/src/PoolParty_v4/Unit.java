@@ -232,5 +232,55 @@ public abstract class Unit extends Robot {
             dir = dir.rotateLeft();
         }
     }
+
+    public RobotInfo inEnemyTowerRange(RobotInfo[] enemies) throws GameActionException {
+        for (RobotInfo enemy : enemies) {
+            if (!enemy.getType().isTowerType()) {
+                continue;
+            }
+            return enemy;
+        }
+        return null;
+    }
+
+    public boolean checkAndPaintTile(MapLocation loc) throws GameActionException{
+        if(!rc.canSenseLocation(loc)){
+            return false;
+        }
+        MapInfo info = rc.senseMapInfo(loc);
+        return checkAndPaintTile(info);
+    }
+
+    public boolean checkAndPaintTile(MapInfo info) throws GameActionException{
+        boolean targetColor = getTileTargetColor(info.getMapLocation());
+        if ((info.getPaint() == PaintType.EMPTY || (info.getPaint() != boolToColor(targetColor) && info.getPaint().isAlly())) && rc.canAttack(info.getMapLocation()) && !info.hasRuin() && info.getMark() == PaintType.EMPTY){
+            rc.attack(info.getMapLocation(), targetColor);
+            rc.setIndicatorDot(info.getMapLocation(), 255, 0, 255);
+            return true;
+        }
+        return false;
+    }
+
+    public PaintType boolToColor(boolean bool){
+        return bool ? PaintType.ALLY_SECONDARY : PaintType.ALLY_PRIMARY;
+    }
+
+    public Direction    getEnemyPaintDirection() throws GameActionException{
+        MapInfo[] infos = rc.senseNearbyMapInfos(8);
+        int x = 0;
+        int y = 0;
+        int enemyPaint = 0;
+        for(MapInfo info : infos){
+            if(isEnemyPaint(info.getPaint())){
+                x += info.getMapLocation().x;
+                y += info.getMapLocation().y;
+                enemyPaint++;
+            }
+
+        }
+        if(enemyPaint < 3) return null;
+        return dirTo(new MapLocation(x,y));
+    }
+
 }
 

@@ -1,5 +1,6 @@
 package PoolParty_v4;
 
+import FirstBot_v2.Units.Mopper;
 import battlecode.common.*;
 
 public abstract class Tower extends Robot {
@@ -13,8 +14,15 @@ public abstract class Tower extends Robot {
     }
 
     public void turn() throws GameActionException {
-        if(rc.senseNearbyRobots(-1, rc.getTeam()).length < 5){
-            trySummonAnything();
+        if(rc.senseNearbyRobots(-1, rc.getTeam()).length < 5) {
+            int paint = rc.getPaint();
+            if (paint <= 249) {
+                trySummon(UnitType.MOPPER);
+            } else if (paint <= 299) {
+                trySummon(UnitType.SOLDIER);
+            } else {
+                trySummonAnything();
+            }
         }
         tryAttack(null);
         RobotInfo[] enemies = rc.senseNearbyRobots(-1,rc.getTeam().opponent());
@@ -56,11 +64,14 @@ public abstract class Tower extends Robot {
         return false;
     }
 
-    public boolean trySummonAnything() throws GameActionException{
-        if(rng.nextInt(2) == 0){
+    public boolean trySummonAnything() throws GameActionException {
+        double rand = rng.nextDouble();
+        if(rand < 0.4 || rc.getRoundNum() <= 5) {
             return trySummon(UnitType.SOLDIER);
-        } else {
+        } else if (rand < 0.8 || rc.getRoundNum() <= 50) {
             return trySummon(UnitType.MOPPER);
+        } else {
+            return trySummon(UnitType.SPLASHER);
         }
     }
 }

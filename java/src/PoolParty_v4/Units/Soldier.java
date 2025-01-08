@@ -7,10 +7,6 @@ import battlecode.common.*;
 
 public class Soldier extends Unit {
     Direction exploreDir = randomDirection();
-    boolean marking = false;
-    MapLocation ruinBeingMarked = null;
-
-
 
     public Soldier(RobotController robot) throws GameActionException {
         super(robot);
@@ -24,9 +20,6 @@ public class Soldier extends Unit {
 //            fuzzyMove(spawnLoc);
 //        }
 
-        if (marking) {
-            markTower();
-        }
         if (shouldRefill()) {
             findNearestPaintTower();
             if (nearestPaintTower != null){
@@ -157,58 +150,5 @@ public class Soldier extends Unit {
 //        MapLocation[] attackable = new MapLocation[69];
 //
 //    }
-
-    public Direction getEnemyPaintDirection() throws GameActionException{
-        MapInfo[] infos = rc.senseNearbyMapInfos(8);
-        int x = 0;
-        int y = 0;
-        int enemyPaint = 0;
-        for(MapInfo info : infos){
-            if(isEnemyPaint(info.getPaint())){
-                x += info.getMapLocation().x;
-                y += info.getMapLocation().y;
-                enemyPaint++;
-            }
-
-        }
-        if(enemyPaint < 3) return null;
-        return dirTo(new MapLocation(x,y));
-    }
-
-    public RobotInfo inEnemyTowerRange(RobotInfo[] enemies) throws GameActionException {
-        for (RobotInfo enemy : enemies) {
-            if (!enemy.getType().isTowerType()) {
-                continue;
-            }
-            return enemy;
-        }
-        return null;
-    }
-
-    public boolean checkAndPaintTile(MapLocation loc) throws GameActionException{
-        if(!rc.canSenseLocation(loc)){
-            return false;
-        }
-        MapInfo info = rc.senseMapInfo(loc);
-        return checkAndPaintTile(info);
-    }
-
-    public boolean checkAndPaintTile(MapInfo info) throws GameActionException{
-        boolean targetColor = getTileTargetColor(info.getMapLocation());
-        if ((info.getPaint() == PaintType.EMPTY || (info.getPaint() != boolToColor(targetColor) && info.getPaint().isAlly())) && rc.canAttack(info.getMapLocation()) && !info.hasRuin() && info.getMark() == PaintType.EMPTY){
-            rc.attack(info.getMapLocation(), targetColor);
-            rc.setIndicatorDot(info.getMapLocation(), 255, 0, 255);
-            return true;
-        }
-        return false;
-    }
-
-    public PaintType boolToColor(boolean bool){
-        return bool ? PaintType.ALLY_SECONDARY : PaintType.ALLY_PRIMARY;
-    }
-
-    public void markTower() {
-
-    }
 
 }
