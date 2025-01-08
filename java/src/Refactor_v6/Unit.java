@@ -1,18 +1,49 @@
-package ALilSmth_v5;
+package Refactor_v6;
 
-import ALilSmth_v5.Helpers.Explore;
-import ALilSmth_v5.Helpers.MapData;
+import Refactor_v6.Helpers.Explore;
+import Refactor_v6.Helpers.MapData;
 import battlecode.common.*;
 
 public abstract class Unit extends Robot {
     public MapData mapData;
     public Explore explorer;
+    protected MapLocation nearestPaintTower = null;
+
+    protected MapInfo[] mapInfo = null;
+    protected RobotInfo[] allies = null;
+    protected RobotInfo[] enemies = null;
+
+    protected MapLocation currentTargetLoc = null;
+
+    // enumerate states
+    protected enum UnitState {
+        REFILL, // for when bot is travelling to station
+        REFILLING, // for when bot is actively refilling
+        EXPLORE, // for when bot is exploring
+
+        // unit specific states, have to start here unfortunately
+        MOPPING, // moppers mopping
+
+        ATTACK, // soldiers shoot, moppers sweep, splashers splash
+
+        BUILD, // finish ruin and build tower
+    }
+
+    protected UnitState state = null;
+    protected UnitState previousState = null;
+
     public Unit(RobotController robot) throws GameActionException {
         super(robot);
         mapData = new MapData(width, height);
         explorer = new Explore(rc, width, height, mapData);
         markNearbyMapData();
-        findNearestPaintTower();
+        nearestPaintTower = findNearestPaintTower();
+    }
+
+    protected void senseNearby() throws GameActionException {
+        mapInfo = rc.senseNearbyMapInfos();
+        allies = rc.senseNearbyRobots(-1, rc.getTeam());
+        enemies = rc.senseNearbyRobots(-1, rc.getTeam().opponent());
     }
 
     public void markNearbyMapData() throws GameActionException{
@@ -25,20 +56,22 @@ public abstract class Unit extends Robot {
                 if (info.hasRuin()) {
                     int containsPaintTower = mapData.containsPaintTowerLocation(loc);
 
-                    // check if paint tower here, add if so
+                    // check if paint tower here and is not added and has paint -> add as refill station
                     if (containsPaintTower == -1 && rc.canSenseRobotAtLocation(loc)) {
                         RobotInfo robot = rc.senseRobotAtLocation(loc);
                         if (robot.getTeam() == rc.getTeam() && (isPaintTower(robot.getType()) || isMoneyTower(robot.getType())) && robot.getPaintAmount() > 0) {
                             mapData.setPaintTower(robot.getLocation(), rc.getLocation());
                         }
                     }
+
+                    // check if paint tower is here and already added but empty -> remove as refill station
                     else if (containsPaintTower != -1 && rc.canSenseRobotAtLocation(loc)) {
                         RobotInfo robot = rc.senseRobotAtLocation(loc);
                         if (robot.getPaintAmount() == 0) {
                             mapData.removePaintTowerLocation(containsPaintTower);
                         }
                     }
-                    // otherwise, check if location in stored paint locations, replace if no more paint tower
+                    // otherwise, check if location in stored paint locations, replace if paint tower no longer exists
                     else if (containsPaintTower != -1 && !rc.canSenseRobotAtLocation(loc)) {
                         mapData.removePaintTowerLocation(containsPaintTower);
                     }
@@ -46,28 +79,39 @@ public abstract class Unit extends Robot {
             }
         }
     }
-    protected MapLocation nearestPaintTower = null;
+
+    protected void confirmNearbyTowers() throws GameActionException {
+        MapLocation[] nearbyRuins = rc.senseNearbyRuins(-1);
+        if(nearbyRuins.length > 0) {
+            MapLocation closestRuin = getClosest(nearbyRuins);
+            // Complete the ruin if we can
+            for (UnitType type : towerTypes) {
+                if (rc.canCompleteTowerPattern(type, closestRuin)) {
+                    rc.completeTowerPattern(type, closestRuin);
+                    rc.setTimelineMarker("Tower built", 0, 255, 0);
+                    System.out.println("Built a tower at " + closestRuin + "!");
+                }
+            }
+        }
+    }
 
     protected boolean shouldRefill() throws GameActionException {
         if (nearestPaintTower == null) {
             return false;
         }
-        int theshold = 25;
-        if(rc.getType() == UnitType.SPLASHER){
-            theshold = 50;
-        }
 
-        return rc.getPaint() <= theshold;
+        return rc.getPaint() <= rc.getType().paintCapacity * 0.25;
     }
 
     protected void refillSelf() throws GameActionException {
         // cant do anything if no nearest tower
         if (nearestPaintTower == null) {
+            rc.setIndicatorString("FAILED REFILL 1");
             return;
         }
 
         // check if tower in range
-        if (distTo(nearestPaintTower) > 16) {
+        if (!rc.getLocation().isWithinDistanceSquared(nearestPaintTower, rc.getType().actionRadiusSquared)) {
             return;
         }
 
@@ -77,6 +121,7 @@ public abstract class Unit extends Robot {
             RobotInfo tower = rc.senseRobotAtLocation(nearestPaintTower);
             if (tower.getTeam() != rc.getTeam()) {
                 nearestPaintTower = null;
+                rc.setIndicatorString("FAILED REFILL 3");
                 return;
             }
 
@@ -86,6 +131,7 @@ public abstract class Unit extends Robot {
         }
 
         if (transferAmount <= 0) {
+            rc.setIndicatorString("FAILED REFILL 4");
             return;
         }
 
@@ -94,8 +140,8 @@ public abstract class Unit extends Robot {
         }
     }
 
-    protected void findNearestPaintTower() throws GameActionException {
-        nearestPaintTower = mapData.getNearestPaintTower(rc.getLocation());
+    protected MapLocation findNearestPaintTower() throws GameActionException {
+        return mapData.getNearestPaintTower(rc.getLocation());
     }
 
     protected boolean moveToNearestPaintTower() throws GameActionException {
@@ -164,6 +210,50 @@ public abstract class Unit extends Robot {
 
     public void fuzzyMove(MapLocation loc) throws GameActionException{
         fuzzyMove(dirTo(loc));
+    }
+
+    // safety filter method to check if location is safe to move to
+    // TODO: can make this threshold based so that robots can do risky things when necessary/if low risk
+    public boolean isSafe(MapLocation loc, RobotInfo[] enemies) throws GameActionException {
+        // check if in tower range
+        for (RobotInfo enemy : enemies) {
+            if (!enemy.getType().isTowerType()) {
+                continue;
+            }
+
+            if (loc.isWithinDistanceSquared(enemy.getLocation(), enemy.getType().actionRadiusSquared)) {
+                return false;
+            }
+        }
+
+        // check if on ally paint
+        MapInfo info = rc.senseMapInfo(loc);
+        if (isEnemyPaint(info.getPaint()) && rc.getHealth() < rc.getType().health * 0.05) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // returns true if able to fuzzy move safely in desired direction, returns false if unable to move
+    public boolean safeFuzzyMove(Direction dir, RobotInfo[] enemies) throws GameActionException {
+        for (Direction d : fuzzyDirs(dir)) {
+            if (!rc.canMove(d)) {
+                continue;
+            }
+
+            MapLocation fuzzyLoc = rc.getLocation().add(d);
+            rc.setIndicatorDot(fuzzyLoc, 0, 0, 125);
+            if (isSafe(fuzzyLoc, enemies)) {
+                rc.move(d);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean safeFuzzyMove(MapLocation loc, RobotInfo[] enemies) throws GameActionException {
+        return safeFuzzyMove(rc.getLocation().directionTo(loc), enemies);
     }
 
     int MAX_STACK_SIZE = 100;
@@ -280,9 +370,11 @@ public abstract class Unit extends Robot {
                 y += info.getMapLocation().y;
                 enemyPaint++;
             }
+
         }
         if(enemyPaint < 3) return null;
-        return dirTo(new MapLocation(x/enemyPaint,y/enemyPaint));
+        return dirTo(new MapLocation(x,y));
     }
 
 }
+

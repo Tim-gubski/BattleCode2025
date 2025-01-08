@@ -1,6 +1,6 @@
-package ALilSmth_v5.Units;
+package Refactor_v6.Units;
 
-import ALilSmth_v5.Unit;
+import Refactor_v6.Unit;
 import battlecode.common.*;
 
 public class Splasher extends Unit {
@@ -8,13 +8,8 @@ public class Splasher extends Unit {
         super(robot);
     }
 
-    MapLocation returnLoc = null;
-
     public void turn() throws Exception {
         if (shouldRefill()) {
-            if (returnLoc == null) {
-                returnLoc = rc.getLocation();
-            }
             findNearestPaintTower();
             if (nearestPaintTower != null){
                 rc.setIndicatorString("Exploring on paint!! Trying to refill at: " + nearestPaintTower);
@@ -36,16 +31,10 @@ public class Splasher extends Unit {
                         break;
                     }
                 }
-                for(MapLocation loc : rc.getAllLocationsWithinRadiusSquared(tower.getLocation(), 4)){
-                    if(rc.canAttack(loc)){
-                        rc.attack(loc);
-                        break;
-                    }
-                }
+                tryAttack(tower.getLocation());
                 // incase we're too close
                 if (rc.getLocation().distanceSquaredTo(tower.getLocation()) <= tower.type.actionRadiusSquared) {
                     fuzzyMove(dirTo(tower.getLocation()).opposite());
-                    rc.setIndicatorString("Retreating");
                 }
                 // otherwise explore
             } else {
@@ -59,66 +48,21 @@ public class Splasher extends Unit {
                         }
                     }
                 }
-
-                if (returnLoc != null) {
-                    if (rc.canSenseLocation(returnLoc)) {
-                        returnLoc = null;
-                    } else {
-                        bugNav(returnLoc);
-                    }
-                }
-
                 Direction enemyPaintDirection = getEnemyPaintDirection();
                 if (enemyPaintDirection != null) {
-                    if(isEnemyPaint(rc.senseMapInfo(rc.getLocation()).getPaint())){
+                    if (isEnemyPaint(rc.senseMapInfo(rc.getLocation()).getPaint())) {
                         fuzzyMove(enemyPaintDirection.opposite());
                     }
-                    Direction startingDirection;
-                    if(RIGHT){
-                        startingDirection = enemyPaintDirection.rotateRight().rotateRight();
-                    }else{
-                        startingDirection = enemyPaintDirection.rotateLeft().rotateLeft();
-                    }
-
-                    for (Direction dir : fuzzyDirs(startingDirection)) {
-                        MapLocation loc = rc.getLocation().add(dir);
-                        if(rc.onTheMap(loc) && !isEnemyPaint(rc.senseMapInfo(loc).getPaint()) && rc.canMove(dir)){
-                            rc.move(dir);
-                            break;
-                        }
-                    }
-                    if(rc.isActionReady()){
-                        RIGHT = !RIGHT;
+                    if (RIGHT) {
+                        fuzzyMove(enemyPaintDirection.rotateRight().rotateRight());
+                    } else {
+                        fuzzyMove(enemyPaintDirection.rotateLeft().rotateLeft());
                     }
                 } else {
                     bugNav(explorer.getExploreTarget());
                 }
             }
         }
-
-        // spray and pray
-        MapInfo[] attackableTilesInfo = rc.senseNearbyMapInfos(rc.getLocation(), rc.getType().actionRadiusSquared);
-        for (MapInfo info : attackableTilesInfo) {
-            if(isEnemyPaint(info.getPaint()) && rc.canAttack(info.getMapLocation())){
-                rc.attack(info.getMapLocation());
-                break;
-            }
-        }
-
-        // confirm nearby towers
-        MapLocation[] nearbyRuins = rc.senseNearbyRuins(-1);
-        if(nearbyRuins.length > 0) {
-            MapLocation closestRuin = getClosest(nearbyRuins);
-            // Complete the ruin if we can
-            for (UnitType type : towerTypes) {
-                if (rc.canCompleteTowerPattern(type, closestRuin)) {
-                    rc.completeTowerPattern(type, closestRuin);
-                    rc.setTimelineMarker("Tower built", 0, 255, 0);
-                    System.out.println("Built a tower at " + closestRuin + "!");
-                }
-            }
-        }
-
         markNearbyMapData();
     }
 }
