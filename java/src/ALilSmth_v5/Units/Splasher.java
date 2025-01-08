@@ -8,13 +8,8 @@ public class Splasher extends Unit {
         super(robot);
     }
 
-    MapLocation returnLoc = null;
-
     public void turn() throws Exception {
         if (shouldRefill()) {
-            if (returnLoc == null) {
-                returnLoc = rc.getLocation();
-            }
             findNearestPaintTower();
             if (nearestPaintTower != null){
                 rc.setIndicatorString("Exploring on paint!! Trying to refill at: " + nearestPaintTower);
@@ -53,15 +48,6 @@ public class Splasher extends Unit {
                         }
                     }
                 }
-
-                if (returnLoc != null) {
-                    if (rc.canSenseLocation(returnLoc)) {
-                        returnLoc = null;
-                    } else {
-                        bugNav(returnLoc);
-                    }
-                }
-
                 Direction enemyPaintDirection = getEnemyPaintDirection();
                 if (enemyPaintDirection != null) {
                     if (isEnemyPaint(rc.senseMapInfo(rc.getLocation()).getPaint())) {
@@ -77,7 +63,6 @@ public class Splasher extends Unit {
                 }
             }
         }
-
         markNearbyMapData();
     }
 }

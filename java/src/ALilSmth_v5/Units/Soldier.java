@@ -13,26 +13,15 @@ public class Soldier extends Unit {
 
     }
 
-    MapLocation returnLoc = null;
-
     public void turn() throws GameActionException {
-//        boolean refillPaint = rc.getPaint() < rc.getType().paintCapacity/4;
-//        if(refillPaint){
-//            RobotInfo paintTowers = rc.senseNearby
-//            fuzzyMove(spawnLoc);
-//        }
-
         if (shouldRefill()) {
-            if (returnLoc == null) {
-                returnLoc = rc.getLocation();
-            }
             findNearestPaintTower();
             if (nearestPaintTower != null){
                 rc.setIndicatorString("Exploring on paint!! Trying to refill at: " + nearestPaintTower);
             } else {
                 rc.setIndicatorString("Can't find refill station");
             }
-            if(!moveToNearestPaintTower()){
+            if(moveToNearestPaintTower()){
                 tryExploreOnPaint();
             }
         } else {
@@ -96,13 +85,6 @@ public class Soldier extends Unit {
                     }
                 // otherwise explore
                 }else{
-                    if (returnLoc != null) {
-                        if (rc.canSenseLocation(returnLoc)) {
-                            returnLoc = null;
-                        } else {
-                            bugNav(returnLoc);
-                        }
-                    }
                     Direction enemyPaintDirection = getEnemyPaintDirection();
                     if(enemyPaintDirection != null){
                         if(isEnemyPaint(rc.senseMapInfo(rc.getLocation()).getPaint())){
@@ -153,14 +135,6 @@ public class Soldier extends Unit {
                 }
             }
         }
-
         markNearbyMapData();
-
     }
-
-//    public MapLocation[] attackableTiles(){
-//        MapLocation[] attackable = new MapLocation[69];
-//
-//    }
-
 }

@@ -68,18 +68,7 @@ public class Mopper extends Unit {
                 }
             }
         }
-
         markNearbyMapData();
-    }
-
-    public RobotInfo inEnemyTowerRange(RobotInfo[] enemies) throws GameActionException {
-        for (RobotInfo enemy : enemies) {
-            if (!enemy.getType().isTowerType()) {
-                continue;
-            }
-            return enemy;
-        }
-        return null;
     }
 
     private void refillAllies(RobotInfo[] allies) throws GameActionException {
