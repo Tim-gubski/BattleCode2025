@@ -59,7 +59,7 @@ public class Soldier extends Unit {
 //            return state;
 //        }
 
-        if (!checkAndPaintTile(rc.getLocation())) {
+        if (rc.getPaint() > rc.getType().attackCost * 2 && !checkAndPaintTile(rc.getLocation())) {
             MapInfo[] attackableTilesInfo = rc.senseNearbyMapInfos(rc.getLocation(), UnitType.SOLDIER.actionRadiusSquared);
             //shuffleArray(attackableTiles);
             for (MapInfo info : attackableTilesInfo) {
@@ -77,6 +77,7 @@ public class Soldier extends Unit {
         MapLocation[] nearbyRuins = senseNearbyCompletableTowerlessRuins();
         if (nearbyRuins.length > 0) {
             // add in logic to instantly start building if can -> avoid waiting extra turn to attack
+            currentTargetLoc = getClosest(nearbyRuins);
             return UnitState.BUILD;
         }
 
@@ -114,15 +115,16 @@ public class Soldier extends Unit {
                     rc.completeTowerPattern(towerType, closestNearby);
                     return UnitState.EXPLORE;
                 }
-                // move on if tower can't be built
-                else if (rc.getMoney() < towerType.moneyCost) {
-                    return UnitState.EXPLORE;
-                }
+//                // move on if tower can't be built
+//                else if (rc.getMoney() < towerType.moneyCost) {
+//                    return UnitState.EXPLORE;
+//                }
 
                 return state;
             }
         }
         // otherwise, fill in the rest
+        boolean hasPainted = false;
         for (MapInfo patternTile : rc.senseNearbyMapInfos(closestNearby, 8)) {
             if (patternTile.getMapLocation().equals(closestNearby)) {
                 continue;
@@ -135,19 +137,25 @@ public class Soldier extends Unit {
                 if (rc.canAttack(patternTile.getMapLocation())) {
                     rc.attack(patternTile.getMapLocation(), neededPaint == PaintType.ALLY_SECONDARY);
 
+                    hasPainted = true;
+
                     // complete tower if possible
                     if (rc.canCompleteTowerPattern(towerType, closestNearby)) {
                         rc.completeTowerPattern(towerType, closestNearby);
                         return UnitState.EXPLORE;
                     }
-                    // move on if tower can't be built
-                    else if (rc.getMoney() < towerType.moneyCost) {
-                        return UnitState.EXPLORE;
-                    }
+//                    // move on if tower can't be built
+//                    else if (rc.getMoney() < towerType.moneyCost) {
+//                        return UnitState.EXPLORE;
+//                    }
 
                     return state;
                 }
             }
+        }
+
+        if (!hasPainted) {
+            return UnitState.EXPLORE;
         }
 
         // Repaint finished ruins
@@ -178,7 +186,12 @@ public class Soldier extends Unit {
 
     private UnitState refillState() throws GameActionException {
         // refill movement (just head towrads nearest paint tower)
-        currentTargetLoc = findNearestPaintTower();
+        MapLocation foundTower = findNearestPaintTower();
+        if (foundTower == null) {
+            return UnitState.EXPLORE;
+        }
+
+        currentTargetLoc = foundTower;
         nearestPaintTower = currentTargetLoc;
         safeFuzzyMove(currentTargetLoc, enemies);
 
@@ -191,7 +204,12 @@ public class Soldier extends Unit {
 
     private UnitState refillingState() throws GameActionException {
         // ensure tower is still good
-        currentTargetLoc = findNearestPaintTower();
+        MapLocation foundTower = findNearestPaintTower();
+        if (foundTower == null) {
+            return UnitState.EXPLORE;
+        }
+
+        currentTargetLoc = foundTower;
         nearestPaintTower = currentTargetLoc;
 
         // if in range of tower, refill

@@ -63,6 +63,9 @@ public class Explore {
             exploreLoc = newLoc;
             targetRound = rc.getRoundNum();
         }
+        if (exploreLoc == null) {
+            exploreLoc = new MapLocation((int)(Math.random()*maxX), (int)(Math.random()*maxY));
+        }
     }
     void getCheckerTarget(int tries){
         //MapLocation myLoc = rc.getLocation();

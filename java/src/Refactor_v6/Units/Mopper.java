@@ -73,7 +73,12 @@ public class Mopper extends Unit {
 
     private UnitState refillState() throws GameActionException {
         // refill movement (just head towrads nearest paint tower)
-        currentTargetLoc = findNearestPaintTower();
+        MapLocation foundTower = findNearestPaintTower();
+        if (foundTower == null) {
+            return UnitState.EXPLORE;
+        }
+
+        currentTargetLoc = foundTower;
         nearestPaintTower = currentTargetLoc;
         safeFuzzyMove(currentTargetLoc, enemies);
 
@@ -86,11 +91,16 @@ public class Mopper extends Unit {
 
     private UnitState refillingState() throws GameActionException {
         // ensure tower is still good
-        currentTargetLoc = findNearestPaintTower();
+        MapLocation foundTower = findNearestPaintTower();
+        if (foundTower == null) {
+            return UnitState.EXPLORE;
+        }
+
+        currentTargetLoc = foundTower;
         nearestPaintTower = currentTargetLoc;
 
         // if in range of tower, refill
-        if (rc.getLocation().isWithinDistanceSquared(currentTargetLoc, rc.getType().actionRadiusSquared)) {
+        if (rc.getLocation().isWithinDistanceSquared(currentTargetLoc, 2)) {
             refillSelf();
             rc.setIndicatorDot(currentTargetLoc, 0, 255, 0);
             if (rc.getPaint() > rc.getType().paintCapacity * 0.75) {

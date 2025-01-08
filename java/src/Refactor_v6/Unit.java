@@ -228,7 +228,7 @@ public abstract class Unit extends Robot {
 
         // check if on ally paint
         MapInfo info = rc.senseMapInfo(loc);
-        if (isEnemyPaint(info.getPaint()) && rc.getHealth() < rc.getType().health * 0.05) {
+        if (isEnemyPaint(info.getPaint()) && rc.getHealth() < rc.getType().health * 0.25) {
             return false;
         }
 
@@ -337,6 +337,7 @@ public abstract class Unit extends Robot {
         return null;
     }
 
+    // TODO: make sure not to paint over tower pattern before tower is built -> check if ruin nearby and if paint is part of determined pattern
     public boolean checkAndPaintTile(MapLocation loc) throws GameActionException{
         if(!rc.canSenseLocation(loc)){
             return false;
