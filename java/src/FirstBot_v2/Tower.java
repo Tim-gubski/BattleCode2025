@@ -13,7 +13,9 @@ public abstract class Tower extends Robot {
         }
         tryAttack(null);
         RobotInfo[] enemies = rc.senseNearbyRobots(-1,rc.getTeam().opponent());
-        tryAttack(getClosest(enemies).getLocation());
+        if(enemies.length > 0){
+            tryAttack(getClosest(enemies).getLocation());
+        }
     }
 
     public boolean tryAttack(MapLocation loc) throws GameActionException{
