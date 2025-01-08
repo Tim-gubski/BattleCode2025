@@ -50,6 +50,7 @@ abstract public class Robot {
         height = rc.getMapHeight();
         spawnLoc = rc.getLocation();
         rng = new Random(rc.getID());
+        RIGHT = rc.getID() % 2 == 0;
     }
 
     abstract public void turn() throws Exception;

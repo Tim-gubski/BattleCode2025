@@ -36,10 +36,16 @@ public class Splasher extends Unit {
                         break;
                     }
                 }
-                tryAttack(tower.getLocation());
+                for(MapLocation loc : rc.getAllLocationsWithinRadiusSquared(tower.getLocation(), 4)){
+                    if(rc.canAttack(loc)){
+                        rc.attack(loc);
+                        break;
+                    }
+                }
                 // incase we're too close
                 if (rc.getLocation().distanceSquaredTo(tower.getLocation()) <= tower.type.actionRadiusSquared) {
                     fuzzyMove(dirTo(tower.getLocation()).opposite());
+                    rc.setIndicatorString("Retreating");
                 }
                 // otherwise explore
             } else {
@@ -64,16 +70,51 @@ public class Splasher extends Unit {
 
                 Direction enemyPaintDirection = getEnemyPaintDirection();
                 if (enemyPaintDirection != null) {
-                    if (isEnemyPaint(rc.senseMapInfo(rc.getLocation()).getPaint())) {
+                    if(isEnemyPaint(rc.senseMapInfo(rc.getLocation()).getPaint())){
                         fuzzyMove(enemyPaintDirection.opposite());
                     }
-                    if (RIGHT) {
-                        fuzzyMove(enemyPaintDirection.rotateRight().rotateRight());
-                    } else {
-                        fuzzyMove(enemyPaintDirection.rotateLeft().rotateLeft());
+                    Direction startingDirection;
+                    if(RIGHT){
+                        startingDirection = enemyPaintDirection.rotateRight().rotateRight();
+                    }else{
+                        startingDirection = enemyPaintDirection.rotateLeft().rotateLeft();
+                    }
+
+                    for (Direction dir : fuzzyDirs(startingDirection)) {
+                        MapLocation loc = rc.getLocation().add(dir);
+                        if(rc.onTheMap(loc) && !isEnemyPaint(rc.senseMapInfo(loc).getPaint()) && rc.canMove(dir)){
+                            rc.move(dir);
+                            break;
+                        }
+                    }
+                    if(rc.isActionReady()){
+                        RIGHT = !RIGHT;
                     }
                 } else {
                     bugNav(explorer.getExploreTarget());
+                }
+            }
+        }
+
+        // spray and pray
+        MapInfo[] attackableTilesInfo = rc.senseNearbyMapInfos(rc.getLocation(), rc.getType().actionRadiusSquared);
+        for (MapInfo info : attackableTilesInfo) {
+            if(isEnemyPaint(info.getPaint()) && rc.canAttack(info.getMapLocation())){
+                rc.attack(info.getMapLocation());
+                break;
+            }
+        }
+
+        // confirm nearby towers
+        MapLocation[] nearbyRuins = rc.senseNearbyRuins(-1);
+        if(nearbyRuins.length > 0) {
+            MapLocation closestRuin = getClosest(nearbyRuins);
+            // Complete the ruin if we can
+            for (UnitType type : towerTypes) {
+                if (rc.canCompleteTowerPattern(type, closestRuin)) {
+                    rc.completeTowerPattern(type, closestRuin);
+                    rc.setTimelineMarker("Tower built", 0, 255, 0);
+                    System.out.println("Built a tower at " + closestRuin + "!");
                 }
             }
         }

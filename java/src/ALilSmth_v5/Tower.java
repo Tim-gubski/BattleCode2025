@@ -4,6 +4,7 @@ import battlecode.common.*;
 
 public abstract class Tower extends Robot {
     boolean firstTower = false;
+    int TOWER_BUILD_COST = 100;
 
     public Tower(RobotController robot) throws GameActionException {
         super(robot);
@@ -15,13 +16,13 @@ public abstract class Tower extends Robot {
     public void turn() throws GameActionException {
         if(rc.senseNearbyRobots(-1, rc.getTeam()).length < 5) {
             int paint = rc.getPaint();
-            if (paint <= 249) {
-                trySummon(UnitType.MOPPER);
-            } else if (paint <= 299) {
-                trySummon(UnitType.SOLDIER);
-            } else {
+//            if (paint <= 249) {
+//                trySummon(UnitType.MOPPER);
+//            } else if (paint <= 299) {
+//                trySummon(UnitType.SOLDIER);
+//            } else {
                 trySummonAnything();
-            }
+//            }
         }
         tryAttack(null);
         RobotInfo[] enemies = rc.senseNearbyRobots(-1,rc.getTeam().opponent());
@@ -39,7 +40,7 @@ public abstract class Tower extends Robot {
             }
         }
 
-        if(rc.getPaint()<50 && rc.senseNearbyRobots(-1, rc.getTeam()).length > 0 && enemies.length == 0 && rc.senseMapInfo(rc.getLocation()).hasRuin() && !firstTower && instaRespawn){
+        if(rc.getPaint()<50 && rc.getChips() >= TOWER_BUILD_COST && rc.senseNearbyRobots(-1, rc.getTeam()).length > 0 && enemies.length == 0 && rc.senseMapInfo(rc.getLocation()).hasRuin() && !firstTower && instaRespawn){
             rc.disintegrate();
         }
     }
@@ -64,15 +65,36 @@ public abstract class Tower extends Robot {
     }
 
     public boolean trySummonAnything() throws GameActionException {
-        double soldierChance    = 0.4 * Math.min(1, 50 / (rc.getRoundNum() * 1.2));
-        double mopperChance     = soldierChance + (0.4 * Math.min(1, 50 / (rc.getRoundNum() * 1.2)));
-        double rand = rng.nextDouble();
-        if(rand < soldierChance || rc.getRoundNum() <= 5) {
+//        double soldierChance    = 0.4 * Math.min(1, 50 / (rc.getRoundNum() * 1.2));
+//        double mopperChance     = soldierChance + (0.4 * Math.min(1, 50 / (rc.getRoundNum() * 1.2)));
+//        double rand = rng.nextDouble();
+//        if(rand < soldierChance || rc.getRoundNum() <= 5) {
+//            return trySummon(UnitType.SOLDIER);
+//        } else if (rand < mopperChance || rc.getRoundNum() <= 50) {
+//            return trySummon(UnitType.MOPPER);
+//        } else {
+//            return trySummon(UnitType.SPLASHER);
+//        }
+        if(rc.getRoundNum()<2){
             return trySummon(UnitType.SOLDIER);
-        } else if (rand < mopperChance || rc.getRoundNum() <= 50) {
-            return trySummon(UnitType.MOPPER);
-        } else {
-            return trySummon(UnitType.SPLASHER);
+        }
+        double rand = rng.nextDouble();
+        if(rc.getRoundNum()<40){
+            if(rand < 0.5){
+                return trySummon(UnitType.SOLDIER);
+            }else{
+                return trySummon(UnitType.MOPPER);
+            }
+        }else{
+            double soldierChance    = 0.4 * Math.min(1, 50 / (rc.getRoundNum() * 1.2));
+            double mopperChance     = soldierChance + (0.4 * Math.min(1, 50 / (rc.getRoundNum() * 1.2)));
+            if(rand < soldierChance || rc.getRoundNum() <= 5) {
+                return trySummon(UnitType.SOLDIER);
+            } else if (rand < mopperChance || rc.getRoundNum() <= 50) {
+                return trySummon(UnitType.MOPPER);
+            } else {
+                return trySummon(UnitType.SPLASHER);
+            }
         }
     }
 }

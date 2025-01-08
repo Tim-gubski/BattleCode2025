@@ -32,26 +32,51 @@ public class Mopper extends Unit {
 
             MapInfo[] nearbyTiles = rc.senseNearbyMapInfos(-1);
             MapLocation closestEnemyPaint = null;
+            boolean bestOnOurMarker = false;
             int closestDist = 999999;
             for(MapInfo tile : nearbyTiles){
                 if(tile.getPaint() == PaintType.ENEMY_PRIMARY || tile.getPaint() == PaintType.ENEMY_SECONDARY){
+                    boolean onMarker = tile.getMark().isAlly();
                     int dist = rc.getLocation().distanceSquaredTo(tile.getMapLocation());
-                    if(dist < closestDist){
+
+                    if(onMarker && !bestOnOurMarker) {
                         closestDist = dist;
                         closestEnemyPaint = tile.getMapLocation();
+                        bestOnOurMarker = true;
+                    } else if (onMarker && bestOnOurMarker) {
+                        if(dist < closestDist){
+                            closestDist = dist;
+                            closestEnemyPaint = tile.getMapLocation();
+                        }
+                    } else if (!onMarker && !bestOnOurMarker) {
+                        if(dist < closestDist){
+                            closestDist = dist;
+                            closestEnemyPaint = tile.getMapLocation();
+                        }
                     }
                 }
             }
             if (closestEnemyPaint != null) {
+                rc.setIndicatorDot(closestEnemyPaint, 255, 255, 0);
                 if(!attemptMopSweep(rc.senseNearbyRobots(2, rc.getTeam().opponent())) && rc.getLocation().isAdjacentTo(closestEnemyPaint)){
-                    if(rc.canAttack(closestEnemyPaint)){
-                        rc.attack(closestEnemyPaint);
-                    }
+                    tryAttack(closestEnemyPaint);
                 }else{
                     fuzzyMove(rc.getLocation().directionTo(closestEnemyPaint));
+                    tryAttack(closestEnemyPaint);
                 }
             } else {
-                bugNav(explorer.getExploreTarget());
+                RobotInfo[] friends = rc.senseNearbyRobots(-1,rc.getTeam());
+                RobotInfo bestFriend = null;
+                for(RobotInfo friend : friends){
+                    if(friend.getType() == UnitType.SOLDIER && (bestFriend == null || Math.abs(friend.getID()-rc.getID()) < Math.abs(bestFriend.getID()-rc.getID()))){
+                        bestFriend = friend;
+                    }
+                }
+                if(bestFriend!=null){
+                    fuzzyMove(dirTo(bestFriend.getLocation()));
+                }else{
+                    bugNav(explorer.getExploreTarget());
+                }
             }
         }
 

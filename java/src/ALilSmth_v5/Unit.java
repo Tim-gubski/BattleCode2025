@@ -52,8 +52,12 @@ public abstract class Unit extends Robot {
         if (nearestPaintTower == null) {
             return false;
         }
+        int theshold = 25;
+        if(rc.getType() == UnitType.SPLASHER){
+            theshold = 50;
+        }
 
-        return rc.getPaint() <= 25;
+        return rc.getPaint() <= theshold;
     }
 
     protected void refillSelf() throws GameActionException {
@@ -276,10 +280,9 @@ public abstract class Unit extends Robot {
                 y += info.getMapLocation().y;
                 enemyPaint++;
             }
-
         }
         if(enemyPaint < 3) return null;
-        return dirTo(new MapLocation(x,y));
+        return dirTo(new MapLocation(x/enemyPaint,y/enemyPaint));
     }
 
 }
