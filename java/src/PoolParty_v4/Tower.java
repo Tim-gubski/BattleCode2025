@@ -1,6 +1,5 @@
 package PoolParty_v4;
 
-import FirstBot_v2.Units.Mopper;
 import battlecode.common.*;
 
 public abstract class Tower extends Robot {
