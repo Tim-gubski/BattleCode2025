@@ -21,7 +21,7 @@ public class Soldier extends Unit {
             } else {
                 rc.setIndicatorString("Can't find refill station");
             }
-            if(moveToNearestPaintTower()){
+            if(!moveToNearestPaintTower()){
                 tryExploreOnPaint();
             }
         } else {
