@@ -52,8 +52,12 @@ public abstract class Unit extends Robot {
         if (nearestPaintTower == null) {
             return false;
         }
+        int theshold = 25;
+        if(rc.getType() == UnitType.SPLASHER){
+            theshold = 50;
+        }
 
-        return rc.getPaint() <= 25;
+        return rc.getPaint() <= theshold;
     }
 
     protected void refillSelf() throws GameActionException {
@@ -160,41 +164,6 @@ public abstract class Unit extends Robot {
 
     public void fuzzyMove(MapLocation loc) throws GameActionException{
         fuzzyMove(dirTo(loc));
-    }
-
-    // safety filter method to check if location is safe to move to
-    public boolean isSafe(MapLocation loc, RobotInfo[] towers) throws GameActionException {
-        // check if in tower range
-        for (RobotInfo tower : towers) {
-            if (loc.isWithinDistanceSquared(tower.getLocation(), tower.getType().actionRadiusSquared)) {
-                return false;
-            }
-        }
-
-        // check if on ally paint
-        MapInfo info = rc.senseMapInfo(loc);
-        if (isEnemyPaint(info.getPaint())) {
-            return false;
-        }
-
-        return true;
-    }
-
-    // returns true if able to fuzzy move safely in desired direction
-    public boolean safeFuzzyMove(Direction dir, RobotInfo[] enemyTowers) throws GameActionException {
-        for (Direction d : fuzzyDirs(dir)) {
-            if (!rc.canMove(d)) {
-                continue;
-            }
-
-            MapLocation fuzzyLoc = rc.getLocation().add(d);
-            if (isSafe(fuzzyLoc, enemyTowers)) {
-                rc.move(d);
-                return true;
-            }
-        }
-
-        return false;
     }
 
     int MAX_STACK_SIZE = 100;
@@ -311,11 +280,9 @@ public abstract class Unit extends Robot {
                 y += info.getMapLocation().y;
                 enemyPaint++;
             }
-
         }
         if(enemyPaint < 3) return null;
-        return dirTo(new MapLocation(x,y));
+        return dirTo(new MapLocation(x/enemyPaint,y/enemyPaint));
     }
 
 }
-

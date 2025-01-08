@@ -13,8 +13,20 @@ public class Soldier extends Unit {
 
     }
 
+    MapLocation returnLoc = null;
+    Direction lastEnemyPaintDirection = null;
+
     public void turn() throws GameActionException {
+//        boolean refillPaint = rc.getPaint() < rc.getType().paintCapacity/4;
+//        if(refillPaint){
+//            RobotInfo paintTowers = rc.senseNearby
+//            fuzzyMove(spawnLoc);
+//        }
+
         if (shouldRefill()) {
+            if (returnLoc == null) {
+                returnLoc = rc.getLocation();
+            }
             findNearestPaintTower();
             if (nearestPaintTower != null){
                 rc.setIndicatorString("Exploring on paint!! Trying to refill at: " + nearestPaintTower);
@@ -70,30 +82,56 @@ public class Soldier extends Unit {
                 // check if enemy tower in range, attack
                 RobotInfo tower = inEnemyTowerRange(rc.senseNearbyRobots(-1, rc.getTeam().opponent()));
                 if(tower != null) {
-                    for (Direction dir : directions) {
-                        MapLocation newLocation = rc.getLocation().add(dir);
-                        int dist = newLocation.distanceSquaredTo(tower.getLocation());
-                        if (dist > tower.type.actionRadiusSquared && dist <= rc.getType().actionRadiusSquared && rc.canMove(dir) && !isEnemyPaint(rc.senseMapInfo(newLocation).getPaint())) {
-                            rc.move(dir);
-                            break;
-                        }
-                    }
-                    tryAttack(tower.getLocation());
+//                    for (Direction dir : directions) {
+//                        MapLocation newLocation = rc.getLocation().add(dir);
+//                        int dist = newLocation.distanceSquaredTo(tower.getLocation());
+//                        if (dist > tower.type.actionRadiusSquared && dist <= rc.getType().actionRadiusSquared && rc.canMove(dir) && !isEnemyPaint(rc.senseMapInfo(newLocation).getPaint())) {
+//                            rc.move(dir);
+//                            break;
+//                        }
+//                    }
+//                    tryAttack(tower.getLocation());
                     // incase we're too close
                     if (rc.getLocation().distanceSquaredTo(tower.getLocation()) <= tower.type.actionRadiusSquared) {
                         fuzzyMove(dirTo(tower.getLocation()).opposite());
                     }
+                }
                 // otherwise explore
-                }else{
+                if(rc.isMovementReady()){
+                    if (returnLoc != null) {
+                        if (rc.canSenseLocation(returnLoc)) {
+                            returnLoc = null;
+                        } else {
+                            bugNav(returnLoc);
+                        }
+                    }
                     Direction enemyPaintDirection = getEnemyPaintDirection();
                     if(enemyPaintDirection != null){
+                        if(lastEnemyPaintDirection == null){
+                            RIGHT = !RIGHT;
+                        }
+                        lastEnemyPaintDirection = enemyPaintDirection;
                         if(isEnemyPaint(rc.senseMapInfo(rc.getLocation()).getPaint())){
                             fuzzyMove(enemyPaintDirection.opposite());
                         }
+                        Direction startingDirection;
                         if(RIGHT){
-                            fuzzyMove(enemyPaintDirection.rotateRight().rotateRight());
+                            startingDirection = enemyPaintDirection.rotateRight().rotateRight();
                         }else{
-                            fuzzyMove(enemyPaintDirection.rotateLeft().rotateLeft());
+                            startingDirection = enemyPaintDirection.rotateLeft().rotateLeft();
+                        }
+                        rc.setIndicatorLine(rc.getLocation(), rc.getLocation().add(startingDirection), 0, 0, 255);
+                        rc.setIndicatorLine(rc.getLocation(), rc.getLocation().add(enemyPaintDirection), 255, 0, 0);
+                        rc.setIndicatorString("trying to following enemy paint");
+                        for (Direction dir : fuzzyDirs(startingDirection)) {
+                            if(!isEnemyPaint(rc.senseMapInfo(rc.getLocation().add(dir)).getPaint()) && (tower == null || rc.getLocation().distanceSquaredTo(tower.getLocation()) > tower.type.actionRadiusSquared) && rc.canMove(dir)){
+                                rc.move(dir);
+                                rc.setIndicatorString("Following enemy paint");
+                                break;
+                            }
+                        }
+                        if(rc.isMovementReady()){
+                            RIGHT = !RIGHT;
                         }
                     }else{
                         bugNav(explorer.getExploreTarget());
@@ -135,6 +173,14 @@ public class Soldier extends Unit {
                 }
             }
         }
+
         markNearbyMapData();
+
     }
+
+//    public MapLocation[] attackableTiles(){
+//        MapLocation[] attackable = new MapLocation[69];
+//
+//    }
+
 }
