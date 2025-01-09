@@ -123,6 +123,9 @@ local.properties
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/**/misc.xml
+.idea/**/vcs.xml
+.idea/**/.gitignore
 
 # AWS User-specific
 .idea/**/aws.xml
