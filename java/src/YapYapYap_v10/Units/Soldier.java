@@ -1,6 +1,6 @@
-package MoneyMan_v9.Units;
+package YapYapYap_v10.Units;
 
-import MoneyMan_v9.Unit;
+import YapYapYap_v10.Unit;
 import battlecode.common.*;
 
 // TODO: Dont go into tower range, attack towers maybe?, moppers attack enemy units
@@ -35,8 +35,8 @@ public class Soldier extends Unit {
         stateInvariantActions();
 
         if(currentTargetLoc != null) {
-            rc.setIndicatorDot(currentTargetLoc, 255, 125, 0);
-            rc.setIndicatorLine(rc.getLocation(), currentTargetLoc, 125, 0, 125);
+            trySetIndicatorDot(currentTargetLoc, 255, 125, 0);
+            trySetIndicatorLine(rc.getLocation(), currentTargetLoc, 125, 0, 125);
         }
         debugString.append("Currently in state: ").append(state.toString());
         rc.setIndicatorString(debugString.toString());
@@ -85,7 +85,7 @@ public class Soldier extends Unit {
         for (MapLocation loc : getResourcePatternCenterLocations()) {
             if (tryConfirmResourcePattern(loc)) {
                 //rc.setTimelineMarker("Resource pattern confirmed", 0, 255, 0);
-                rc.setIndicatorDot(loc, 0, 255, 0);
+                trySetIndicatorDot(loc, 0, 255, 0);
                 System.out.println("Resource pattern confirmed at " + loc + "!");
             }
         }
@@ -131,8 +131,8 @@ public class Soldier extends Unit {
 //                }else{
 //                    startingDirection = enemyPaintDirection.rotateLeft().rotateLeft();
 //                }
-////                rc.setIndicatorLine(rc.getLocation(), rc.getLocation().add(startingDirection), 0, 0, 255);
-////                rc.setIndicatorLine(rc.getLocation(), rc.getLocation().add(enemyPaintDirection), 255, 0, 0);
+////                trySetIndicatorLine(rc.getLocation(), rc.getLocation().add(startingDirection), 0, 0, 255);
+////                trySetIndicatorLine(rc.getLocation(), rc.getLocation().add(enemyPaintDirection), 255, 0, 0);
 //                rc.setIndicatorString("trying to following enemy paint");
 //                for (Direction dir : fuzzyDirs(startingDirection)) {
 //                    if(rc.onTheMap(rc.getLocation().add(dir)) && !isEnemyPaint(rc.senseMapInfo(rc.getLocation().add(dir)).getPaint()) && (tower == null || rc.getLocation().distanceSquaredTo(tower.getLocation()) > tower.type.actionRadiusSquared) && rc.canMove(dir)){
@@ -188,7 +188,7 @@ public class Soldier extends Unit {
             int yOff = patternTile.getMapLocation().y - ruinLoc.y + 2;
             PaintType neededPaint = determinePaintType(towerType, xOff, yOff);
             if (patternTile.getPaint() == PaintType.EMPTY || patternTile.getPaint() != neededPaint) {
-                rc.setIndicatorDot(patternTile.getMapLocation(), 125, 125, 0);
+                trySetIndicatorDot(patternTile.getMapLocation(), 125, 125, 0);
                 if (rc.canAttack(patternTile.getMapLocation())) {
                     rc.attack(patternTile.getMapLocation(), neededPaint == PaintType.ALLY_SECONDARY);
                     return true;
