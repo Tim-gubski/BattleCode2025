@@ -42,7 +42,6 @@ public abstract class Unit extends Robot {
         mapData = new MapData(width, height);
         explorer = new Explore(rc, width, height, mapData);
         markNearbyMapData();
-        nearestPaintTower = findNearestPaintTower();
     }
 
     protected void senseNearby() throws GameActionException {
@@ -56,6 +55,8 @@ public abstract class Unit extends Robot {
             closestAnyRuin = getClosest(allRuins);
         }
         debugString.append("Closest ruin: ").append(closestCompletableRuin);
+
+        mapData.updateLandmarks(allRuins, allies, rc.getLocation());
     }
 
     public void markNearbyMapData() throws GameActionException{
@@ -118,55 +119,73 @@ public abstract class Unit extends Robot {
         return rc.getPaint() <= rc.getType().paintCapacity * 0.25;
     }
 
-    protected void refillSelf() throws GameActionException {
+    protected boolean refillSelf(MapLocation refillLoc) throws GameActionException {
         // cant do anything if no nearest tower
-        if (nearestPaintTower == null) {
+        if (refillLoc == null) {
             rc.setIndicatorString("FAILED REFILL 1");
-            return;
+            return false;
         }
 
         // check if tower in range
-        if (!rc.getLocation().isWithinDistanceSquared(nearestPaintTower, rc.getType().actionRadiusSquared)) {
-            return;
+        if (!rc.getLocation().isWithinDistanceSquared(refillLoc, rc.getType().actionRadiusSquared)) {
+            return false;
         }
 
         int needed = rc.getType().paintCapacity - rc.getPaint();
         int transferAmount = 0;
-        if (rc.canSenseRobotAtLocation(nearestPaintTower)) {
-            RobotInfo tower = rc.senseRobotAtLocation(nearestPaintTower);
-            if (tower.getTeam() != rc.getTeam()) {
-                nearestPaintTower = null;
-                rc.setIndicatorString("FAILED REFILL 3");
-                return;
-            }
-
+        if (rc.canSenseRobotAtLocation(refillLoc)) {
+            RobotInfo tower = rc.senseRobotAtLocation(refillLoc);
             int availablePaint = tower.getPaintAmount();
-
             transferAmount = Math.min(needed, availablePaint);
+        }else{
+            rc.setIndicatorString("FAILED REFILL 2");
+            return false;
         }
 
         if (transferAmount <= 0) {
             rc.setIndicatorString("FAILED REFILL 4");
-            return;
+            return false;
         }
 
-        if (rc.canTransferPaint(nearestPaintTower, -transferAmount)) {
-            rc.transferPaint(nearestPaintTower, -transferAmount);
+        if (rc.canTransferPaint(refillLoc, -transferAmount)) {
+            rc.transferPaint(refillLoc, -transferAmount);
+            return true;
         }
+
+        return false;
     }
 
+    int targetTowerIndex = 0;
+    MapLocation[] paintTowers = null;
+    MapLocation closestPaintTower = null;
     protected UnitState refillingState() throws GameActionException {
+        if(paintTowers == null){
+            paintTowers = mapData.getPaintTowers();
+            targetTowerIndex = 0;
+            int misDist = 999999;
+            for(MapLocation tower : paintTowers){
+                if(tower == null){
+                    continue;
+                }
+                int dist = rc.getLocation().distanceSquaredTo(tower);
+                if(dist < misDist) {
+                    misDist = dist;
+                    closestPaintTower = tower;
+                }
+            }
+        }
 
-        // ensure tower is still good
-        MapLocation foundTower = findNearestPaintTower();
-        debugString.append(foundTower);
-        if (foundTower == null) {
-            // need to find a tower atp
-            // path find on paint
-//            safeFuzzyMove(lastSeenTower, enemies);
-//            if (rc.getLocation().isWithinDistanceSquared(lastSeenTower, 8)) {
-//                lastSeenTower = explorer.getExploreTarget();
-//            }
+        MapLocation targetTower = null;
+        if (paintTowers.length > 0) {
+            if(closestPaintTower != null) {
+                targetTower = closestPaintTower;
+            }else if(targetTowerIndex < paintTowers.length && paintTowers[targetTowerIndex] != null){
+                targetTower = paintTowers[targetTowerIndex];
+            }
+        }
+
+        debugString.append(targetTower);
+        if (targetTower == null) {
             debugString.append("Exploring on Paint");
             if(!tryExploreOnPaint()){
                 // find closest ally paint
@@ -177,57 +196,39 @@ public abstract class Unit extends Robot {
                     safeFuzzyMove(explorer.getExploreTarget(), enemies);
                 }
             }
-
             return state;
         }
-        nearestPaintTower = foundTower;
         
         // if in range of tower, refill
-        if (rc.getLocation().isWithinDistanceSquared(foundTower, 2)) {
-            refillSelf();
-            rc.setIndicatorDot(foundTower, 0, 255, 0);
+        if (rc.getLocation().isWithinDistanceSquared(targetTower, 2)) {
+            refillSelf(targetTower);
+            rc.setIndicatorDot(targetTower, 0, 255, 0);
             // done filling
             if (rc.getPaint() > rc.getType().paintCapacity * 0.75) {
                 state = UnitState.EXPLORE;
+                paintTowers = null;
+                closestPaintTower = null;
                 return UnitState.EXPLORE;
             }
         }
 
-        // remove tower
-        if (rc.canSenseRobotAtLocation(foundTower) && rc.senseRobotAtLocation(foundTower).getPaintAmount() < 30) {
-            if (isMoneyTower(rc.senseRobotAtLocation(foundTower).getType())) {
-                int index = mapData.containsPaintTowerLocation(foundTower);
-                mapData.removePaintTowerLocation(index);
+        // move to next tower if empty
+        if (rc.canSenseRobotAtLocation(targetTower) && rc.senseRobotAtLocation(targetTower).getPaintAmount() < 30) {
+            if(closestPaintTower != null){
+                closestPaintTower = null;
+            }else{
+                targetTowerIndex++;
             }
-            return state;
         }
 
         // move closer to tower
-        if (rc.getLocation().distanceSquaredTo(foundTower) > 2) {
-            rc.setIndicatorDot(foundTower, 255, 255, 255);
-            safeFuzzyMove(foundTower, enemies);
+        if (rc.getLocation().distanceSquaredTo(targetTower) > 2) {
+            rc.setIndicatorDot(targetTower, 255, 255, 255);
+            safeFuzzyMove(targetTower, enemies);
         }
         return state;
     }
 
-    protected MapLocation findNearestPaintTower() throws GameActionException {
-        return mapData.getNearestPaintTower(rc.getLocation());
-    }
-
-    protected boolean moveToNearestPaintTower() throws GameActionException {
-        // make some way to find tower if no available ones
-        if (nearestPaintTower == null) {
-            return false;
-        }
-
-        // move to tower
-        if (!rc.getLocation().isWithinDistanceSquared(nearestPaintTower, 2)) {
-            bugNav(nearestPaintTower);
-        } else {
-            refillSelf();
-        }
-        return true;
-    }
 
     public Direction paintExploreDirection = null;
     public boolean tryExploreOnPaint() throws GameActionException {
