@@ -84,7 +84,8 @@ abstract public class Robot {
     }
 
     public static boolean isEnemyPaint (PaintType paint) throws  GameActionException {
-        return paint == PaintType.ENEMY_PRIMARY || paint == PaintType.ENEMY_SECONDARY;
+//        return paint == PaintType.ENEMY_PRIMARY || paint == PaintType.ENEMY_SECONDARY;
+        return paint.isEnemy();
     }
 
     /**
@@ -145,18 +146,6 @@ abstract public class Robot {
         return (loc.x - 2) % 4 == 0 && (loc.y - 2) % 4 == 0;
     }
 
-    //TODO: Make this better
-    public MapLocation[] getResourcePatternCenterLocations() throws GameActionException{
-        MapLocation[] locs = rc.getAllLocationsWithinRadiusSquared(rc.getLocation(),-1);
-        ArrayList<MapLocation> centers = new ArrayList<>();
-        for(MapLocation loc : locs){
-            if(isResourcePatternCenter(loc)){
-                centers.add(loc);
-            }
-        }
-        return centers.toArray(new MapLocation[0]);
-    }
-
     public boolean getTileTargetColor(MapLocation loc) throws GameActionException{
         if(isResourcePatternCenter(loc)){
             return false;
@@ -173,76 +162,7 @@ abstract public class Robot {
     }
     //=================================//
 
-    // MAP HELPER FUNCTIONS //
-    public MapLocation[] senseNearbyTowerlessRuins() throws GameActionException{
-        MapLocation[] nearbyRuins = rc.senseNearbyRuins(-1);
-        int toRemove = 0;
-        for (int i = 0; i < nearbyRuins.length; i++){
-            if(rc.senseRobotAtLocation(nearbyRuins[i]) != null){
-                nearbyRuins[i] = null;
-                toRemove++;
-            }
-        }
-        MapLocation[] newNearbyRuins = new MapLocation[nearbyRuins.length - toRemove];
-        int j = 0;
-        for (int i = 0; i < nearbyRuins.length; i++){
-            if(nearbyRuins[i] != null){
-                newNearbyRuins[j] = nearbyRuins[i];
-                j++;
-            }
-        }
-        return newNearbyRuins;
-    }
-    
-    public MapLocation[] senseNearbyCompletableTowerlessRuins() throws GameActionException{
-        MapLocation[] nearbyRuins = rc.senseNearbyRuins(-1);
-        int toRemove = 0;
-        for (int i = 0; i < nearbyRuins.length; i++){
-            if(rc.senseRobotAtLocation(nearbyRuins[i]) != null){
-                nearbyRuins[i] = null;
-                toRemove++;
-            }
-            int correctPaint = 0;
-            int sensable = 0;
-            // Enemy Paint around it, Ignore it
-            for(int x = -2; x <= 2; x++){
-                if (nearbyRuins[i] == null) break;
-                for(int y = -2; y <= 2; y++){
-                    MapLocation senseLoc = nearbyRuins[i].translate(x,y);
-                    if(rc.onTheMap(senseLoc) && rc.canSenseLocation(senseLoc)){
-                        MapInfo tileInfo = rc.senseMapInfo(senseLoc);
-                        if(!tileInfo.hasRuin()){
-                            sensable++;
-                        }
-                        if(isEnemyPaint(tileInfo.getPaint())){
-                            nearbyRuins[i] = null;
-                            toRemove++;
-                            break;
-                        }
-                        if(tileInfo.getPaint().isAlly()){
-                            correctPaint++;
-                        }
-                    }
-                }
-            }
-            if (nearbyRuins[i] == null) continue;
-            int workingFriends = rc.senseNearbyRobots(nearbyRuins[i], 2, rc.getTeam()).length;
-            //debugString.append("Working Friends: " + workingFriends + " Correct Paint: " + correctPaint + " Sensable: " + sensable + "\n");
-            if(workingFriends >= 2 || (correctPaint == sensable && workingFriends == 1)){
-                nearbyRuins[i] = null;
-                toRemove++;
-            }
-        }
-        MapLocation[] newNearbyRuins = new MapLocation[nearbyRuins.length - toRemove];
-        int j = 0;
-        for (int i = 0; i < nearbyRuins.length; i++){
-            if(nearbyRuins[i] != null){
-                newNearbyRuins[j] = nearbyRuins[i];
-                j++;
-            }
-        }
-        return newNearbyRuins;
-    }
+
 
     // deterministic random function to determine what tower type goes here
 //    public UnitType determineTowerPattern(MapLocation ruinLoc) {
@@ -259,17 +179,7 @@ abstract public class Robot {
        return UnitType.LEVEL_ONE_PAINT_TOWER;
     }
 
-    // x and y are local to 5x5 pattern -> 0,0 is topleft
-    public PaintType determinePaintType(UnitType towerType, int x, int y) throws GameActionException{
-        // find paint type using bit extraction
-        // method: pattern >> (24 - (x + y * 5)) & 1
-        if (isPaintTower(towerType)) {
-            return (GameConstants.PAINT_TOWER_PATTERN >> (24 - (x + y * 5)) & 1) == 1 ? PaintType.ALLY_SECONDARY : PaintType.ALLY_PRIMARY;
-        } else if (isMoneyTower(towerType)) {
-            return (GameConstants.MONEY_TOWER_PATTERN >> (24 - (x + y * 5)) & 1) == 1 ? PaintType.ALLY_SECONDARY : PaintType.ALLY_PRIMARY;
-        }
-        return (GameConstants.DEFENSE_TOWER_PATTERN >> (24 - (x + y * 5)) & 1) == 1 ? PaintType.ALLY_SECONDARY : PaintType.ALLY_PRIMARY;
-    }
+
 
     public MapLocation getClosest(MapLocation[] locs) throws GameActionException{
         int closestDist = Integer.MAX_VALUE;

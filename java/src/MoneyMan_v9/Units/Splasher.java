@@ -47,7 +47,7 @@ public class Splasher extends Unit {
     }
 
     private void stateInvariantActions() throws GameActionException{
-        markNearbyMapData();
+        return;
     }
 
     private void exploreState() throws GameActionException {

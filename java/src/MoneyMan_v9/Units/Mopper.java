@@ -102,14 +102,14 @@ public class Mopper extends Unit {
         }
 
         // confirm all resource patterns
-        for (MapLocation loc : getResourcePatternCenterLocations()) {
-            if (tryConfirmResourcePattern(loc)) {
+        mapData.SRPs.updateIterable();
+        for (int i = 0; i < mapData.SRPs.size; i++) {
+            if (tryConfirmResourcePattern(mapData.SRPs.locs[i])) {
                 //rc.setTimelineMarker("Resource pattern confirmed", 0, 255, 0);
-                rc.setIndicatorDot(loc, 0, 255, 0);
-                System.out.println("Resource pattern confirmed at " + loc + "!");
+                rc.setIndicatorDot(mapData.SRPs.locs[i], 0, 255, 0);
+                System.out.println("Resource pattern confirmed at " + mapData.SRPs.locs[i] + "!");
             }
         }
-        markNearbyMapData();
     }
 
     private void exploreState() throws GameActionException {

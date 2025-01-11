@@ -5,6 +5,10 @@ import MoneyMan_v9.Helpers.MapData;
 import battlecode.common.*;
 
 public abstract class Unit extends Robot {
+    // CONSTANTS
+    public PaintType SRP_MARKER_COLOR = PaintType.ALLY_PRIMARY;
+    public boolean SRP_MARKER_BOOL = false; // change these together ^
+
     public MapData mapData;
     public Explore explorer;
     public MapLocation nearestPaintTower = null;
@@ -32,6 +36,8 @@ public abstract class Unit extends Robot {
         ATTACK, // soldiers shoot, moppers sweep, splashers splash
 
         BUILD, // finish ruin and build tower
+
+        BUILDSRP,
     }
 
     protected UnitState state = null;
@@ -41,78 +47,114 @@ public abstract class Unit extends Robot {
         super(robot);
         mapData = new MapData(width, height);
         explorer = new Explore(rc, width, height, mapData);
-        markNearbyMapData();
     }
+
 
     protected void senseNearby() throws GameActionException {
         mapInfo = rc.senseNearbyMapInfos();
+        mapData.setMapInfos(mapInfo, SRP_MARKER_COLOR);
+
+        allRuins = rc.senseNearbyRuins(-1);
+        completableRuins = senseNearbyCompletableTowerlessRuins();
+
         allies = rc.senseNearbyRobots(-1, rc.getTeam());
         enemies = rc.senseNearbyRobots(-1, rc.getTeam().opponent());
-        completableRuins = senseNearbyCompletableTowerlessRuins();
-        allRuins = rc.senseNearbyRuins(-1);
+
         closestCompletableRuin = getClosest(completableRuins);
         if(allRuins.length > 0){
             closestAnyRuin = getClosest(allRuins);
         }
-        debugString.append("Closest ruin: ").append(closestCompletableRuin);
-
-        mapData.updateLandmarks(allRuins, allies, rc.getLocation());
-    }
-
-    public void markNearbyMapData() throws GameActionException{
-        for(MapLocation loc : rc.getAllLocationsWithinRadiusSquared(rc.getLocation(),-1)){
-            mapData.setVisited(loc);
-
-            // check if loc is a ruin
-            if (rc.canSenseLocation(loc)) {
-                MapInfo info = rc.senseMapInfo(loc);
-                if (info.hasRuin()) {
-                    // mark the tower for recall
-                    if (rc.canSenseRobotAtLocation(loc) && rc.senseRobotAtLocation(loc).getTeam() == rc.getTeam() && lastSeenTower == null) {
-                        lastSeenTower = loc;
-                    }
-
-                    // if we already have this tower saved as a paint tower
-                    int containsPaintTower = mapData.containsPaintTowerLocation(loc);
-
-                    // check if paint tower here and is not added and has paint -> add as refill station
-                    if (containsPaintTower == -1 && rc.canSenseRobotAtLocation(loc)) {
-                        RobotInfo robot = rc.senseRobotAtLocation(loc);
-                        if (robot.getTeam() == rc.getTeam() && (isPaintTower(robot.getType()) || isMoneyTower(robot.getType())) && robot.getPaintAmount() > 30) {
-                            mapData.setPaintTower(robot.getLocation(), rc.getLocation());
-                        }
-                    }
-
-                    // check if paint tower is here and already added but empty -> remove as refill station
-                    else if (containsPaintTower != -1 && rc.canSenseRobotAtLocation(loc)) {
-                        RobotInfo robot = rc.senseRobotAtLocation(loc);
-                        if (robot.getPaintAmount() == 0) {
-                            mapData.removePaintTowerLocation(containsPaintTower);
-                        }
-                    }
-
-                    // otherwise, check if location in stored paint locations, replace if paint tower no longer exists
-                    else if (containsPaintTower != -1 && !rc.canSenseRobotAtLocation(loc)) {
-                        mapData.removePaintTowerLocation(containsPaintTower);
-                    }
-                }
-            }
+        UnitType[] ruinTypes = new UnitType[allRuins.length];
+        for(int i = ruinTypes.length; --i >= 0;){
+            ruinTypes[i] = determineTowerPattern(allRuins[i]);
         }
+
+        mapData.updateLandmarks(allRuins, ruinTypes, allies, rc.getLocation());
     }
 
-    protected void confirmNearbyTowers() throws GameActionException {
+//    protected void confirmNearbyTowers() throws GameActionException {
+//        MapLocation[] nearbyRuins = rc.senseNearbyRuins(-1);
+//        if(nearbyRuins.length > 0) {
+//            MapLocation closestRuin = getClosest(nearbyRuins);
+//            // Complete the ruin if we can
+//            for (UnitType type : towerTypes) {
+//                if (rc.canCompleteTowerPattern(type, closestRuin)) {
+//                    rc.completeTowerPattern(type, closestRuin);
+//                    rc.setTimelineMarker("Tower built", 0, 255, 0);
+//                    System.out.println("Built a tower at " + closestRuin + "!");
+//                }
+//            }
+//        }
+//    }
+
+    // MAP HELPER FUNCTIONS //
+    public MapLocation[] senseNearbyTowerlessRuins() throws GameActionException{
         MapLocation[] nearbyRuins = rc.senseNearbyRuins(-1);
-        if(nearbyRuins.length > 0) {
-            MapLocation closestRuin = getClosest(nearbyRuins);
-            // Complete the ruin if we can
-            for (UnitType type : towerTypes) {
-                if (rc.canCompleteTowerPattern(type, closestRuin)) {
-                    rc.completeTowerPattern(type, closestRuin);
-                    rc.setTimelineMarker("Tower built", 0, 255, 0);
-                    System.out.println("Built a tower at " + closestRuin + "!");
-                }
+        int toRemove = 0;
+        for (int i = 0; i < nearbyRuins.length; i++){
+            if(rc.senseRobotAtLocation(nearbyRuins[i]) != null){
+                nearbyRuins[i] = null;
+                toRemove++;
             }
         }
+        MapLocation[] newNearbyRuins = new MapLocation[nearbyRuins.length - toRemove];
+        int j = 0;
+        for (int i = 0; i < nearbyRuins.length; i++){
+            if(nearbyRuins[i] != null){
+                newNearbyRuins[j] = nearbyRuins[i];
+                j++;
+            }
+        }
+        return newNearbyRuins;
+    }
+
+    public MapLocation[] senseNearbyCompletableTowerlessRuins() throws GameActionException{
+        MapLocation[] nearbyRuins = rc.senseNearbyRuins(-1);
+        int toRemove = 0;
+        for (int i = 0; i < nearbyRuins.length; i++){
+            if(rc.senseRobotAtLocation(nearbyRuins[i]) != null){
+                nearbyRuins[i] = null;
+                toRemove++;
+            }
+            int correctPaint = 0;
+            int sensable = -1;
+            // Enemy Paint around it, Ignore it
+            MapLocation senseLoc;
+            MapInfo tileInfo;
+            for(int x = -2; x <= 2; x++){
+                if (nearbyRuins[i] == null) break;
+                for(int y = -2; y <= 2; y++){
+                    senseLoc = nearbyRuins[i].translate(x,y);
+                    if(rc.onTheMap(senseLoc) && rc.canSenseLocation(senseLoc)){
+                        tileInfo = mapData.getMapInfo(senseLoc);
+                        if(tileInfo.getPaint().isEnemy()){
+                            nearbyRuins[i] = null;
+                            toRemove++;
+                            break;
+                        }
+                        if(tileInfo.getPaint().isAlly()){
+                            correctPaint++;
+                        }
+                    }
+                }
+            }
+            if (nearbyRuins[i] == null) continue;
+            int workingFriends = rc.senseNearbyRobots(nearbyRuins[i], 2, rc.getTeam()).length;
+            //debugString.append("Working Friends: " + workingFriends + " Correct Paint: " + correctPaint + " Sensable: " + sensable + "\n");
+            if(workingFriends >= 2 || (correctPaint == sensable && workingFriends == 1)){
+                nearbyRuins[i] = null;
+                toRemove++;
+            }
+        }
+        MapLocation[] newNearbyRuins = new MapLocation[nearbyRuins.length - toRemove];
+        int j = 0;
+        for (int i = 0; i < nearbyRuins.length; i++){
+            if(nearbyRuins[i] != null){
+                newNearbyRuins[j] = nearbyRuins[i];
+                j++;
+            }
+        }
+        return newNearbyRuins;
     }
 
     protected boolean shouldRefill() throws GameActionException {
@@ -159,8 +201,9 @@ public abstract class Unit extends Robot {
     MapLocation[] paintTowers = null;
     MapLocation closestPaintTower = null;
     protected UnitState refillingState() throws GameActionException {
-        if(paintTowers == null){
-            paintTowers = mapData.getPaintTowers();
+        MapLocation[] newPaintTowers = mapData.getPaintTowers();
+        if(paintTowers == null || paintTowers.length != newPaintTowers.length){
+            paintTowers = newPaintTowers;
             targetTowerIndex = 0;
             int misDist = 999999;
             for(MapLocation tower : paintTowers){
@@ -213,7 +256,7 @@ public abstract class Unit extends Robot {
         }
 
         // move to next tower if empty
-        if (rc.canSenseRobotAtLocation(targetTower) && rc.senseRobotAtLocation(targetTower).getPaintAmount() < 30) {
+        if (rc.canSenseRobotAtLocation(targetTower) && (rc.senseRobotAtLocation(targetTower).getPaintAmount() < 30 && paintTowers.length > 1)) {
             if(closestPaintTower != null){
                 closestPaintTower = null;
             }else{
@@ -231,6 +274,8 @@ public abstract class Unit extends Robot {
 
 
     public Direction paintExploreDirection = null;
+    public MapLocation[] previousPositions = new MapLocation[15];
+    public int previousPositionIndex = 0;
     public boolean tryExploreOnPaint() throws GameActionException {
         if(!rc.isMovementReady()){
             return false;
@@ -241,17 +286,22 @@ public abstract class Unit extends Robot {
         for(Direction dir : fuzzyDirs(paintExploreDirection)){
             MapLocation loc = rc.getLocation().add(dir);
             if(rc.canSenseLocation(loc)){
-                MapInfo info = rc.senseMapInfo(loc);
+                MapInfo info = mapData.getMapInfo(loc);
                 rc.setIndicatorDot(loc, 0, 0, 255);
-                if(info.getPaint().isAlly()){
+                if(info.getPaint().isAlly() && !isPreviousLocation(loc, previousPositions)){
                     if(tryMove(dir)){
                         paintExploreDirection = dir;
+                        previousPositions[previousPositionIndex] = loc;
+                        previousPositionIndex = (previousPositionIndex + 1) % previousPositions.length;
                         return true;
                     }
                 }
             }
         }
-        paintExploreDirection = paintExploreDirection.opposite();
+        safeFuzzyMove(paintExploreDirection, enemies);
+        if(mapData.getMapInfo(rc.getLocation()).getPaint().isAlly()){
+            paintExploreDirection = paintExploreDirection.opposite();
+        }
         return false;
     }
 
@@ -316,27 +366,33 @@ public abstract class Unit extends Robot {
     public boolean safeFuzzyMove(Direction dir, RobotInfo[] enemies) throws GameActionException {
         for (Direction d : fuzzyDirs(dir)) {
             if (!rc.canMove(d)) {
-                rc.setIndicatorDot(rc.getLocation().add(d), 255, 0, 0);
+                trySetIndicatorDot(rc.getLocation().add(d), 255, 0, 0);
                 continue;
             }
 
             MapLocation fuzzyLoc = rc.getLocation().add(d);
-            rc.setIndicatorDot(fuzzyLoc, 0, 0, 125);
-            if (isSafe(fuzzyLoc, enemies) && !isPreviousLocation(fuzzyLoc)) {
+            trySetIndicatorDot(fuzzyLoc, 0, 0, 125);
+            if (isSafe(fuzzyLoc, enemies) && !isPreviousLocation(fuzzyLoc, prevPositions)) {
                 rc.move(d);
                 prevPositions[prevPosIndex] = fuzzyLoc;
                 prevPosIndex = (prevPosIndex + 1) % prevPositions.length;
                 return true;
             } else {
-                rc.setIndicatorDot(rc.getLocation().add(d), 255, 0, 0);
+                trySetIndicatorDot(rc.getLocation().add(d), 255, 0, 0);
             }
         }
         fuzzyMove(dir);
         return false;
     }
 
-    public boolean isPreviousLocation(MapLocation loc) {
-        for (MapLocation prevLoc : prevPositions) {
+    public void trySetIndicatorDot(MapLocation loc, int r, int g, int b) throws GameActionException{
+        if (rc.onTheMap(loc)) {
+            rc.setIndicatorDot(loc, r, g, b);
+        }
+    }
+
+    public boolean isPreviousLocation(MapLocation loc, MapLocation[] previous) {
+        for (MapLocation prevLoc : previous) {
             if (prevLoc != null && prevLoc.equals(loc)) {
                 return true;
             }
@@ -419,6 +475,34 @@ public abstract class Unit extends Robot {
         }
     }
 
+    public MapLocation[] mapLocationSpiral(MapLocation loc, int radius) {
+        int maxSize = (int) Math.pow((radius * 2 + 1), 2);
+        MapLocation[] coordinates = new MapLocation[maxSize];
+        coordinates[0] = loc;
+
+        int x = loc.x, y = loc.y;
+        int dx = 1, dy = 0;
+        int index = 1;
+        int steps = 1;
+
+        while (index < maxSize) {
+            for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < steps; j++) {
+                    x += dx;
+                    y += dy;
+                    if (Math.abs(x - loc.x) <= radius && Math.abs(y - loc.y) <= radius) {
+                        coordinates[index++] = new MapLocation(x, y);
+                    }
+                }
+                int temp = dx;
+                dx = -dy;
+                dy = temp;
+            }
+            steps++;
+        }
+        return coordinates;
+    }
+
     public RobotInfo inEnemyTowerRange(RobotInfo[] enemies) throws GameActionException {
         for (RobotInfo enemy : enemies) {
             if (!enemy.getType().isTowerType()) {
@@ -434,22 +518,24 @@ public abstract class Unit extends Robot {
         if(!rc.canSenseLocation(loc)){
             return false;
         }
-        MapInfo info = rc.senseMapInfo(loc);
+        MapInfo info = mapData.getMapInfo(loc);
         return checkAndPaintTile(info);
     }
 
     public boolean checkAndPaintTile(MapInfo info) throws GameActionException{
-        boolean targetColor = getTileTargetColor(info.getMapLocation());
+        if(info == null){
+            return false;
+        }
+//        boolean targetColor = getTileTargetColor(info.getMapLocation());
+        int targetColorInt = mapData.tileColors.getVal(info.getMapLocation());
+        boolean targetColor = targetColorInt == 1;
         if ((info.getPaint() == PaintType.EMPTY
-                || (info.getPaint() != boolToColor(targetColor) && info.getPaint().isAlly()))
+                || (targetColorInt != -1 && info.getPaint() != boolToColor(targetColor)))
                 && rc.canAttack(info.getMapLocation())
-                && !info.hasRuin() && info.getMark() == PaintType.EMPTY
-                && (closestAnyRuin == null || info.getMapLocation().distanceSquaredTo(closestAnyRuin) > 8)
+                && !info.hasRuin() //&& info.getMark() == PaintType.EMPTY
+                //&& (closestAnyRuin == null || info.getMapLocation().distanceSquaredTo(closestAnyRuin) > 8)
         ){
             rc.attack(info.getMapLocation(), targetColor);
-            if(closestAnyRuin != null){
-                rc.setIndicatorDot(closestAnyRuin, 0, 255, 255);
-            }
             rc.setIndicatorDot(info.getMapLocation(), 255, 0, 255);
             return true;
         }
