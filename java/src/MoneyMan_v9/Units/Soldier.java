@@ -3,6 +3,7 @@ package MoneyMan_v9.Units;
 import MoneyMan_v9.Unit;
 import battlecode.common.*;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -19,7 +20,9 @@ public class Soldier extends Unit {
 
     public void turn() throws GameActionException {
         debugString.setLength(0);
+//        int bytecode = Clock.getBytecodesLeft();
         senseNearby(); // perform all scans
+//        System.out.println("Bytecodes used for senseNearby: " + (bytecode - Clock.getBytecodesLeft()));
 
         previousState = state;
         state = determineState();
@@ -60,7 +63,9 @@ public class Soldier extends Unit {
         if (closestCompletableRuin != null && rc.getChips() >= 900){//UnitType.LEVEL_ONE_PAINT_TOWER.paintCost - 100) {
             return UnitState.BUILD;
         }
+//        int startByte = Clock.getBytecodesLeft();
         completableSRP = closestCompletableSRP();
+//        System.out.println("Bytecodes used: " + (startByte - Clock.getBytecodesLeft()));
         if (completableSRP != null){
             return UnitState.BUILDSRP;
         }
@@ -246,29 +251,33 @@ public class Soldier extends Unit {
             if(rc.getLocation().distanceSquaredTo(loc) > GameConstants.RESOURCE_PATTERN_RADIUS_SQUARED || !rc.onTheMap(loc)){
                 continue;
             }
-            if(!mapData.SRPExclusionZone[loc.x][loc.y] && rc.canMarkResourcePattern(loc) ){
+            if(!mapData.SRPExclusionZone[loc.x][loc.y] && rc.canMarkResourcePattern(loc)){
                 boolean bad = false;
                 boolean finished = true;
+                MapLocation checkLoc;
+                MapInfo checkLocInfo;
                 for(int x = -2; x <= 2; x++){
-                    if(!finished || bad) {
-                        break;
-                    }
                     for(int y = -2; y <= 2; y++){
-                        MapLocation checkLoc = loc.translate(x, y);
-                        MapInfo checkLocInfo = mapData.getMapInfo(checkLoc);
+                        checkLoc = loc.translate(x, y);
+                        checkLocInfo = mapData.getMapInfo(checkLoc);
                         // check to make sure its not finished and that theres no enemy paint on it
                         if(checkLocInfo == null){
                             continue;
                         }
                         if(checkLocInfo.getPaint() == PaintType.EMPTY){
                             finished = false;
-                            break;
                         }
-                        if(isEnemyPaint(checkLocInfo.getPaint())){
+                        if(checkLocInfo.getPaint().isEnemy()){
                             bad = true;
                             break;
                         }
                     }
+                    if(bad) {   // mista white
+                        break; // jesse
+                    }
+                }
+                if(bad){
+                    mapData.SRPExclusionZone[loc.x][loc.y] = true;
                 }
                 if(!bad && !finished){
                     return loc;
@@ -276,25 +285,108 @@ public class Soldier extends Unit {
             }else{
                 trySetIndicatorDot(loc, 0, 0, 0);
             }
-//            boolean incompletable = false;
-//            for(int x = -2; x <= 2; x++){
-//                if(incompletable){
-//                    break;
-//                }
-//                for(int y = -2; y <= 2; y++){
-//                    MapLocation checkLoc = loc.translate(x, y);
-//                    MapInfo checkLocInfo = mapData.getMapInfo(checkLoc);
-//                    if(!rc.canSenseLocation(loc) || checkLocInfo == null || isEnemyPaint(checkLocInfo.getPaint()) || checkLocInfo.hasRuin()){
-//                        incompletable = true;
-//                        break;
-//                    }
-//                }
-//            }
-//            if(!incompletable){
-//                return loc;
-//            }
         }
         return null;
     }
+
+//    static BigInteger mask1 = new BigInteger("111111111100111111111100111111111100111111111100111111111100111111111100111111111100111111111100", 2);
+//    static BigInteger mask2 = new BigInteger("001111111111001111111111001111111111001111111111001111111111001111111111001111111111001111111111", 2);
+//    public static BigInteger convolveBigInt(BigInteger map) {
+//        BigInteger leftShift = map.shiftLeft(2).and(mask1);
+//        BigInteger rightShift = map.shiftRight(2).and(mask2);
+//        BigInteger hShift = leftShift.or(rightShift).or(map);
+//
+//        return hShift.or(hShift.shiftRight(11)).or(hShift.shiftLeft(11));
+//    }
+//
+//    public long convolveLong(long map) {
+////        long leftShift = (map << 1) & 0b1111111011111110111111101111111011111110111111101111111011111110L;
+////        long rightShift = (map >> 1) & 0b0111111101111111011111110111111101111111011111110111111101111111L;
+//
+//        long leftShift  = (map << 2) & 0b1111110011111100111111001111110011111100111111001111110011111100L;
+//        long rightShift = (map >> 2) & 0b0011111100111111001111110011111100111111001111110011111100111111L;
+//
+//        long hShift = leftShift | rightShift | map;
+//
+//        return hShift | (hShift >> 8) | (hShift << 8) | (hShift >> 16) | (hShift << 16);
+//    }
+//
+//    public long precomputeGucciSquares() throws GameActionException{
+////        BigInteger enemyPaint = new BigInteger("0".repeat(121), 2);
+////        BigInteger emptyTiles = new BigInteger("0".repeat(121), 2);
+//        long enemyPaint = 0L;
+//        long emptyTiles = 0L;
+//        int bytecodes = Clock.getBytecodesLeft();
+//        for(int x = -3; x <= 3; x++){
+//            for(int y = -3; y <= 3; y++){
+//                int bytecode = Clock.getBytecodesLeft();
+//                if(!rc.onTheMap(rc.getLocation().translate(x, y))){
+//                    continue;
+//                }
+////                MapInfo info = mapData.getMapInfo(rc.getLocation().translate(x, y));
+//                MapInfo info = mapData.mapInfos[rc.getLocation().x + x][rc.getLocation().y + y];
+//                if(info == null){
+//                    continue;
+//                }
+//
+////                if(info.getPaint().isEnemy()) {
+////                    enemyPaint = enemyPaint.setBit((x + 5) * 11 + y + 5);
+////                }
+////                if(info.getPaint() == PaintType.EMPTY){
+////                    emptyTiles = emptyTiles.setBit((x + 5) * 11 + y + 5);
+////                }
+//
+//                if(info.getPaint().isEnemy()) {
+//                    enemyPaint = enemyPaint | (1L << ((x + 3) * 8 + y + 3));
+//                }
+//                if(info.getPaint() == PaintType.EMPTY){
+//                    emptyTiles = emptyTiles | (1L << ((x + 3) * 8 + y + 3));
+//                }
+//
+//                System.out.println("Bytecodes used for getMapInfo: " + (bytecode - Clock.getBytecodesLeft()));
+//            }
+//        }
+//        System.out.println("Bytecodes used for precompute: " + (bytecodes - Clock.getBytecodesLeft()));
+//
+//        enemyPaint = ~convolveLong(enemyPaint);
+//        emptyTiles = convolveLong(emptyTiles);
+//
+//        return enemyPaint & emptyTiles;
+//    }
+//
+//    private MapLocation closestCompletableSRP() throws GameActionException{
+//        mapData.ruins.updateIterable();
+//        mapData.SRPs.updateIterable();
+//        int startingBytecode = Clock.getBytecodesLeft();
+//        long gucciSquares = precomputeGucciSquares();
+//        System.out.println("Bytecodes used for gucci: " + (startingBytecode - Clock.getBytecodesLeft()));
+////        for(int x = -3; x <= 3; x++){
+////            for(int y = -3; y <= 3; y++){
+////                if(!rc.onTheMap(rc.getLocation().translate(x, y))){
+////                    continue;
+////                }
+////                int index = (x + 3) * 8 + y + 3;
+////                if(((gucciSquares & (1L << index)) != 0)){
+////                    trySetIndicatorDot(rc.getLocation().translate(x, y), 0, 255, 0);
+////                }else{
+////                    trySetIndicatorDot(rc.getLocation().translate(x, y), 255, 0, 0);
+////                }
+////            }
+////        }
+//
+//        for(MapLocation loc : mapLocationSpiral(rc.getLocation(), 3)){
+//            if(rc.getLocation().distanceSquaredTo(loc) > GameConstants.RESOURCE_PATTERN_RADIUS_SQUARED || !rc.onTheMap(loc)){
+//                continue;
+//            }
+//            int index = (loc.x - rc.getLocation().x + 3) * 8 + loc.y - rc.getLocation().y + 3;
+//            if(!mapData.SRPExclusionZone[loc.x][loc.y] && ((gucciSquares & (1L << index)) != 0) && rc.canMarkResourcePattern(loc)){
+//                return loc;
+//            }else{
+//                //trySetIndicatorDot(loc, 0, 0, 0);
+//            }
+//        }
+//        return null;
+//    }
+
 
 }

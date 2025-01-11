@@ -4,6 +4,8 @@ import MoneyMan_v9.Helpers.Explore;
 import MoneyMan_v9.Helpers.MapData;
 import battlecode.common.*;
 
+import java.util.Arrays;
+
 public abstract class Unit extends Robot {
     // CONSTANTS
     public PaintType SRP_MARKER_COLOR = PaintType.ALLY_PRIMARY;
@@ -45,7 +47,7 @@ public abstract class Unit extends Robot {
 
     public Unit(RobotController robot) throws GameActionException {
         super(robot);
-        mapData = new MapData(width, height);
+        mapData = new MapData(robot, width, height);
         explorer = new Explore(rc, width, height, mapData);
     }
 
@@ -55,7 +57,7 @@ public abstract class Unit extends Robot {
         mapData.setMapInfos(mapInfo, SRP_MARKER_COLOR);
 
         allRuins = rc.senseNearbyRuins(-1);
-        completableRuins = senseNearbyCompletableTowerlessRuins();
+        completableRuins = senseNearbyCompletableTowerlessRuins(); // 1k-3k bytecode usage
 
         allies = rc.senseNearbyRobots(-1, rc.getTeam());
         enemies = rc.senseNearbyRobots(-1, rc.getTeam().opponent());
@@ -69,7 +71,7 @@ public abstract class Unit extends Robot {
             ruinTypes[i] = determineTowerPattern(allRuins[i]);
         }
 
-        mapData.updateLandmarks(allRuins, ruinTypes, allies, rc.getLocation());
+        mapData.updateLandmarks(allRuins, ruinTypes, allies, rc.getLocation()); // usually low but i saw it spike to 7k???
     }
 
 //    protected void confirmNearbyTowers() throws GameActionException {
@@ -475,31 +477,50 @@ public abstract class Unit extends Robot {
         }
     }
 
+    int[][] layerOne = new int[][]{
+            {0, 0},
+            {-1,1},
+            {0, 1},
+            {1, 1},
+            {1, 0},
+            {1, -1},
+            {0, -1},
+            {-1, -1},
+            {-1, 0}
+    };
+    int[][] layerTwo = new int[][]{
+            {-2, 2}, {-1, 2}, {0, 2}, {1, 2}, {2, 2},
+            {2, 1}, {2, 0}, {2, -1}, {2, -2}, {1, -2},
+            {0, -2}, {-1, -2}, {-2, -2}, {-2, -1}, {-2, 0},
+            {-2, 1}
+    };
+
+    int[][] layerThree = new int[][]{
+            {-3, 3}, {-2, 3}, {-1, 3}, {0, 3}, {1, 3}, {2, 3}, {3, 3},
+            {3, 2}, {3, 1}, {3, 0}, {3, -1}, {3, -2}, {3, -3},
+            {2, -3}, {1, -3}, {0, -3}, {-1, -3}, {-2, -3}, {-3, -3},
+            {-3, -2}, {-3, -1}, {-3, 0}, {-3, 1}, {-3, 2}
+    };
+
     public MapLocation[] mapLocationSpiral(MapLocation loc, int radius) {
         int maxSize = (int) Math.pow((radius * 2 + 1), 2);
         MapLocation[] coordinates = new MapLocation[maxSize];
-        coordinates[0] = loc;
-
-        int x = loc.x, y = loc.y;
-        int dx = 1, dy = 0;
-        int index = 1;
-        int steps = 1;
-
-        while (index < maxSize) {
-            for (int i = 0; i < 2; i++) {
-                for (int j = 0; j < steps; j++) {
-                    x += dx;
-                    y += dy;
-                    if (Math.abs(x - loc.x) <= radius && Math.abs(y - loc.y) <= radius) {
-                        coordinates[index++] = new MapLocation(x, y);
-                    }
-                }
-                int temp = dx;
-                dx = -dy;
-                dy = temp;
+        if(radius >= 1){
+            for(int i = 0; i < layerOne.length; i++){
+                coordinates[i] = loc.translate(layerOne[i][0], layerOne[i][1]);
             }
-            steps++;
         }
+        if(radius >= 2){
+            for(int i = 0; i < layerTwo.length; i++){
+                coordinates[i+layerOne.length] = loc.translate(layerTwo[i][0], layerTwo[i][1]);
+            }
+        }
+        if(radius >= 3){
+            for(int i = 0; i < layerThree.length; i++){
+                coordinates[i+layerOne.length+layerTwo.length] = loc.translate(layerThree[i][0], layerThree[i][1]);
+            }
+        }
+//        System.out.println(Arrays.toString(coordinates));
         return coordinates;
     }
 
@@ -527,7 +548,7 @@ public abstract class Unit extends Robot {
             return false;
         }
 //        boolean targetColor = getTileTargetColor(info.getMapLocation());
-        int targetColorInt = mapData.tileColors.getVal(info.getMapLocation());
+        int targetColorInt = mapData.tileColors[info.getMapLocation().x][info.getMapLocation().y] - 1;
         boolean targetColor = targetColorInt == 1;
         if ((info.getPaint() == PaintType.EMPTY
                 || (targetColorInt != -1 && info.getPaint() != boolToColor(targetColor)))

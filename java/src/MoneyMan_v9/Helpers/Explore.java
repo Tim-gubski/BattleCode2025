@@ -56,7 +56,7 @@ public class Explore {
             //if (exploreLoc != null) return;
             MapLocation newLoc = new MapLocation((int)(Math.random()*maxX), (int)(Math.random()*maxY));
             //if (checkDanger && Robot.comm.isEnemyTerritoryRadial(newLoc)) continue;
-            if (mapData.getVisited(newLoc.x, newLoc.y)) continue;
+            if (mapData.getMapInfo(newLoc) != null) continue;
             if (exploreLoc != null && rc.getLocation().distanceSquaredTo(exploreLoc) < rc.getLocation().distanceSquaredTo(newLoc)) continue;
             /*if (myLoc.distanceSquaredTo(newLoc) > myVisionRange){
                 exploreLoc = newLoc;
@@ -73,7 +73,7 @@ public class Explore {
         while (tries-- > 0){
             int checkerIndex = (int)(Math.random()* checkLocs.length);
             MapLocation newLoc = checkLocs[checkerIndex];
-            if (mapData.getVisited(newLoc.x, newLoc.y)) continue;
+            if (mapData.getMapInfo(newLoc) != null) continue;
             if (exploreLoc != null && rc.getLocation().distanceSquaredTo(exploreLoc) < rc.getLocation().distanceSquaredTo(newLoc)) continue;
             exploreLoc = newLoc;
             targetRound = rc.getRoundNum();
@@ -82,7 +82,7 @@ public class Explore {
     }
 
     public MapLocation getExploreTarget() {
-        if (rc.getRoundNum() - targetRound > 40 || (exploreLoc != null && mapData.getVisited(exploreLoc.x, exploreLoc.y))) exploreLoc = null;
+        if (rc.getRoundNum() - targetRound > 40 || (exploreLoc != null && mapData.getMapInfo(exploreLoc) != null)) exploreLoc = null;
         if (exploreLoc == null){
             if (rc.getID()%2 == 0) getCheckerTarget(15);
             else getEmergencyTarget(15);

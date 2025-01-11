@@ -8,20 +8,29 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MapData {
-    public boolean[][] visited;
+    public RobotController rc;
+    public int width;
+    public int height;
     public MapInfo[][] mapInfos;
     public FastIterableLocSet ruins = new FastIterableLocSet(100);
     public boolean[][] SRPExclusionZone;
     public FastIterableLocSet SRPs = new FastIterableLocSet(100);
-    public FastLocIntMap tileColors = new FastLocIntMap();
+    public int[][] tileColors; // 0 is undefined, 1 is primary, 2 is secondary
     public FastSetRobotInfo friendlyTowers = new FastSetRobotInfo(30);
+
+//    StringBuilder SRPExclusionZone2;
 
     public short towerIndex = 0;
 
-    public MapData(int width, int height) {
-        visited = new boolean[width][height];
+    public MapData(RobotController rc, int width, int height) {
+        this.rc = rc;
+        this.width = width;
+        this.height = height;
         mapInfos = new MapInfo[width][height];
         SRPExclusionZone = new boolean[width][height];
+        tileColors = new int[width][height];
+
+//        SRPExclusionZone2 = new StringBuilder("0".repeat(width*height));
 
         // exclude the edges of the map for SRPs
         for(int i = width; --i >= 0;){
@@ -43,7 +52,7 @@ public class MapData {
     int numNearbyFriendlyTowers = 0;
     public void updateLandmarks(MapLocation[] ruins, UnitType[] ruinTypes, RobotInfo[] allies, MapLocation currentLocation) throws GameActionException{
         // add new stuff
-        markRuins(ruins, ruinTypes);
+        markRuins(ruins, ruinTypes); // this shit uses crazy bytecode
 
         numNearbyFriendlyTowers = 0;
         for(RobotInfo ally : allies){
@@ -70,47 +79,77 @@ public class MapData {
         }
     }
 
+
     // RUIN STUFF
     public void markRuins(MapLocation[] locs, UnitType[] ruinTypes) throws GameActionException{
         for (int i = locs.length; --i >= 0;) {
-            if(ruins.add(locs[i])){
+            MapLocation loc = locs[i];
+            if(ruins.add(loc)){
                 // mark pattern
+                boolean[][] pattern = determinePaintType(ruinTypes[i]);
                 for(int x = -2; x <= 2; x++){
                     for(int y = -2; y <= 2; y++){
-                        tileColors.add(locs[i].translate(x, y), determinePaintType(ruinTypes[i], x+2, y+2) == PaintType.ALLY_PRIMARY ? 0 : 1); // 2 offset since -2, -2 -> 0,0;
+                        // this costs 83 bytecode, and we're doing it 25 times, 48 bytecode now, 25 now
+                        tileColors[loc.x + x][loc.y + y] = pattern[x + 2][y + 2] ? 2 : 1; // 2 offset since -2, -2 -> 0,0;
                     }
                 }
 
                 // mark that no srps should be built here
                 for (int x = -4; x <= 4; x++) {
                     for (int y = -4; y <= 4; y++) {
-                        if(onTheMap(locs[i].x + x, locs[i].y + y))
-                        SRPExclusionZone[locs[i].x + x][locs[i].y + y] = true;
+                        // costs 51 bytecode for some reason, 43 now, 39 now, 23 now
+                        MapLocation newLoc = loc.translate(x, y);
+                        if(rc.onTheMap(newLoc)) {
+                            SRPExclusionZone[newLoc.x][newLoc.y] = true; // 18 bytecode
+//                            SRPExclusionZone2.setCharAt((loc.y + y) * width + loc.x + x, '1'); // 16bytecode
+                        }
                     }
                 }
             }
+
         }
     }
 
+    // manual patterns
+    // binary = 1000101010001000101010001
+    boolean[][] paintTowerPattern = new boolean[][]{
+            {true, false, false, false, true},
+            {false, true, false, true, false},
+            {false, false, true, false, false},
+            {false, true, false, true, false},
+            {true, false, false, false, true},
+    };
+
+    // binary = 0111011011100011101101110
+    boolean[][] moneyTowerPattern = new boolean[][]{
+            {false, true, true, true, false},
+            {true, true, false, true, true},
+            {true, false, false, false, true},
+            {true, true, false, true, true},
+            {false, true, true, true, false},
+    };
+
+    // binary = 10001110111110111000100;
+    boolean[][] defenseTowerPattern = new boolean[][]{
+            {true, false, false, false, true},
+            {false, true, true, true, false},
+            {false, true, true, true, false},
+            {false, true, true, true, false},
+            {true, false, false, false, true},
+    };
+
     // x and y are local to 5x5 pattern -> 0,0 is topleft
-    public PaintType determinePaintType(UnitType towerType, int x, int y) throws GameActionException{
+    public boolean[][] determinePaintType(UnitType towerType) throws GameActionException{
         // find paint type using bit extraction
         // method: pattern >> (24 - (x + y * 5)) & 1
         if (towerType.getBaseType() == UnitType.LEVEL_ONE_PAINT_TOWER) {
-            return (GameConstants.PAINT_TOWER_PATTERN >> (24 - (x + y * 5)) & 1) == 1 ? PaintType.ALLY_SECONDARY : PaintType.ALLY_PRIMARY;
+            return paintTowerPattern;
         } else if (towerType.getBaseType() == UnitType.LEVEL_ONE_MONEY_TOWER) {
-            return (GameConstants.MONEY_TOWER_PATTERN >> (24 - (x + y * 5)) & 1) == 1 ? PaintType.ALLY_SECONDARY : PaintType.ALLY_PRIMARY;
+            return moneyTowerPattern;
         }
-        return (GameConstants.DEFENSE_TOWER_PATTERN >> (24 - (x + y * 5)) & 1) == 1 ? PaintType.ALLY_SECONDARY : PaintType.ALLY_PRIMARY;
+        return defenseTowerPattern;
     }
 
-    private boolean onTheMap(int x, int y){
-        return x >= 0 && y >= 0 && x < visited.length && y < visited[0].length;
-    }
-
-    private boolean onTheMap(MapLocation loc){
-        return onTheMap(loc.x, loc.y);
-    }
 
     public void markRuin(MapLocation loc) {
         ruins.add(loc);
@@ -151,26 +190,10 @@ public class MapData {
         return paintTowers;
     }
 
-    public boolean getVisited(int x, int y) {
-        return visited[x][y];
-    }
-
-    public void setVisited(int x, int y) {
-        visited[x][y] = true;
-    }
-
-    public void setVisited(MapLocation loc) {
-        visited[loc.x][loc.y] = true;
-    }
-
-    public void setMapInfo(MapInfo info) {
-        mapInfos[info.getMapLocation().x][info.getMapLocation().y] = info;
-    }
-
+    // can probably optimize this hella seems like storing the mapinfo objects takes a bunch of bytecode
     public void setMapInfos(MapInfo[] infos, PaintType SRP_COLOR) {
         for (MapInfo info : infos) {
-            mapInfos[info.getMapLocation().x][info.getMapLocation().y] = info;
-            visited[info.getMapLocation().x][info.getMapLocation().y] = true;
+            mapInfos[info.getMapLocation().x][info.getMapLocation().y] = info; // 12 bytecode just to set a map info
             if(info.getMark() == SRP_COLOR){
                 if(!SRPs.contains(info.getMapLocation())) {
                     markSRP(info.getMapLocation());
@@ -179,7 +202,7 @@ public class MapData {
         }
     }
 
-    int[][] exlusionOffsets = new int[][]{
+    int[][] exclusionOffsets = new int[][]{
             {-2, 3}, {0, 3}, {2, 3},
             {-2, 4}, {-1, 4}, {1, 4}, {2, 4},
             {-2, -3}, {0, -3}, {2, -3},
@@ -189,31 +212,39 @@ public class MapData {
             {-3, -2}, {-3, 0}, {-3, 2},
             {-4, -2}, {-4, -1}, {-4, 1}, {-4, 2},
     };
-    private void markSRP(MapLocation loc){
+    // binary =1010101010100010101010101
+    boolean[][] resourcePattern = new boolean[][]{
+            {true, false, true, false, true},
+            {false, true, false, true, false},
+            {true, false, false, false, true},
+            {false, true, false, true, false},
+            {true, false, true, false, true},
+    };
+    private void markSRP(MapLocation loc){ // uses 3k bytecode
+        int bytecode = Clock.getBytecodeNum();
         SRPs.add(loc);
+        int newX = 0;
+        int newY = 0;
         for (int x = -2; x <= 2; x++) {
-            if(loc.x + x >= SRPExclusionZone.length || loc.x + x < 0) continue;
+            newX = loc.x + x;
+            if(newX >= width || newX < 0) continue;
             for (int y = -2; y <= 2; y++) {
-                if (loc.y + y >= SRPExclusionZone[0].length || loc.y + y < 0) continue;
+                newY = loc.y + y;
+                if (newY >= height || newY < 0) continue;
                 // resource pattern hard coded
-                MapLocation newLoc = loc.translate(x, y);
-                SRPExclusionZone[loc.x + x][loc.y + y] = true;
-                if (x == 0 && y == 0) {
-                    tileColors.add(newLoc, 0);
-                    SRPExclusionZone[newLoc.x][newLoc.y] = false;
-                }else if((x + y) % 2 == 0){
-                    tileColors.add(newLoc, 1);
-                }else{
-                    tileColors.add(newLoc, 0);
-                }
-
+                SRPExclusionZone[newX][newY] = !(x == 0 && y == 0);
+                tileColors[newX][newY] = resourcePattern[x + 2][y + 2] ? 2 : 1;
             }
         }
-        for(int x = exlusionOffsets.length; --x >= 0;){
-            if(loc.x + exlusionOffsets[x][0] >= SRPExclusionZone.length || loc.x + exlusionOffsets[x][0] < 0) continue;
-            if(loc.y + exlusionOffsets[x][1] >= SRPExclusionZone[0].length || loc.y + exlusionOffsets[x][1] < 0) continue;
-            SRPExclusionZone[loc.x + exlusionOffsets[x][0]][loc.y + exlusionOffsets[x][1]] = true;
+        for(int x = exclusionOffsets.length; --x >= 0;){
+            newX = loc.x + exclusionOffsets[x][0];
+            newY = loc.y + exclusionOffsets[x][1];
+            if(newX >= SRPExclusionZone.length || newX < 0) continue;
+            if(newY >= SRPExclusionZone[0].length || newY < 0) continue;
+            SRPExclusionZone[newX][newY] = true;
         }
+        System.out.println("markSRP bytecode: " + (Clock.getBytecodeNum() - bytecode));
+
     }
 
     public MapInfo getMapInfo(MapLocation loc) {
