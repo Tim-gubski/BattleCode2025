@@ -1,0 +1,126 @@
+package v02_FirstBot.Units;
+
+import v02_FirstBot.Unit;
+import battlecode.common.*;
+
+// TODO: Dont go into tower range, attack towers maybe?, moppers attack enemy units
+
+public class Soldier extends Unit {
+    Direction exploreDir = randomDirection();
+
+
+    public Soldier(RobotController robot) throws GameActionException {
+        super(robot);
+
+    }
+
+    public void turn() throws GameActionException {
+//        boolean refillPaint = rc.getPaint() < rc.getType().paintCapacity/4;
+//        if(refillPaint){
+//            RobotInfo paintTowers = rc.senseNearby
+//            fuzzyMove(spawnLoc);
+//        }
+
+        findNearestPaintTower(rc.senseNearbyRobots(-1));
+        if (rc.getPaint() < 50) {
+            if(!moveToNearestPaintTower()){
+                rc.setIndicatorString("Exploring on paint!! Trying to refill");
+                tryExploreOnPaint();
+            }
+        }else {
+
+            MapLocation[] nearbyRuins = senseNearbyCompletableTowerlessRuins();
+            rc.setIndicatorString("Nearby ruins: " + nearbyRuins.length);
+            if (nearbyRuins.length > 0) {
+                MapLocation closestRuin = getClosest(nearbyRuins);
+                // Check if ruin has already been marked
+                if (rc.senseMapInfo(closestRuin.subtract(dirTo(closestRuin))).getMark() == PaintType.EMPTY) {
+                    if (!tryMarkTower(randomTowerType(), closestRuin)) {
+                        fuzzyMove(closestRuin);
+                    }
+                    // if ruin has been marked
+                } else {
+                    fuzzyMove(closestRuin);
+                    // prioritize tile we're standing on
+                    MapInfo ourTile = rc.senseMapInfo(rc.getLocation());
+                    if (ourTile.getMark() != ourTile.getPaint() && ourTile.getMark() != PaintType.EMPTY) {
+                        boolean useSecondaryColor = ourTile.getMark() == PaintType.ALLY_SECONDARY;
+                        if (rc.canAttack(ourTile.getMapLocation())) {
+                            rc.setIndicatorDot(ourTile.getMapLocation(), 255, 0, 0);
+                            rc.attack(ourTile.getMapLocation(), useSecondaryColor);
+                        }
+                    }
+                    // fill in correct paint
+                    for (MapInfo patternTile : rc.senseNearbyMapInfos(closestRuin, 8)) {
+                        if (patternTile.getMark() != patternTile.getPaint() && patternTile.getMark() != PaintType.EMPTY) {
+                            boolean useSecondaryColor = patternTile.getMark() == PaintType.ALLY_SECONDARY;
+                            if (rc.canAttack(patternTile.getMapLocation())) {
+                                rc.attack(patternTile.getMapLocation(), useSecondaryColor);
+                                rc.setIndicatorDot(patternTile.getMapLocation(), 255,0,0);
+                            }
+                        }
+                    }
+                    // Complete the ruin if we can
+                    for (UnitType type : towerTypes) {
+                        if (rc.canCompleteTowerPattern(type, closestRuin)) {
+                            rc.completeTowerPattern(type, closestRuin);
+                            rc.setTimelineMarker("Tower built", 0, 255, 0);
+                            System.out.println("Built a tower at " + closestRuin + "!");
+                        }
+                    }
+                }
+                // No ruins nearby, Explore
+            } else {
+                bugNav(explorer.getExploreTarget());
+            }
+
+            if(!checkAndPaintTile(rc.getLocation())) {
+                MapInfo[] attackableTilesInfo = rc.senseNearbyMapInfos(rc.getLocation(), UnitType.SOLDIER.actionRadiusSquared);
+                //shuffleArray(attackableTiles);
+                for (MapInfo info : attackableTilesInfo) {
+                    if (checkAndPaintTile(info)) {
+                        break;
+                    }
+                }
+            }
+            for (MapLocation loc : getResourcePatternCenterLocations()) {
+                if (tryConfirmResourcePattern(loc)) {
+                    //rc.setTimelineMarker("Resource pattern confirmed", 0, 255, 0);
+                    rc.setIndicatorDot(loc, 0, 255, 0);
+                    System.out.println("Resource pattern confirmed at " + loc + "!");
+                }
+            }
+        }
+
+        markNearbyMapData();
+
+    }
+
+//    public MapLocation[] attackableTiles(){
+//        MapLocation[] attackable = new MapLocation[69];
+//
+//    }
+
+    public boolean checkAndPaintTile(MapLocation loc) throws GameActionException{
+        if(!rc.canSenseLocation(loc)){
+            return false;
+        }
+        MapInfo info = rc.senseMapInfo(loc);
+        return checkAndPaintTile(info);
+    }
+
+    public boolean checkAndPaintTile(MapInfo info) throws GameActionException{
+        boolean targetColor = getTileTargetColor(info.getMapLocation());
+        if ((info.getPaint() == PaintType.EMPTY || (info.getPaint() != boolToColor(targetColor) && info.getPaint().isAlly())) && rc.canAttack(info.getMapLocation()) && !info.hasRuin() && info.getMark() == PaintType.EMPTY){
+            rc.attack(info.getMapLocation(), targetColor);
+            rc.setIndicatorDot(info.getMapLocation(), 255, 0, 255);
+            return true;
+        }
+        return false;
+    }
+
+    public PaintType boolToColor(boolean bool){
+        return bool ? PaintType.ALLY_SECONDARY : PaintType.ALLY_PRIMARY;
+    }
+
+}

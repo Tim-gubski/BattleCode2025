@@ -1,0 +1,18 @@
+package v04_PoolParty.Towers;
+
+import v04_PoolParty.Tower;
+import battlecode.common.*;
+
+public class MoneyTower extends Tower {
+    public MoneyTower(RobotController robot) throws GameActionException {
+        super(robot);
+    }
+
+    /**
+     * Run a single turn for towers.
+     * This code is wrapped inside the infinite loop in run(), so it is called once per turn.
+     */
+    public void turn() throws GameActionException {
+        super.turn();
+    }
+}

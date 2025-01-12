@@ -1,0 +1,15 @@
+package v01_InitialStructure.Towers;
+
+import v01_InitialStructure.Tower;
+import battlecode.common.GameActionException;
+import battlecode.common.RobotController;
+
+public class DefenseTower extends Tower {
+    public DefenseTower(RobotController robot) throws GameActionException {
+        super(robot);
+    }
+
+    public void turn() throws Exception {
+
+    }
+}
