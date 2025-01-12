@@ -18,6 +18,7 @@ public class Mopper extends Unit {
 
     public void turn() throws GameActionException {
         senseNearby(); // perform all scans
+        communication.parseMessages();
 
         previousState = state;
         state = determineState();
@@ -35,6 +36,8 @@ public class Mopper extends Unit {
         }
 
         stateInvariantActions();
+
+        debugString.append("Currently in state: ").append(state.toString());
 
 //        rc.setIndicatorDot(currentTargetLoc, 255, 125, 0);
 //        rc.setIndicatorLine(rc.getLocation(), currentTargetLoc, 125, 0, 125);

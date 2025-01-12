@@ -4,6 +4,11 @@ import SuperiorCowPowers_v11.Robot;
 import battlecode.common.MapLocation;
 import battlecode.common.Message;
 import battlecode.common.RobotController;
+import battlecode.world.MapSymmetry;
+import scala.Int;
+
+import java.util.List;
+import java.util.Queue;
 
 public class Comms {
     public enum Codes {
@@ -55,16 +60,13 @@ public class Comms {
                             case "10" -> robot.symmetry = Symmetry.ROTATIONAL;
                             default -> throw new RuntimeException("Invalid symmetry code '" + symmetry + "' for message '" + bitstring + "'");
                         }
-
-                        robot.debugString.append(String.format("|symmetry=%s", robot.symmetry));
                     }
                     case FRONTLINE -> {
                         if (rc.getType().isTowerType() || robot.returnLoc == null) {
-                            int x = Integer.parseInt(bitstring.substring(3,9), 2);
-                            int y = Integer.parseInt(bitstring.substring(9, 15), 2);
+                            int x = Integer.parseUnsignedInt(bitstring.substring(3,9), 2);
+                            int y = Integer.parseUnsignedInt(bitstring.substring(9, 15), 2);
                             robot.returnLoc = new MapLocation(x, y);
                         }
-                        robot.debugString.append(String.format("|frontline=%s", robot.returnLoc));
                     }
                 }
             }
@@ -79,8 +81,8 @@ public class Comms {
                 String xBinary = Integer.toBinaryString(loc.x);
                 String yBinary = Integer.toBinaryString(loc.y);
 
-                String xPaddedBinary = "0".repeat(6 - xBinary.length());
-                String yPaddedBinary = "0".repeat(6 - yBinary.length());
+                String xPaddedBinary = "0".repeat(6 - xBinary.length()) + xBinary;
+                String yPaddedBinary = "0".repeat(6 - yBinary.length()) + yBinary;
 
                 message = combineMessage(Codes.FRONTLINE.getPrefix(), xPaddedBinary, yPaddedBinary);
             }
@@ -102,7 +104,7 @@ public class Comms {
         }
 
         builder.append("0".repeat(31 - builder.toString().length()));
-        robot.debugString.append(String.format("|constructed message %s|", builder));
+
         return Integer.parseUnsignedInt(builder.toString(), 2);
     }
 }

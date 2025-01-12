@@ -18,6 +18,7 @@ public class Soldier extends Unit {
         debugString.setLength(0);
 //        int bytecode = Clock.getBytecodesLeft();
         senseNearby(); // perform all scans
+        communication.parseMessages();
 //        System.out.println("Bytecodes used for senseNearby: " + (bytecode - Clock.getBytecodesLeft()));
 
         previousState = state;
