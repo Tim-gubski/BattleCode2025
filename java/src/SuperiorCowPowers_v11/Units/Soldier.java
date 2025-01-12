@@ -150,6 +150,7 @@ public class Soldier extends Unit {
         // otherwise explore
         if(rc.isMovementReady()){
             if (returnLoc != null) {
+                debugString.append(String.format("returning to %d, %d", returnLoc.x, returnLoc.y));
                 if (distTo(returnLoc) <= 8) {
                     returnLoc = null;
                 } else {

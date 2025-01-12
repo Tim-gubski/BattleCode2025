@@ -49,6 +49,7 @@ public class MapData {
             if(ally.type.isTowerType()){
                 markFriendlyTower(ally);
                 nearbyFriendlyTowersID[numNearbyFriendlyTowers++] = ally.ID;
+
             }
         }
 

@@ -62,10 +62,11 @@ public class Comms {
                         }
                     }
                     case FRONTLINE -> {
-                        if (rc.getType().isTowerType() || robot.returnLoc == null) {
-                            int x = Integer.parseUnsignedInt(bitstring.substring(3,9), 2);
-                            int y = Integer.parseUnsignedInt(bitstring.substring(9, 15), 2);
-                            robot.returnLoc = new MapLocation(x, y);
+                        int x = Integer.parseUnsignedInt(bitstring.substring(3,9), 2);
+                        int y = Integer.parseUnsignedInt(bitstring.substring(9, 15), 2);
+                        MapLocation newLoc = new MapLocation(x, y);
+                        if ((rc.getType().isTowerType() || robot.returnLoc == null) && rc.getLocation().isWithinDistanceSquared(newLoc, 128)) {
+                            robot.returnLoc = newLoc;
                         }
                     }
                 }
@@ -77,7 +78,7 @@ public class Comms {
         int message;
         switch (code) {
             case FRONTLINE -> {
-                MapLocation loc = rc.getLocation();
+                MapLocation loc = robot.returnLoc;
                 String xBinary = Integer.toBinaryString(loc.x);
                 String yBinary = Integer.toBinaryString(loc.y);
 

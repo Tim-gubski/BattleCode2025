@@ -236,7 +236,7 @@ public abstract class Unit extends Robot {
         if (paintTowers.length > 0) {
             if(closestPaintTower != null) {
                 targetTower = closestPaintTower;
-            }else if(targetTowerIndex < paintTowers.length && paintTowers[targetTowerIndex] != null){
+            }else if(targetTowerIndex < paintTowers.length && paintTowers[targetTowerIndex] != null) {
                 targetTower = paintTowers[targetTowerIndex];
             }
         }
