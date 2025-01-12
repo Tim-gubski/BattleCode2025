@@ -1,74 +1,82 @@
 package SuperiorCowPowers_v11.Helpers;
 
-import java.util.*;
-
 public class KDTree {
-    public static class KDNode {
-        int[] point;  // The point coordinates
-        KDNode left, right;
+    public static class N {
+        int x, y;
+        N l, r;
 
-        public KDNode(int[] point) {
-            this.point = point;
-            this.left = this.right = null;
+        N(int xx, int yy) {
+            x = xx;
+            y = yy;
         }
     }
 
-    private KDNode root;
-    private int k; // Number of dimensions
+    N r; // root node
 
-    public KDTree(int k) {
-        this.k = k;
-    }
-
-    // Insert a point into the KD-tree
-    public void insert(int[] point) {
-        root = insertRec(root, point, 0);
-    }
-
-    private KDNode insertRec(KDNode node, int[] point, int depth) {
-        if (node == null) return new KDNode(point);
-
-        int axis = depth % k;
-        if (point[axis] < node.point[axis]) {
-            node.left = insertRec(node.left, point, depth + 1);
-        } else {
-            node.right = insertRec(node.right, point, depth + 1);
+    // Insert, skipping duplicates
+    public void insert(int X, int Y) {
+        if (r == null) {
+            r = new N(X, Y);
+            return;
         }
-        return node;
+        N n = r;
+        int d = 0;
+        while (true) {
+            if (X == n.x && Y == n.y) return;
+            // Axis: if d&1 == 0 then compare X, else compare Y
+            if (((d & 1) == 0 && X < n.x) || ((d & 1) == 1 && Y < n.y)) {
+                if (n.l == null) {
+                    n.l = new N(X, Y);
+                    return;
+                }
+                n = n.l;
+            } else {
+                if (n.r == null) {
+                    n.r = new N(X, Y);
+                    return;
+                }
+                n = n.r;
+            }
+            d++;
+        }
     }
 
-    // Find the nearest neighbor
-    public int[] nearestNeighbor(int[] target) {
-        return nearestNeighborRec(root, target, 0, null, Integer.MAX_VALUE).point;
-    }
+    // Nearest neighbor search (distance squared, fully iterative)
+    public int[] nearestNeighbor(int X, int Y) {
+        if (r == null) return null;
+        N best = r, n = r;
+        int bd = (r.x - X)*(r.x - X) + (r.y - Y)*(r.y - Y); // best dist^2
+        int d = 0;
 
-    private KDNode nearestNeighborRec(KDNode node, int[] target, int depth, KDNode best, int bestDist) {
-        if (node == null) return best;
+        while (n != null) {
+            // Compute distance squared
+            int dx = n.x - X, dy = n.y - Y;
+            int dist = dx*dx + dy*dy;
+            if (dist < bd) {
+                bd = dist;
+                best = n;
+            }
 
-        int dist = euclideanDistance(node.point, target);
-        if (dist < bestDist) {
-            bestDist = dist;
-            best = node;
+            // Axis-based split
+            int axis = d & 1;
+            // c is how far the query point is from n along the current axis
+            int c = (axis == 0 ? X - n.x : Y - n.y);
+            int ad = c*c; // axis-dist^2
+
+            // Decide which branch is primary vs. secondary
+            N p = (c < 0) ? n.l : n.r;
+            N s = (c < 0) ? n.r : n.l;
+
+            if (p != null) {
+                n = p;
+                d++;
+            } else if (s != null && ad < bd) {
+                n = s;
+                d++;
+            } else {
+                break;
+            }
         }
-
-        int axis = depth % k;
-        KDNode nextBranch = (target[axis] < node.point[axis]) ? node.left : node.right;
-        KDNode otherBranch = (target[axis] < node.point[axis]) ? node.right : node.left;
-
-        best = nearestNeighborRec(nextBranch, target, depth + 1, best, bestDist);
-
-        if (Math.abs(target[axis] - node.point[axis]) < bestDist) {
-            best = nearestNeighborRec(otherBranch, target, depth + 1, best, bestDist);
-        }
-
-        return best;
-    }
-
-    private int euclideanDistance(int[] a, int[] b) {
-        int sum = 0;
-        for (int i = 0; i < k; i++) {
-            sum += (a[i] - b[i]) * (a[i] - b[i]);
-        }
-        return sum;
+        return new int[]{best.x, best.y};
     }
 }

@@ -3,6 +3,7 @@ package SuperiorCowPowers_v11.Helpers;
 import SuperiorCowPowers_v11.Helpers.Fast.FastLocIntMap;
 import battlecode.common.*;
 import SuperiorCowPowers_v11.Helpers.Fast.FastIterableLocSet;
+import SuperiorCowPowers_v11.Helpers.KDTree;
 
 import java.sql.SQLOutput;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ public class MapData {
     public MapInfo[][] mapInfos;
     public FastIterableLocSet ruins = new FastIterableLocSet(100);
     public boolean[][] SRPExclusionZone;
+    public int[][] SRPExclusionZoneInt;
     public FastIterableLocSet SRPs = new FastIterableLocSet(100);
     public int[][] tileColors; // 0 is undefined, 1 is primary, 2 is secondary
     public FastSetRobotInfo friendlyTowers = new FastSetRobotInfo(30);
@@ -28,13 +30,16 @@ public class MapData {
         this.height = height;
         mapInfos = new MapInfo[width][height];
         SRPExclusionZone = new boolean[width][height];
+        SRPExclusionZoneInt = new int[width][height];
         tileColors = new int[width][height];
 
 //        SRPExclusionZone2 = new StringBuilder("0".repeat(width*height));
 
         // exclude the edges of the map for SRPs
-        for(int i = width;  --i >= 0;)  SRPExclusionZone[i][0] = SRPExclusionZone[i][1] = SRPExclusionZone[i][height - 1] = SRPExclusionZone[i][height - 2] = true;
-        for(int i = height; --i >= 0;)  SRPExclusionZone[0][i] = SRPExclusionZone[1][i] = SRPExclusionZone[width - 1][i] = SRPExclusionZone[width - 2][i] = true;
+//        for(int i = width;  --i >= 0;)  SRPExclusionZone[i][0] = SRPExclusionZone[i][1] = SRPExclusionZone[i][height - 1] = SRPExclusionZone[i][height - 2] = true;
+//        for(int i = height; --i >= 0;)  SRPExclusionZone[0][i] = SRPExclusionZone[1][i] = SRPExclusionZone[width - 1][i] = SRPExclusionZone[width - 2][i] = true;
+        for(int i = width;  --i >= 0;)  SRPExclusionZoneInt[i][0] = SRPExclusionZoneInt[i][1] = SRPExclusionZoneInt[i][height - 1] = SRPExclusionZoneInt[i][height - 2] = 1;
+        for(int i = height; --i >= 0;)  SRPExclusionZoneInt[0][i] = SRPExclusionZoneInt[1][i] = SRPExclusionZoneInt[width - 1][i] = SRPExclusionZoneInt[width - 2][i] = 1;
     }
 
 
@@ -49,7 +54,6 @@ public class MapData {
             if(ally.type.isTowerType()){
                 markFriendlyTower(ally);
                 nearbyFriendlyTowersID[numNearbyFriendlyTowers++] = ally.ID;
-
             }
         }
 
@@ -76,24 +80,36 @@ public class MapData {
     public void markRuins(MapLocation[] locs, UnitType[] ruinTypes) throws GameActionException{
         for (int i = locs.length; --i >= 0;) {
             MapLocation loc = locs[i];
-            if(ruins.add(loc)){
-                // mark pattern
-                int[][] pattern = determinePaintType(ruinTypes[i]);
-                for(int x = -2; x <= 2; x++){
-                    System.arraycopy(pattern[x + 2], 0, tileColors[loc.x + x], loc.y - 2, 5);
+            if(ruins.add(loc)){ // only mark and exclude if tower not finished
+                if(!rc.canSenseRobotAtLocation(loc)) {
+                    // mark pattern
+                    int[][] pattern = determinePaintType(ruinTypes[i]);
+                    for (int x = -2; x <= 2; x++) {
+                        System.arraycopy(pattern[x + 2], 0, tileColors[loc.x + x], loc.y - 2, 5);
+                    }
                 }
 
                 // mark that no srps should be built here
-                int newX = 0;
-                int startY = 0;
-                int endY = 0;
-                for (int x = -4; x <= 4; x++) {
+//                int newX = 0;
+//                int startY = 0;
+//                int endY = 0;
+//                for (int x = -4; x <= 4; x++) {
+//                    newX = loc.x + x;
+//                    if(newX >= width || newX < 0) continue;
+//                    //array coppy with bounds checking
+//                    startY = Math.max(0, loc.y - 4);
+//                    endY = Math.min(height, loc.y + 5);
+//                    System.arraycopy(bigFillRow, 0, SRPExclusionZone[newX], startY, endY - startY);
+//                }
+                int newX, newY = 0;
+                for(int x = -4; x <= 4; x++){
                     newX = loc.x + x;
                     if(newX >= width || newX < 0) continue;
-                    //array coppy with bounds checking
-                    startY = Math.max(0, loc.y - 4);
-                    endY = Math.min(height, loc.y + 5);
-                    System.arraycopy(bigFillRow, 0, SRPExclusionZone[newX], startY, endY - startY);
+                    for(int y = -4; y <= 4; y++){
+                        newY = loc.y + y;
+                        if(newY >= height || newY < 0) continue;
+                        SRPExclusionZoneInt[newX][newY]++;
+                    }
                 }
             }
         }
@@ -151,8 +167,19 @@ public class MapData {
 
     // FRIENDLY TOWER STUFF
     public void markFriendlyTower(RobotInfo tower) {
-        friendlyTowers.add(tower);
-
+        if(friendlyTowers.add(tower)) {
+            // remove exclusion zone around it
+            int newX, newY = 0;
+            for (int x = -4; x <= 4; x++) {
+                newX = tower.location.x + x;
+                if (newX >= width || newX < 0) continue;
+                for (int y = -4; y <= 4; y++) {
+                    newY = tower.location.y + y;
+                    if (newY >= height || newY < 0) continue;
+                    SRPExclusionZoneInt[newX][newY]--;
+                }
+            }
+        }
     }
 
     public void markFriendlyTowers(RobotInfo[] towers) {
@@ -229,15 +256,7 @@ public class MapData {
             {2, 1, 2, 1, 2},
     };
     boolean[] fillRow = new boolean[]{true, true, true, true, true};
-    int[][] test = new int[][]{
-            {1,2,3, 4, 5, 6},
-            {4,5,6, 7, 8, 9}
-    };
     private void markSRP(MapLocation loc){ // uses 3k bytecode
-        int bytecodes = Clock.getBytecodeNum();
-//        test[1][1]++;
-        System.out.println("bytecodes to increement: " + (Clock.getBytecodeNum() - bytecodes));
-
         SRPs.add(loc);
         int newX = 0;
         int newY = 0;
@@ -245,20 +264,39 @@ public class MapData {
         for(int x = -2; x <= 2; x++){
             newX = loc.x + x;
             newY = loc.y - 2;
-            System.arraycopy(fillRow, 0, SRPExclusionZone[newX], newY, 5);
+//            System.arraycopy(fillRow, 0, SRPExclusionZone[newX], newY, 5);
             System.arraycopy(resourcePattern[x + 2], 0, tileColors[newX], newY, 5);
         }
-        SRPExclusionZone[loc.x][loc.y] = false;
+        // no need to check bounds, srp already valid location
+        for(int x = -2; x <= 2; x++) {
+            for (int y = -2; y <= 2; y++) {
+                newX = loc.x + x;
+                newY = loc.y + y;
+                SRPExclusionZoneInt[newX][newY]++;
+            }
+        }
+        SRPExclusionZoneInt[loc.x][loc.y]--;
 
-
-        // still need bounds checking here
         for(int x = exclusionOffsets.length; --x >= 0;){
             newX = loc.x + exclusionOffsets[x][0];
             newY = loc.y + exclusionOffsets[x][1];
-            if(newX >= SRPExclusionZone.length || newX < 0) continue;
-            if(newY >= SRPExclusionZone[0].length || newY < 0) continue;
-            SRPExclusionZone[newX][newY] = true;
+            if(newX >= SRPExclusionZoneInt.length || newX < 0) continue;
+            if(newY >= SRPExclusionZoneInt[0].length || newY < 0) continue;
+            SRPExclusionZoneInt[newX][newY]++;
         }
+
+
+//        SRPExclusionZone[loc.x][loc.y] = false;
+//
+//
+//        // still need bounds checking here
+//        for(int x = exclusionOffsets.length; --x >= 0;){
+//            newX = loc.x + exclusionOffsets[x][0];
+//            newY = loc.y + exclusionOffsets[x][1];
+//            if(newX >= SRPExclusionZone.length || newX < 0) continue;
+//            if(newY >= SRPExclusionZone[0].length || newY < 0) continue;
+//            SRPExclusionZone[newX][newY] = true;
+//        }
     }
 
     public MapInfo getMapInfo(MapLocation loc) {

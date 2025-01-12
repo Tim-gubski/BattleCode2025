@@ -1,8 +1,9 @@
 package SuperiorCowPowers_v11.Units;
 
-import SuperiorCowPowers_v11.Helpers.KDTree;
 import SuperiorCowPowers_v11.Unit;
 import battlecode.common.*;
+
+import java.sql.SQLOutput;
 
 // TODO: Dont go into tower range, attack towers maybe?, moppers attack enemy units
 
@@ -13,32 +14,6 @@ public class Soldier extends Unit {
     public Soldier(RobotController robot) throws GameActionException {
         super(robot);
         state = UnitState.EXPLORE;
-
-        int bytecode = Clock.getBytecodesLeft();
-        KDTree tree = new KDTree(2); // 2D KD-Tree
-        System.out.println("Bytecodes used to make KDTree: " + (bytecode - Clock.getBytecodesLeft()));
-
-        int[][] points = {
-                {3, 6}, {17, 15}, {13, 15}, {6, 12},
-                {9, 1}, {2, 7}, {10, 19}
-        };
-        bytecode = Clock.getBytecodesLeft();
-        for (int[] point : points) {
-            tree.insert(point);
-        }
-        System.out.println("Bytecodes used to insert KDTree: " + (bytecode - Clock.getBytecodesLeft()));
-
-        bytecode = Clock.getBytecodesLeft();
-        int[] target = {10, 9};
-        int[] nearest = tree.nearestNeighbor(target);
-        System.out.println("Bytecodes to get nearest " + (bytecode - Clock.getBytecodesLeft()));
-
-        System.out.println("Nearest neighbor to (" + target[0] + ", " + target[1] + ") is (" + nearest[0] + ", " + nearest[1] + ")");
-
-//        System.out.println("Bytecodes used for KDTree: " + (bytecode - Clock.getBytecodesLeft()));
-
-
-
     }
 
     public void turn() throws GameActionException {
@@ -47,6 +22,11 @@ public class Soldier extends Unit {
         senseNearby(); // perform all scans
         communication.parseMessages();
 //        System.out.println("Bytecodes used for senseNearby: " + (bytecode - Clock.getBytecodesLeft()));
+
+//        int bytecode = Clock.getBytecodesLeft();
+//        int[] closestRuin = mapData.ruinTree.nearestNeighbor(rc.getLocation().x, rc.getLocation().y);
+//        System.out.println("Closest ruin by tree: " + closestRuin[0] + ", " + closestRuin[1]);
+//        System.out.println("Bytecodes used for nearestNeighbor: " + (bytecode - Clock.getBytecodesLeft()));
 
         previousState = state;
         state = determineState();
@@ -88,7 +68,7 @@ public class Soldier extends Unit {
         }
 //        int startByte = Clock.getBytecodesLeft();
         completableSRP = closestCompletableSRP();
-//        System.out.println("Bytecodes used: " + (startByte - Clock.getBytecodesLeft()));
+//        System.out.println("Bytecodes used for finding srp: " + (startByte - Clock.getBytecodesLeft()));
         if (completableSRP != null){
             return UnitState.BUILDSRP;
         }
@@ -123,14 +103,14 @@ public class Soldier extends Unit {
                         int xOffset = closestCompletableRuin.x - rc.getLocation().x;
                         int yOffset = closestCompletableRuin.y - rc.getLocation().y;
                         for (MapLocation target : targets) {
-                            if (checkAndPaintTile(target.translate(xOffset, yOffset))) {
+                            if (Clock.getBytecodesLeft() < 1000 || checkAndPaintTile(target.translate(xOffset, yOffset))) {
                                 break;
                             }
                         }
                     }else{
                         // fill other stuff
                         for (MapLocation target : targets) {
-                            if (checkAndPaintTile(target)) {
+                            if (Clock.getBytecodesLeft() < 1000 || checkAndPaintTile(target)) {
                                 break;
                             }
                         }
@@ -281,10 +261,14 @@ public class Soldier extends Unit {
         mapData.ruins.updateIterable();
         mapData.SRPs.updateIterable();
         for(MapLocation loc : mapLocationSpiral(rc.getLocation(), 3)){
+            if(Clock.getBytecodeNum()>10000){
+                debugString.append("Terminating closest SRP early");
+                return null;
+            }
             if(rc.getLocation().distanceSquaredTo(loc) > GameConstants.RESOURCE_PATTERN_RADIUS_SQUARED || !rc.onTheMap(loc)){
                 continue;
             }
-            if(!mapData.SRPExclusionZone[loc.x][loc.y] && rc.canMarkResourcePattern(loc)){
+            if(mapData.SRPExclusionZoneInt[loc.x][loc.y] == 0 && rc.canMarkResourcePattern(loc)){
                 boolean bad = false;
                 boolean finished = true;
                 MapLocation checkLoc;

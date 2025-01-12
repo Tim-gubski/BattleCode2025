@@ -14,15 +14,17 @@ public class FastSetRobotInfo {
         size = 0;
     }
 
-    public void add(RobotInfo ri) {
+    public boolean add(RobotInfo ri) {
         if(size >= capacity){
             System.out.println("Set too small! " + size + " " + capacity);
-            return;
+            return false;
         }
         if(!contains(ri)) {
             arr[size++] = ri;
             retChanged = true;
+            return true;
         }
+        return false;
     }
 
     public void remove(RobotInfo ri) {
