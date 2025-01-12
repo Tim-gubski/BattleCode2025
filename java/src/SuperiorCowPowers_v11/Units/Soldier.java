@@ -1,11 +1,7 @@
-package MoneyMan_v9.Units;
+package SuperiorCowPowers_v11.Units;
 
-import MoneyMan_v9.Unit;
+import SuperiorCowPowers_v11.Unit;
 import battlecode.common.*;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 // TODO: Dont go into tower range, attack towers maybe?, moppers attack enemy units
 
@@ -49,7 +45,6 @@ public class Soldier extends Unit {
             rc.setIndicatorLine(rc.getLocation(), currentTargetLoc, 125, 0, 125);
         }
         debugString.append("Currently in state: ").append(state.toString());
-        rc.setIndicatorString(debugString.toString());
     }
 
     MapLocation completableSRP = null;
@@ -95,9 +90,21 @@ public class Soldier extends Unit {
                 // then fill other stuff
                 if(rc.isActionReady()) {
                     MapLocation[] targets = mapLocationSpiral(rc.getLocation(), 3);
-                    for (MapLocation target : targets) {
-                        if (checkAndPaintTile(target)) {
-                            break;
+                    // fill ruins first
+                    if(closestCompletableRuin != null) {
+                        int xOffset = closestCompletableRuin.x - rc.getLocation().x;
+                        int yOffset = closestCompletableRuin.y - rc.getLocation().y;
+                        for (MapLocation target : targets) {
+                            if (checkAndPaintTile(target.translate(xOffset, yOffset))) {
+                                break;
+                            }
+                        }
+                    }else{
+                        // fill other stuff
+                        for (MapLocation target : targets) {
+                            if (checkAndPaintTile(target)) {
+                                break;
+                            }
                         }
                     }
                 }
@@ -105,12 +112,10 @@ public class Soldier extends Unit {
         }
         // confirm all tower patterns
         if(closestAnyRuin != null) {
-            for (UnitType type : towerTypes) {
-                if (rc.canCompleteTowerPattern(type, closestAnyRuin)) {
-                    rc.completeTowerPattern(type, closestAnyRuin);
-                    rc.setTimelineMarker("Tower built", 0, 255, 0);
-                    System.out.println("Built a tower at " + closestAnyRuin + "!");
-                }
+            if (rc.canCompleteTowerPattern(determineTowerPattern(closestAnyRuin), closestAnyRuin)) {
+                rc.completeTowerPattern(determineTowerPattern(closestAnyRuin), closestAnyRuin);
+                rc.setTimelineMarker("Tower built", 0, 255, 0);
+                System.out.println("Built a tower at " + closestAnyRuin + "!");
             }
         }
 

@@ -1,11 +1,11 @@
-package MoneyMan_v9.Helpers;
+package SuperiorCowPowers_v11.Helpers;
 
+import SuperiorCowPowers_v11.Helpers.Fast.FastLocIntMap;
 import battlecode.common.*;
-import MoneyMan_v9.Helpers.Fast.FastIterableLocSet;
-import MoneyMan_v9.Helpers.Fast.FastLocIntMap;
+import SuperiorCowPowers_v11.Helpers.Fast.FastIterableLocSet;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.SQLOutput;
+import java.util.Arrays;
 
 public class MapData {
     public RobotController rc;
@@ -71,65 +71,63 @@ public class MapData {
 
 
     // RUIN STUFF
+    boolean[] bigFillRow = new boolean[]{true, true, true, true, true, true, true, true, true};
     public void markRuins(MapLocation[] locs, UnitType[] ruinTypes) throws GameActionException{
         for (int i = locs.length; --i >= 0;) {
             MapLocation loc = locs[i];
             if(ruins.add(loc)){
                 // mark pattern
-                boolean[][] pattern = determinePaintType(ruinTypes[i]);
+                int[][] pattern = determinePaintType(ruinTypes[i]);
                 for(int x = -2; x <= 2; x++){
-                    for(int y = -2; y <= 2; y++){
-                        // this costs 83 bytecode, and we're doing it 25 times, 48 bytecode now, 25 now
-                        tileColors[loc.x + x][loc.y + y] = pattern[x + 2][y + 2] ? 2 : 1; // 2 offset since -2, -2 -> 0,0;
-                    }
+                    System.arraycopy(pattern[x + 2], 0, tileColors[loc.x + x], loc.y - 2, 5);
                 }
 
                 // mark that no srps should be built here
+                int newX = 0;
+                int startY = 0;
+                int endY = 0;
                 for (int x = -4; x <= 4; x++) {
-                    for (int y = -4; y <= 4; y++) {
-                        // costs 51 bytecode for some reason, 43 now, 39 now, 23 now
-                        MapLocation newLoc = loc.translate(x, y);
-                        if(rc.onTheMap(newLoc)) {
-                            SRPExclusionZone[newLoc.x][newLoc.y] = true; // 18 bytecode
-//                            SRPExclusionZone2.setCharAt((loc.y + y) * width + loc.x + x, '1'); // 16bytecode
-                        }
-                    }
+                    newX = loc.x + x;
+                    if(newX >= width || newX < 0) continue;
+                    //array coppy with bounds checking
+                    startY = Math.max(0, loc.y - 4);
+                    endY = Math.min(height, loc.y + 5);
+                    System.arraycopy(bigFillRow, 0, SRPExclusionZone[newX], startY, endY - startY);
                 }
             }
-
         }
     }
 
     // manual patterns, replace with get tower patterns later
     // binary = 1000101010001000101010001
-    boolean[][] paintTowerPattern = new boolean[][]{
-            {true, false, false, false, true},
-            {false, true, false, true, false},
-            {false, false, true, false, false},
-            {false, true, false, true, false},
-            {true, false, false, false, true},
+    int[][] paintTowerPattern = new int[][]{
+            {2, 1, 1, 1, 2},
+            {1, 2, 1, 2, 1},
+            {1, 1, 2, 1, 1},
+            {1, 2, 1, 2, 1},
+            {2, 1, 1, 1, 2},
     };
 
     // binary = 0111011011100011101101110
-    boolean[][] moneyTowerPattern = new boolean[][]{
-            {false, true, true, true, false},
-            {true, true, false, true, true},
-            {true, false, false, false, true},
-            {true, true, false, true, true},
-            {false, true, true, true, false},
+    int[][] moneyTowerPattern = new int[][]{
+            {1, 2, 2, 2, 1},
+            {2, 2, 1, 2, 2},
+            {2, 1, 1, 1, 2},
+            {2, 2, 1, 2, 2},
+            {1, 2, 2, 2, 1},
     };
 
     // binary = 10001110111110111000100;
-    boolean[][] defenseTowerPattern = new boolean[][]{
-            {true, false, false, false, true},
-            {false, true, true, true, false},
-            {false, true, true, true, false},
-            {false, true, true, true, false},
-            {true, false, false, false, true},
+    int[][] defenseTowerPattern = new int[][]{
+            {2, 1, 1, 1, 2},
+            {1, 2, 2, 2, 1},
+            {1, 2, 2, 2, 1},
+            {1, 2, 2, 2, 1},
+            {2, 1, 1, 1, 2},
     };
 
     // x and y are local to 5x5 pattern -> 0,0 is topleft
-    public boolean[][] determinePaintType(UnitType towerType) throws GameActionException{
+    public int[][] determinePaintType(UnitType towerType) throws GameActionException{
         // find paint type using bit extraction
         // method: pattern >> (24 - (x + y * 5)) & 1
         if (towerType.getBaseType() == UnitType.LEVEL_ONE_PAINT_TOWER) {
@@ -182,14 +180,32 @@ public class MapData {
 
     // can probably optimize this hella seems like storing the mapinfo objects takes a bunch of bytecode
     public void setMapInfos(MapInfo[] infos, PaintType SRP_COLOR) {
-        for (MapInfo info : infos) {
+        if(infos.length == 0) return;
+//        int x = infos[0].getMapLocation().x;
+//        int lineStart = 0;
+//        int minY = infos[0].getMapLocation().y;
+        MapInfo info;
+
+
+        for (int i = infos.length; --i >= 0;) {
+            info = infos[i];
+//            if(info.getMapLocation().x != x || i == infos.length - 1){
+//                System.arraycopy(infos, lineStart, mapInfos[x], minY, (i == infos.length - 1) ? (i - lineStart + 1) : (i - lineStart));
+//                lineStart = i;
+//                x = info.getMapLocation().x;
+//                minY = info.getMapLocation().y;
+//            }
+
+            // do we actually need this or can we just sense each turn.
             mapInfos[info.getMapLocation().x][info.getMapLocation().y] = info; // 12 bytecode just to set a map info
+
             if(info.getMark() == SRP_COLOR){
                 if(!SRPs.contains(info.getMapLocation())) {
                     markSRP(info.getMapLocation());
                 }
             }
         }
+
     }
 
     int[][] exclusionOffsets = new int[][]{
@@ -203,29 +219,30 @@ public class MapData {
             {-4, -2}, {-4, -1}, {-4, 1}, {-4, 2},
     };
     // binary =1010101010100010101010101
-    boolean[][] resourcePattern = new boolean[][]{
-            {true, false, true, false, true},
-            {false, true, false, true, false},
-            {true, false, false, false, true},
-            {false, true, false, true, false},
-            {true, false, true, false, true},
+    int[][] resourcePattern = new int[][]{
+            {2, 1, 2, 1, 2},
+            {1, 2, 1, 2, 1},
+            {2, 1, 1, 1, 2},
+            {1, 2, 1, 2, 1},
+            {2, 1, 2, 1, 2},
     };
+    boolean[] fillRow = new boolean[]{true, true, true, true, true};
+
     private void markSRP(MapLocation loc){ // uses 3k bytecode
-        int bytecode = Clock.getBytecodeNum();
         SRPs.add(loc);
         int newX = 0;
         int newY = 0;
-        for (int x = -2; x <= 2; x++) {
+        // this is weird to think about because map is [x][y] but x selects the row, freaky
+        for(int x = -2; x <= 2; x++){
             newX = loc.x + x;
-            if(newX >= width || newX < 0) continue;
-            for (int y = -2; y <= 2; y++) {
-                newY = loc.y + y;
-                if (newY >= height || newY < 0) continue;
-                // resource pattern hard coded
-                SRPExclusionZone[newX][newY] = !(x == 0 && y == 0);
-                tileColors[newX][newY] = resourcePattern[x + 2][y + 2] ? 2 : 1;
-            }
+            newY = loc.y - 2;
+            System.arraycopy(fillRow, 0, SRPExclusionZone[newX], newY, 5);
+            System.arraycopy(resourcePattern[x + 2], 0, tileColors[newX], newY, 5);
         }
+        SRPExclusionZone[loc.x][loc.y] = false;
+
+
+        // still need bounds checking here
         for(int x = exclusionOffsets.length; --x >= 0;){
             newX = loc.x + exclusionOffsets[x][0];
             newY = loc.y + exclusionOffsets[x][1];
@@ -233,8 +250,6 @@ public class MapData {
             if(newY >= SRPExclusionZone[0].length || newY < 0) continue;
             SRPExclusionZone[newX][newY] = true;
         }
-        System.out.println("markSRP bytecode: " + (Clock.getBytecodeNum() - bytecode));
-
     }
 
     public MapInfo getMapInfo(MapLocation loc) {

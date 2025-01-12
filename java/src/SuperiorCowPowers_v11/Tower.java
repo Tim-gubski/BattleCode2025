@@ -1,5 +1,6 @@
-package MoneyMan_v9;
+package SuperiorCowPowers_v11;
 
+import SuperiorCowPowers_v11.Util.Comms;
 import battlecode.common.*;
 
 public abstract class Tower extends Robot {
@@ -19,6 +20,8 @@ public abstract class Tower extends Robot {
         if(rc.getChips()>3000 && rc.canUpgradeTower(rc.getLocation()) && allies.length > 3){
             rc.upgradeTower(rc.getLocation());
         }
+
+        communication.parseMessages();
 
         MapInfo[] nearbyTiles = rc.senseNearbyMapInfos(-1);
         boolean enemyPaint = false;
@@ -54,6 +57,13 @@ public abstract class Tower extends Robot {
         RobotInfo[] enemies = rc.senseNearbyRobots(-1,rc.getTeam().opponent());
         if(enemies.length > 0){
             tryAttack(getClosest(enemies).getLocation());
+        }
+
+        if (returnLoc != null) {
+            int frontlineMessage = communication.constructMessage(Comms.Codes.FRONTLINE);
+            for (RobotInfo friend : allies) {
+                if (rc.canSendMessage(friend.getLocation())) rc.sendMessage(friend.getLocation(), frontlineMessage);
+            }
         }
 
 //        boolean instaRespawn = true;

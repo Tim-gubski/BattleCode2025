@@ -1,10 +1,9 @@
-package MoneyMan_v9;
+package SuperiorCowPowers_v11;
 
-import MoneyMan_v9.Helpers.Explore;
-import MoneyMan_v9.Helpers.MapData;
+import SuperiorCowPowers_v11.Helpers.Explore;
+import SuperiorCowPowers_v11.Helpers.MapData;
+import SuperiorCowPowers_v11.Util.Comms;
 import battlecode.common.*;
-
-import java.util.Arrays;
 
 public abstract class Unit extends Robot {
     // CONSTANTS
@@ -14,7 +13,6 @@ public abstract class Unit extends Robot {
     public MapData mapData;
     public Explore explorer;
     public MapLocation nearestPaintTower = null;
-    public MapLocation returnLoc = null;
 
     public MapInfo[] mapInfo = null;
     public RobotInfo[] allies = null;
@@ -23,6 +21,8 @@ public abstract class Unit extends Robot {
     public MapLocation closestCompletableRuin = null;
     public MapLocation[] allRuins = null;
     public MapLocation closestAnyRuin = null;
+
+    public boolean returningFromFight = false;
 
     protected MapLocation currentTargetLoc = null;
 
@@ -56,6 +56,8 @@ public abstract class Unit extends Robot {
         mapInfo = rc.senseNearbyMapInfos();
         mapData.setMapInfos(mapInfo, SRP_MARKER_COLOR);
 
+        communication.parseMessages();
+
         allRuins = rc.senseNearbyRuins(-1);
 //        int bytecode = Clock.getBytecodeNum();
         completableRuins = senseNearbyCompletableTowerlessRuins(); // 1k-3k bytecode usage
@@ -64,6 +66,7 @@ public abstract class Unit extends Robot {
         allies = rc.senseNearbyRobots(-1, rc.getTeam());
         enemies = rc.senseNearbyRobots(-1, rc.getTeam().opponent());
 
+        if (enemies != null && state != UnitState.REFILLING) returningFromFight = true;
 
         closestCompletableRuin = getClosest(completableRuins);
         if(allRuins.length > 0){
@@ -104,9 +107,9 @@ public abstract class Unit extends Robot {
         }
         MapLocation[] newNearbyRuins = new MapLocation[nearbyRuins.length - toRemove];
         int j = 0;
-        for (int i = 0; i < nearbyRuins.length; i++){
-            if(nearbyRuins[i] != null){
-                newNearbyRuins[j] = nearbyRuins[i];
+        for (MapLocation nearbyRuin : nearbyRuins) {
+            if (nearbyRuin != null) {
+                newNearbyRuins[j] = nearbyRuin;
                 j++;
             }
         }
@@ -129,7 +132,6 @@ public abstract class Unit extends Robot {
             for(int x = -2; x <= 2; x++){
                 if (nearbyRuins[i] == null) break;
                 for(int y = -2; y <= 2; y++){
-                    int bytecode = Clock.getBytecodeNum();
                     senseLoc = nearbyRuins[i].translate(x,y);
                     if(rc.onTheMap(senseLoc) && rc.canSenseLocation(senseLoc)){
                         tileInfo = mapData.mapInfos[senseLoc.x][senseLoc.y];
@@ -142,22 +144,27 @@ public abstract class Unit extends Robot {
                             correctPaint++;
                         }
                     }
-                    System.out.println("Bytecode for inner loop: " + (Clock.getBytecodeNum() - bytecode));
                 }
             }
             if (nearbyRuins[i] == null) continue;
-            int workingFriends = rc.senseNearbyRobots(nearbyRuins[i], 2, rc.getTeam()).length;
+            RobotInfo[] workingFriends = rc.senseNearbyRobots(nearbyRuins[i], 2, rc.getTeam());
+            int soldiers = 0;
+            for(int j = workingFriends.length; --j >= 0;){
+                if(workingFriends[j].type == UnitType.SOLDIER){
+                    soldiers++;
+                }
+            }
             //debugString.append("Working Friends: " + workingFriends + " Correct Paint: " + correctPaint + " Sensable: " + sensable + "\n");
-            if(workingFriends >= 2 || (correctPaint == sensable && workingFriends == 1)){
+            if(soldiers >= 2 || (correctPaint == sensable && soldiers == 1)){
                 nearbyRuins[i] = null;
                 toRemove++;
             }
         }
         MapLocation[] newNearbyRuins = new MapLocation[nearbyRuins.length - toRemove];
         int j = 0;
-        for (int i = 0; i < nearbyRuins.length; i++){
-            if(nearbyRuins[i] != null){
-                newNearbyRuins[j] = nearbyRuins[i];
+        for (MapLocation nearbyRuin : nearbyRuins) {
+            if (nearbyRuin != null) {
+                newNearbyRuins[j] = nearbyRuin;
                 j++;
             }
         }
@@ -171,7 +178,7 @@ public abstract class Unit extends Robot {
     protected boolean refillSelf(MapLocation refillLoc) throws GameActionException {
         // cant do anything if no nearest tower
         if (refillLoc == null) {
-            rc.setIndicatorString("FAILED REFILL 1");
+            debugString.append("FAILED REFILL 1");
             return false;
         }
 
@@ -181,18 +188,18 @@ public abstract class Unit extends Robot {
         }
 
         int needed = rc.getType().paintCapacity - rc.getPaint();
-        int transferAmount = 0;
+        int transferAmount;
         if (rc.canSenseRobotAtLocation(refillLoc)) {
             RobotInfo tower = rc.senseRobotAtLocation(refillLoc);
             int availablePaint = tower.getPaintAmount();
             transferAmount = Math.min(needed, availablePaint);
         }else{
-            rc.setIndicatorString("FAILED REFILL 2");
+            debugString.append("FAILED REFILL 2");
             return false;
         }
 
         if (transferAmount <= 0) {
-            rc.setIndicatorString("FAILED REFILL 4");
+            debugString.append("FAILED REFILL 4");
             return false;
         }
 
@@ -248,7 +255,12 @@ public abstract class Unit extends Robot {
             }
             return state;
         }
-        
+
+//        if (returningFromFight && rc.canSendMessage(targetTower)){
+//            returningFromFight = false;
+//            rc.sendMessage(targetTower, communication.constructMessage(Comms.Codes.FRONTLINE));
+//        }
+
         // if in range of tower, refill
         if (rc.getLocation().isWithinDistanceSquared(targetTower, 2)) {
             refillSelf(targetTower);
@@ -508,23 +520,37 @@ public abstract class Unit extends Robot {
     };
 
     public MapLocation[] mapLocationSpiral(MapLocation loc, int radius) {
-        int maxSize = (int) Math.pow((radius * 2 + 1), 2);
+        int bytecode = Clock.getBytecodeNum();
+        int maxSize = (radius == 1) ? 9 : (radius == 2) ? 25 : 49;
         MapLocation[] coordinates = new MapLocation[maxSize];
-        if(radius >= 1){
-            for(int i = 0; i < layerOne.length; i++){
-                coordinates[i] = loc.translate(layerOne[i][0], layerOne[i][1]);
+        int index = 0;
+
+        // Unrolled layerOne loop (Closest points first, using translate())
+        coordinates[index++] = loc.translate(0, 0);
+        coordinates[index++] = loc.translate(-1, 1);
+        coordinates[index++] = loc.translate(0, 1);
+        coordinates[index++] = loc.translate(1, 1);
+        coordinates[index++] = loc.translate(1, 0);
+        coordinates[index++] = loc.translate(1, -1);
+        coordinates[index++] = loc.translate(0, -1);
+        coordinates[index++] = loc.translate(-1, -1);
+        coordinates[index++] = loc.translate(-1, 0);
+
+        if (radius >= 2) {
+            int[] pos;
+            for (int i = 0; i < 16; i++) {
+                pos = layerTwo[i]; // Reduce array lookup overhead
+                coordinates[index++] = loc.translate(pos[0], pos[1]);
             }
         }
-        if(radius >= 2){
-            for(int i = 0; i < layerTwo.length; i++){
-                coordinates[i+layerOne.length] = loc.translate(layerTwo[i][0], layerTwo[i][1]);
+        if (radius >= 3) {
+            int[] pos;
+            for (int i = 0; i < 24; i++) {
+                pos = layerThree[i];
+                coordinates[index++] = loc.translate(pos[0], pos[1]);
             }
         }
-        if(radius >= 3){
-            for(int i = 0; i < layerThree.length; i++){
-                coordinates[i+layerOne.length+layerTwo.length] = loc.translate(layerThree[i][0], layerThree[i][1]);
-            }
-        }
+        System.out.println("Bytecode: " + (Clock.getBytecodeNum() - bytecode));
 //        System.out.println(Arrays.toString(coordinates));
         return coordinates;
     }
@@ -538,7 +564,7 @@ public abstract class Unit extends Robot {
 
     // TODO: make sure not to paint over tower pattern before tower is built -> check if ruin nearby and if paint is part of determined pattern
     public boolean checkAndPaintTile(MapLocation loc) throws GameActionException{
-        if(!rc.canSenseLocation(loc)){
+        if(rc.getLocation().distanceSquaredTo(loc) >= rc.getType().actionRadiusSquared || !rc.canSenseLocation(loc)){
             return false;
         }
         MapInfo info = mapData.getMapInfo(loc);
