@@ -11,8 +11,8 @@ public class Splasher extends Unit {
     MapLocation returnLoc = null;
 
     public void turn() throws Exception {
-        debugString = new StringBuilder();
         senseNearby(); // perform all scans
+        communication.parseMessages();
 
         previousState = state;
         state = determineState();

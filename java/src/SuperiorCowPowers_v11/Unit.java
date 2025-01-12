@@ -236,7 +236,7 @@ public abstract class Unit extends Robot {
         if (paintTowers.length > 0) {
             if(closestPaintTower != null) {
                 targetTower = closestPaintTower;
-            }else if(targetTowerIndex < paintTowers.length && paintTowers[targetTowerIndex] != null){
+            }else if(targetTowerIndex < paintTowers.length && paintTowers[targetTowerIndex] != null) {
                 targetTower = paintTowers[targetTowerIndex];
             }
         }
@@ -256,10 +256,10 @@ public abstract class Unit extends Robot {
             return state;
         }
 
-//        if (returningFromFight && rc.canSendMessage(targetTower)){
-//            returningFromFight = false;
-//            rc.sendMessage(targetTower, communication.constructMessage(Comms.Codes.FRONTLINE));
-//        }
+        if (returningFromFight && rc.canSendMessage(targetTower)){
+            returningFromFight = false;
+            rc.sendMessage(targetTower, communication.constructMessage(Comms.Codes.FRONTLINE));
+        }
 
         // if in range of tower, refill
         if (rc.getLocation().isWithinDistanceSquared(targetTower, 2)) {
