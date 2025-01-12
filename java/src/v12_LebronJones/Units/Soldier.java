@@ -144,15 +144,38 @@ public class Soldier extends Unit {
         }
     }
 
+    private boolean tryMoveOutOfRange(MapLocation avoidLoc, int dist) throws GameActionException{
+        for(Direction dir : fuzzyDirs(dirTo(avoidLoc).opposite())){
+            if(rc.getLocation().add(dir).distanceSquaredTo(avoidLoc) > dist && rc.canMove(dir)){
+                rc.move(dir);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean tryMoveIntoRange(MapLocation avoidLoc, int dist) throws GameActionException{
+        for(Direction dir : fuzzyDirs(dirTo(avoidLoc))){
+            if(rc.getLocation().add(dir).distanceSquaredTo(avoidLoc) <= dist && rc.canMove(dir)){
+                rc.move(dir);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void combatState() throws GameActionException {
         if(distTo(closestEnemyTower.getLocation()) <= rc.getType().actionRadiusSquared){
             if(!mapData.getMapInfo(rc.getLocation()).getPaint().isAlly()){
                 tryAttack(rc.getLocation());
             }
-            tryAttack(closestEnemyTower.getLocation());
-            fuzzyMove(dirTo(closestEnemyTower.getLocation()).opposite());
+            if(!tryMoveOutOfRange(closestEnemyTower.getLocation(), closestEnemyTower.type.actionRadiusSquared)){
+                fuzzyMove(dirTo(closestEnemyTower.getLocation()).opposite());
+            }
         }else{
-            fuzzyMove(closestEnemyTower.getLocation());
+            if(!tryMoveIntoRange(closestEnemyTower.getLocation(), rc.getType().actionRadiusSquared)){
+                fuzzyMove(closestEnemyTower.getLocation());
+            }
             if(!mapData.getMapInfo(rc.getLocation()).getPaint().isAlly()){
                 tryAttack(rc.getLocation());
             }
@@ -256,7 +279,11 @@ public class Soldier extends Unit {
             if(rc.getLocation().distanceSquaredTo(loc) > GameConstants.RESOURCE_PATTERN_RADIUS_SQUARED || !rc.onTheMap(loc)){
                 continue;
             }
-            if(mapData.SRPExclusionZoneInt[loc.x][loc.y] == 0 && rc.canMarkResourcePattern(loc)){
+            if(mapData.SRPExclusionZoneInt[loc.x][loc.y] == 0){
+                if(!rc.canMarkResourcePattern(loc)){
+                    mapData.SRPExclusionZoneInt[loc.x][loc.y]++;
+                    continue;
+                }
                 boolean bad = false;
                 boolean finished = true;
                 MapLocation checkLoc;
