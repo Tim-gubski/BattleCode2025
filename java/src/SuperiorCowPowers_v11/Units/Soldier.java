@@ -1,5 +1,6 @@
 package SuperiorCowPowers_v11.Units;
 
+import SuperiorCowPowers_v11.Helpers.KDTree;
 import SuperiorCowPowers_v11.Unit;
 import battlecode.common.*;
 
@@ -12,6 +13,32 @@ public class Soldier extends Unit {
     public Soldier(RobotController robot) throws GameActionException {
         super(robot);
         state = UnitState.EXPLORE;
+
+        int bytecode = Clock.getBytecodesLeft();
+        KDTree tree = new KDTree(2); // 2D KD-Tree
+        System.out.println("Bytecodes used to make KDTree: " + (bytecode - Clock.getBytecodesLeft()));
+
+        int[][] points = {
+                {3, 6}, {17, 15}, {13, 15}, {6, 12},
+                {9, 1}, {2, 7}, {10, 19}
+        };
+        bytecode = Clock.getBytecodesLeft();
+        for (int[] point : points) {
+            tree.insert(point);
+        }
+        System.out.println("Bytecodes used to insert KDTree: " + (bytecode - Clock.getBytecodesLeft()));
+
+        bytecode = Clock.getBytecodesLeft();
+        int[] target = {10, 9};
+        int[] nearest = tree.nearestNeighbor(target);
+        System.out.println("Bytecodes to get nearest " + (bytecode - Clock.getBytecodesLeft()));
+
+        System.out.println("Nearest neighbor to (" + target[0] + ", " + target[1] + ") is (" + nearest[0] + ", " + nearest[1] + ")");
+
+//        System.out.println("Bytecodes used for KDTree: " + (bytecode - Clock.getBytecodesLeft()));
+
+
+
     }
 
     public void turn() throws GameActionException {

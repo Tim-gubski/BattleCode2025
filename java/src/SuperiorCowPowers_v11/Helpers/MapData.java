@@ -151,6 +151,7 @@ public class MapData {
     // FRIENDLY TOWER STUFF
     public void markFriendlyTower(RobotInfo tower) {
         friendlyTowers.add(tower);
+
     }
 
     public void markFriendlyTowers(RobotInfo[] towers) {
@@ -227,8 +228,15 @@ public class MapData {
             {2, 1, 2, 1, 2},
     };
     boolean[] fillRow = new boolean[]{true, true, true, true, true};
-
+    int[][] test = new int[][]{
+            {1,2,3, 4, 5, 6},
+            {4,5,6, 7, 8, 9}
+    };
     private void markSRP(MapLocation loc){ // uses 3k bytecode
+        int bytecodes = Clock.getBytecodeNum();
+//        test[1][1]++;
+        System.out.println("bytecodes to increement: " + (Clock.getBytecodeNum() - bytecodes));
+
         SRPs.add(loc);
         int newX = 0;
         int newY = 0;

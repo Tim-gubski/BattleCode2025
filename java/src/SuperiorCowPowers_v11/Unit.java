@@ -519,40 +519,98 @@ public abstract class Unit extends Robot {
             {-3, -2}, {-3, -1}, {-3, 0}, {-3, 1}, {-3, 2}
     };
 
+    public MapLocation[] spiral(int x, int y){
+        return new MapLocation[]{
+                new MapLocation(0, 0).translate(x, y),
+                new MapLocation(-1, 1).translate(x, y),
+                new MapLocation(0, 1).translate(x, y),
+                new MapLocation(1, 1).translate(x, y),
+                new MapLocation(1, 0).translate(x, y),
+                new MapLocation(1, -1).translate(x, y),
+                new MapLocation(0, -1).translate(x, y),
+                new MapLocation(-1, -1).translate(x, y),
+                new MapLocation(-1, 0).translate(x, y),
+                new MapLocation(-2, 2).translate(x, y),
+                new MapLocation(-1, 2).translate(x, y),
+                new MapLocation(0, 2).translate(x, y),
+                new MapLocation(1, 2).translate(x, y),
+                new MapLocation(2, 2).translate(x, y),
+                new MapLocation(2, 1).translate(x, y),
+                new MapLocation(2, 0).translate(x, y),
+                new MapLocation(2, -1).translate(x, y),
+                new MapLocation(2, -2).translate(x, y),
+                new MapLocation(1, -2).translate(x, y),
+                new MapLocation(0, -2).translate(x, y),
+                new MapLocation(-1, -2).translate(x, y),
+                new MapLocation(-2, -2).translate(x, y),
+                new MapLocation(-2, -1).translate(x, y),
+                new MapLocation(-2, 0).translate(x, y),
+                new MapLocation(-2, 1).translate(x, y),
+                new MapLocation(-3, 3).translate(x, y),
+                new MapLocation(-2, 3).translate(x, y),
+                new MapLocation(-1, 3).translate(x, y),
+                new MapLocation(0, 3).translate(x, y),
+                new MapLocation(1, 3).translate(x, y),
+                new MapLocation(2, 3).translate(x, y),
+                new MapLocation(3, 3).translate(x, y),
+                new MapLocation(3, 2).translate(x, y),
+                new MapLocation(3, 1).translate(x, y),
+                new MapLocation(3, 0).translate(x, y),
+                new MapLocation(3, -1).translate(x, y),
+                new MapLocation(3, -2).translate(x, y),
+                new MapLocation(3, -3).translate(x, y),
+                new MapLocation(2, -3).translate(x, y),
+                new MapLocation(1, -3).translate(x, y),
+                new MapLocation(0, -3).translate(x, y),
+                new MapLocation(-1, -3).translate(x, y),
+                new MapLocation(-2, -3).translate(x, y),
+                new MapLocation(-3, -3).translate(x, y),
+                new MapLocation(-3, -2).translate(x, y),
+                new MapLocation(-3, -1).translate(x, y),
+                new MapLocation(-3, 0).translate(x, y),
+                new MapLocation(-3, 1).translate(x, y),
+                new MapLocation(-3, 2).translate(x, y),
+        };
+    }
+
+
     public MapLocation[] mapLocationSpiral(MapLocation loc, int radius) {
-        int bytecode = Clock.getBytecodeNum();
-        int maxSize = (radius == 1) ? 9 : (radius == 2) ? 25 : 49;
-        MapLocation[] coordinates = new MapLocation[maxSize];
-        int index = 0;
+        return spiral(loc.x, loc.y);
+//        System.out.println("Bytecode spiral: " + (Clock.getBytecodeNum() - bytecode));
 
-        // Unrolled layerOne loop (Closest points first, using translate())
-        coordinates[index++] = loc.translate(0, 0);
-        coordinates[index++] = loc.translate(-1, 1);
-        coordinates[index++] = loc.translate(0, 1);
-        coordinates[index++] = loc.translate(1, 1);
-        coordinates[index++] = loc.translate(1, 0);
-        coordinates[index++] = loc.translate(1, -1);
-        coordinates[index++] = loc.translate(0, -1);
-        coordinates[index++] = loc.translate(-1, -1);
-        coordinates[index++] = loc.translate(-1, 0);
-
-        if (radius >= 2) {
-            int[] pos;
-            for (int i = 0; i < 16; i++) {
-                pos = layerTwo[i]; // Reduce array lookup overhead
-                coordinates[index++] = loc.translate(pos[0], pos[1]);
-            }
-        }
-        if (radius >= 3) {
-            int[] pos;
-            for (int i = 0; i < 24; i++) {
-                pos = layerThree[i];
-                coordinates[index++] = loc.translate(pos[0], pos[1]);
-            }
-        }
-        System.out.println("Bytecode: " + (Clock.getBytecodeNum() - bytecode));
-//        System.out.println(Arrays.toString(coordinates));
-        return coordinates;
+//        int maxSize = (radius == 1) ? 9 : (radius == 2) ? 25 : 49;
+//        MapLocation[] coordinates = new MapLocation[maxSize];
+//        int index = 0;
+//
+//        // Unrolled layerOne loop (Closest points first, using translate())
+//
+//        coordinates[index++] = loc.translate(0, 0);
+//        coordinates[index++] = loc.translate(-1, 1);
+//        coordinates[index++] = loc.translate(0, 1);
+//        coordinates[index++] = loc.translate(1, 1);
+//        coordinates[index++] = loc.translate(1, 0);
+//        coordinates[index++] = loc.translate(1, -1);
+//        coordinates[index++] = loc.translate(0, -1);
+//        coordinates[index++] = loc.translate(-1, -1);
+//        coordinates[index++] = loc.translate(-1, 0);
+//
+//        if (radius >= 2) {
+//            int[] pos;
+//            for (int i = 0; i < 16; i++) {
+//                pos = layerTwo[i]; // Reduce array lookup overhead
+//                coordinates[index++] = loc.translate(pos[0], pos[1]);
+//            }
+//        }
+//        if (radius >= 3) {
+//            int[] pos;
+//            for (int i = 0; i < 24; i++) {
+//                pos = layerThree[i];
+//                coordinates[index++] = loc.translate(pos[0], pos[1]);
+//            }
+//        }
+//
+////        System.out.println(Arrays.toString(coordinates));
+//        return coordinates;
     }
 
     public RobotInfo inEnemyTowerRange(RobotInfo[] enemies) throws GameActionException {
