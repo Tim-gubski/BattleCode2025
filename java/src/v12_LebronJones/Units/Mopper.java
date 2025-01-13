@@ -6,6 +6,7 @@ import battlecode.common.*;
 public class Mopper extends Unit {
     Direction exploreDir = randomDirection();
     MapLocation closestEnemyPaint = null;
+    RobotInfo targetEnemy = null;
 
     public Mopper(RobotController robot) throws GameActionException {
         super(robot);
@@ -26,6 +27,9 @@ public class Mopper extends Unit {
         switch (state) {
             case UnitState.EXPLORE -> {
                 exploreState();
+            }
+            case UnitState.COMBAT -> {
+                combatState();
             }
             case UnitState.REFILLING -> {
                 refillingState();
@@ -52,29 +56,35 @@ public class Mopper extends Unit {
             return UnitState.REFILLING;
         }
 
+
+        targetEnemy = getTargetEnemy();
+        if(targetEnemy != null){
+            return UnitState.COMBAT;
+        }
+
         if(closestAnyRuin != null){
             rc.setIndicatorDot(closestAnyRuin, 0, 255, 0);
         }
 
         MapInfo[] nearbyTiles = rc.senseNearbyMapInfos(-1);
         closestEnemyPaint = null;
-        boolean bestOnOurMarker = false;
+        boolean bestNearRuin = false;
         int closestDist = 999999;
         for(MapInfo tile : nearbyTiles) {
             if (tile.getPaint() == PaintType.ENEMY_PRIMARY || tile.getPaint() == PaintType.ENEMY_SECONDARY) {
-                boolean onMarker = closestAnyRuin != null && tile.getMapLocation().distanceSquaredTo(closestAnyRuin) <= 8;
+                boolean nearRuin = closestAnyRuin != null && tile.getMapLocation().distanceSquaredTo(closestAnyRuin) <= 8;
                 int dist = rc.getLocation().distanceSquaredTo(tile.getMapLocation());
 
-                if (onMarker && !bestOnOurMarker) {
+                if (nearRuin && !bestNearRuin) {
                     closestDist = dist;
                     closestEnemyPaint = tile.getMapLocation();
-                    bestOnOurMarker = true;
-                } else if (onMarker && bestOnOurMarker) {
+                    bestNearRuin = true;
+                } else if (nearRuin && bestNearRuin) {
                     if (dist < closestDist) {
                         closestDist = dist;
                         closestEnemyPaint = tile.getMapLocation();
                     }
-                } else if (!onMarker && !bestOnOurMarker) {
+                } else if (!nearRuin && !bestNearRuin) {
                     if (dist < closestDist) {
                         closestDist = dist;
                         closestEnemyPaint = tile.getMapLocation();
@@ -138,14 +148,46 @@ public class Mopper extends Unit {
         }
     }
 
+    private RobotInfo getTargetEnemy() {
+        RobotInfo targetEnemy = null;
+        boolean isSoldier = false;
+        int minDist = 999999;
+        for(RobotInfo enemy : enemies){
+            if(enemy.getPaintAmount() == 0 || enemy.type.isTowerType()){
+                continue;
+            }
+            int dist = rc.getLocation().distanceSquaredTo(enemy.getLocation());
+            if(!isSoldier && enemy.getType() == UnitType.SOLDIER){
+                isSoldier = true;
+                minDist = dist;
+                targetEnemy = enemy;
+            }else if(isSoldier && enemy.getType() == UnitType.SOLDIER && dist < minDist){
+                minDist = dist;
+                targetEnemy = enemy;
+            }else if(!isSoldier && dist < minDist){
+                minDist = dist;
+                targetEnemy = enemy;
+            }
+        }
+        return targetEnemy;
+    }
+
+    private void combatState() throws GameActionException{
+        if(!tryAttack(targetEnemy.getLocation()) && !rc.getLocation().isAdjacentTo(targetEnemy.getLocation())){
+            if(!tryMoveIntoRange(targetEnemy.getLocation(), 2)){
+                safeFuzzyMove(rc.getLocation().directionTo(targetEnemy.getLocation()), enemies);
+            }
+            tryAttack(targetEnemy.getLocation());
+        }
+    }
+
     private UnitState moppingState() throws GameActionException {
         rc.setIndicatorDot(closestEnemyPaint, 255, 255, 0);
-        if(!attemptMopSweep(rc.senseNearbyRobots(2, rc.getTeam().opponent())) && rc.getLocation().isAdjacentTo(closestEnemyPaint)){
-            tryAttack(closestEnemyPaint);
-        }else{
+//        if(!(rc.getLocation().isAdjacentTo(closestEnemyPaint) && rc.getLocation() != closestEnemyPaint) && !tryMoveIntoRange(closestEnemyPaint, 2)){
+        if(!tryMoveIntoRange(closestEnemyPaint, 2)){
             safeFuzzyMove(rc.getLocation().directionTo(closestEnemyPaint), enemies);
-            tryAttack(closestEnemyPaint);
         }
+        tryAttack(closestEnemyPaint);
         return state;
     }
 

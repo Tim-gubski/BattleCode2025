@@ -139,6 +139,7 @@ public abstract class Unit extends Robot {
                 for(int y = -2; y <= 2; y++){
                     senseLoc = nearbyRuins[i].translate(x,y);
                     if(rc.onTheMap(senseLoc) && rc.canSenseLocation(senseLoc)){
+                        sensable++;
                         tileInfo = mapData.mapInfos[senseLoc.x][senseLoc.y];
                         if(tileInfo.getPaint().isEnemy()){
                             nearbyRuins[i] = null;
@@ -159,7 +160,7 @@ public abstract class Unit extends Robot {
                     soldiers++;
                 }
             }
-            //debugString.append("Working Friends: " + workingFriends + " Correct Paint: " + correctPaint + " Sensable: " + sensable + "\n");
+//            debugString.append("Working Friends: " + soldiers + " Correct Paint: " + correctPaint + " Sensable: " + sensable + "\n");
             if(soldiers >= 2 || (correctPaint == sensable && soldiers == 1)){
                 nearbyRuins[i] = null;
                 toRemove++;
@@ -358,6 +359,55 @@ public abstract class Unit extends Robot {
         fuzzyMove(dirTo(loc));
     }
 
+    public int paintToScore(PaintType paint){
+        if(paint.isAlly()){
+            return 1;
+        }else if(paint.isEnemy()){
+            return -1;
+        }else{
+            return 0;
+        }
+    }
+
+    public boolean tryMoveOutOfRange(MapLocation avoidLoc, int dist) throws GameActionException{
+        Direction bestDir = null;
+        int bestDirScore = -9999;
+        for(Direction dir : fuzzyDirs(dirTo(avoidLoc).opposite())){
+            if(rc.getLocation().add(dir).distanceSquaredTo(avoidLoc) > dist && rc.canMove(dir)){
+                int score = paintToScore(mapData.getMapInfo(rc.getLocation().add(dir)).getPaint());
+                if(score > bestDirScore){
+                    bestDir = dir;
+                    bestDirScore = score;
+                }
+            }
+        }
+        if(bestDir != null){
+            rc.move(bestDir);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean tryMoveIntoRange(MapLocation targetLoc, int dist) throws GameActionException{
+        Direction bestDir = null;
+        int bestDirScore = -9999;
+        for(Direction dir : fuzzyDirs(dirTo(targetLoc))){
+            rc.setIndicatorDot(rc.getLocation().add(dir), 0, 100, 100);
+            if(rc.getLocation().add(dir).distanceSquaredTo(targetLoc) <= dist && rc.canMove(dir)){
+                int score = paintToScore(mapData.getMapInfo(rc.getLocation().add(dir)).getPaint());
+                if(score > bestDirScore){
+                    bestDir = dir;
+                    bestDirScore = score;
+                }
+            }
+        }
+        if(bestDir != null){
+            rc.move(bestDir);
+            return true;
+        }
+        return false;
+    }
+
     // safety filter method to check if location is safe to move to
     // TODO: can make this threshold based so that robots can do risky things when necessary/if low risk
     public boolean isSafe(MapLocation loc, RobotInfo[] enemies) throws GameActionException {
@@ -386,7 +436,6 @@ public abstract class Unit extends Robot {
 
     MapLocation[] prevPositions = new MapLocation[5];
     int prevPosIndex = 0;
-
     // returns true if able to fuzzy move safely in desired direction, returns false if unable to move
     public boolean safeFuzzyMove(Direction dir, RobotInfo[] enemies) throws GameActionException {
         for (Direction d : fuzzyDirs(dir)) {
@@ -644,7 +693,7 @@ public abstract class Unit extends Robot {
         boolean targetColor = targetColorInt == 1;
         if ((info.getPaint() == PaintType.EMPTY
                 || (targetColorInt != -1 && info.getPaint() != boolToColor(targetColor)))
-                && rc.canPaint(info.getMapLocation())
+                && rc.canAttack(info.getMapLocation())
                 && !info.hasRuin() //&& info.getMark() == PaintType.EMPTY
                 //&& (closestAnyRuin == null || info.getMapLocation().distanceSquaredTo(closestAnyRuin) > 8)
         ){

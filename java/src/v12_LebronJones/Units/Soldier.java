@@ -144,26 +144,6 @@ public class Soldier extends Unit {
         }
     }
 
-    private boolean tryMoveOutOfRange(MapLocation avoidLoc, int dist) throws GameActionException{
-        for(Direction dir : fuzzyDirs(dirTo(avoidLoc).opposite())){
-            if(rc.getLocation().add(dir).distanceSquaredTo(avoidLoc) > dist && rc.canMove(dir)){
-                rc.move(dir);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean tryMoveIntoRange(MapLocation avoidLoc, int dist) throws GameActionException{
-        for(Direction dir : fuzzyDirs(dirTo(avoidLoc))){
-            if(rc.getLocation().add(dir).distanceSquaredTo(avoidLoc) <= dist && rc.canMove(dir)){
-                rc.move(dir);
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void combatState() throws GameActionException {
         if(distTo(closestEnemyTower.getLocation()) <= rc.getType().actionRadiusSquared){
             if(!mapData.getMapInfo(rc.getLocation()).getPaint().isAlly()){
@@ -228,6 +208,7 @@ public class Soldier extends Unit {
     }
 
     private UnitState buildState() throws GameActionException {
+        mapData.markPattern(closestCompletableRuin, determineTowerPattern(closestCompletableRuin));
         // get closer to/hover around ruin
         safeFuzzyMove(closestCompletableRuin, enemies);
         return state;
@@ -268,14 +249,41 @@ public class Soldier extends Unit {
 //        return false;
 //    }
 
+    private MapLocation[] srpGridLocs(MapLocation loc) throws GameActionException{
+        int x = rc.getLocation().x;
+        int y = rc.getLocation().y;
+        // Find the nearest valid y such that (y+1) % 3 == 0
+        int newY = y - (y + 1) % 3;
+
+        // Compute the base x that satisfies the second condition
+        int baseX = ((3 - (newY + 1) / 3) % 4 + 4) % 4; // Ensure non-negative remainder
+        int closestX = x - (x % 4) + baseX;
+        int x1 = closestX, x2 = closestX + 4;
+        int d1 = (x1 - x) * (x1 - x) + (newY - y) * (newY - y);
+        int d2 = (x2 - x) * (x2 - x) + (newY - y) * (newY - y);
+
+        if (d2 < d1) closestX = x2;
+
+        return new MapLocation[]{
+                new MapLocation(closestX, newY),
+                new MapLocation(closestX-1, newY+3),
+                new MapLocation(closestX+4, newY),
+                new MapLocation(closestX+3, newY+3),
+        };
+    }
+
     private MapLocation closestCompletableSRP() throws GameActionException{
         mapData.ruins.updateIterable();
         mapData.SRPs.updateIterable();
-        for(MapLocation loc : mapLocationSpiral(rc.getLocation(), 3)){
+        MapLocation[] locsToCheck = new MapLocation[4];//+49];
+        System.arraycopy(srpGridLocs(rc.getLocation()),0,locsToCheck,0,4);
+//        System.arraycopy(mapLocationSpiral(rc.getLocation(),3),0,locsToCheck,4, 49);
+        for(MapLocation loc : locsToCheck){
             if(Clock.getBytecodeNum()>10000){
                 debugString.append("Terminating closest SRP early");
                 return null;
             }
+            trySetIndicatorDot(loc, 255, 255, 0);
             if(rc.getLocation().distanceSquaredTo(loc) > GameConstants.RESOURCE_PATTERN_RADIUS_SQUARED || !rc.onTheMap(loc)){
                 continue;
             }
@@ -296,7 +304,7 @@ public class Soldier extends Unit {
                         if(checkLocInfo == null){
                             continue;
                         }
-                        if(checkLocInfo.getPaint() == PaintType.EMPTY){
+                        if((checkLocInfo.getPaint() == PaintType.ALLY_SECONDARY ? 2 : 1) != mapData.resourcePattern[x+2][y+2]){
                             finished = false;
                         }
                         if(checkLocInfo.getPaint().isEnemy()){
@@ -315,7 +323,8 @@ public class Soldier extends Unit {
                     return loc;
                 }
             }else{
-                trySetIndicatorDot(loc, 0, 0, 0);
+                trySetIndicatorDot(loc, 255, 0, 0);
+//                trySetIndicatorDot(loc, 0, 0, 0);
             }
         }
         return null;

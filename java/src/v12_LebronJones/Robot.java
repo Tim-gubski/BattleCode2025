@@ -179,7 +179,7 @@ abstract public class Robot {
 //    }
 
     public UnitType determineTowerPattern(MapLocation ruinLoc) {
-       int selection = (ruinLoc.x + ruinLoc.y) % 3;
+       int selection = (ruinLoc.x*17 + ruinLoc.y*31) % 3;
        if (selection == 0) {
            return UnitType.LEVEL_ONE_PAINT_TOWER;
        } else if (selection == 1) {

@@ -36,7 +36,7 @@ public abstract class Tower extends Robot {
                 return;
             }
         }else {
-            if (allies.length < 5 && (spawnTurn - startSpawnTurn < 6 || rc.getChips() > 1000)) {
+            if (allies.length < 3 && (spawnTurn - startSpawnTurn < 6 || rc.getChips() > 1000)) {
                 if (spawnTurn % 5 < 2) {
                     if (trySummon(UnitType.SOLDIER)) {
                         spawnTurn++;

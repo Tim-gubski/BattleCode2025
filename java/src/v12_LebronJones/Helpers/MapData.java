@@ -69,6 +69,12 @@ public class MapData {
         }
     }
 
+    public void markPattern(MapLocation loc, UnitType type) throws GameActionException{
+        int[][] pattern = determinePaintType(type);
+        for (int x = -2; x <= 2; x++) {
+            System.arraycopy(pattern[x + 2], 0, tileColors[loc.x + x], loc.y - 2, 5);
+        }
+    }
 
     // RUIN STUFF
     boolean[] bigFillRow = new boolean[]{true, true, true, true, true, true, true, true, true};
@@ -78,10 +84,7 @@ public class MapData {
             if(ruins.add(loc)){ // only mark and exclude if tower not finished
                 if(!rc.canSenseRobotAtLocation(loc)) {
                     // mark pattern
-                    int[][] pattern = determinePaintType(ruinTypes[i]);
-                    for (int x = -2; x <= 2; x++) {
-                        System.arraycopy(pattern[x + 2], 0, tileColors[loc.x + x], loc.y - 2, 5);
-                    }
+                    markPattern(loc, ruinTypes[i]);
                 }
 
                 // mark that no srps should be built here
@@ -243,7 +246,7 @@ public class MapData {
             {-4, -2}, {-4, -1}, {-4, 1}, {-4, 2},
     };
     // binary =1010101010100010101010101
-    int[][] resourcePattern = new int[][]{
+    public int[][] resourcePattern = new int[][]{
             {2, 1, 2, 1, 2},
             {1, 2, 1, 2, 1},
             {2, 1, 1, 1, 2},
