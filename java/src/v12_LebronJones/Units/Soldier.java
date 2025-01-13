@@ -3,6 +3,8 @@ package v12_LebronJones.Units;
 import v12_LebronJones.Unit;
 import battlecode.common.*;
 
+import java.util.Arrays;
+
 // TODO: Dont go into tower range, attack towers maybe?, moppers attack enemy units
 
 public class Soldier extends Unit {
@@ -48,11 +50,6 @@ public class Soldier extends Unit {
         }
 
         stateInvariantActions();
-
-        if(currentTargetLoc != null) {
-            trySetIndicatorDot(currentTargetLoc, 255, 125, 0);
-            rc.setIndicatorLine(rc.getLocation(), currentTargetLoc, 125, 0, 125);
-        }
         debugString.append("Currently in state: ").append(state.toString());
     }
 
@@ -148,6 +145,8 @@ public class Soldier extends Unit {
         if(distTo(closestEnemyTower.getLocation()) <= rc.getType().actionRadiusSquared){
             if(!mapData.getMapInfo(rc.getLocation()).getPaint().isAlly()){
                 tryAttack(rc.getLocation());
+            }else{
+                tryAttack(closestEnemyTower.getLocation());
             }
             if(!tryMoveOutOfRange(closestEnemyTower.getLocation(), closestEnemyTower.type.actionRadiusSquared)){
                 fuzzyMove(dirTo(closestEnemyTower.getLocation()).opposite());
@@ -197,8 +196,37 @@ public class Soldier extends Unit {
                     }
                 }
             }else{
+                boolean surroundedByAllyPaint = true;
+                for(Direction dir : directions){
+                    if(!rc.onTheMap(rc.getLocation().add(dir))) continue;
+                    MapInfo info = mapData.getMapInfo(rc.getLocation().add(dir));
+                    if(info == null || !info.getPaint().isAlly()){
+                        surroundedByAllyPaint = false;
+                        break;
+                    }
+                }
+                if(surroundedByAllyPaint){
+                    MapLocation closestEmptyPaint = null;
+                    int closestDist = Integer.MAX_VALUE;
+                    for(MapInfo info : mapInfo){
+                        if(info.getPaint() == PaintType.EMPTY && !info.hasRuin() && !info.isWall()){
+                            int dist = distTo(info.getMapLocation());
+                            if(dist < closestDist){
+                                closestDist = dist;
+                                closestEmptyPaint = info.getMapLocation();
+                            }
+                        }
+                    }
+                    if (closestEmptyPaint != null) {
+                        rc.setIndicatorLine(rc.getLocation(), closestEmptyPaint, 0, 100, 100);
+                        debugString.append("Moving to closest empty paint " + closestEmptyPaint);
+                        safeFuzzyMove(closestEmptyPaint, enemies);
+                    }
+                }
+
                 if(rc.isMovementReady()) {
                     currentTargetLoc = explorer.getExploreTarget();
+                    rc.setIndicatorLine(rc.getLocation(), currentTargetLoc, 100, 0, 100);
                     safeFuzzyMove(currentTargetLoc, enemies);
                 }
             }
@@ -275,15 +303,14 @@ public class Soldier extends Unit {
     private MapLocation closestCompletableSRP() throws GameActionException{
         mapData.ruins.updateIterable();
         mapData.SRPs.updateIterable();
-        MapLocation[] locsToCheck = new MapLocation[4];//+49];
+        MapLocation[] locsToCheck = new MapLocation[4+49];
         System.arraycopy(srpGridLocs(rc.getLocation()),0,locsToCheck,0,4);
-//        System.arraycopy(mapLocationSpiral(rc.getLocation(),3),0,locsToCheck,4, 49);
+        System.arraycopy(mapLocationSpiral(rc.getLocation(),3),0,locsToCheck,4, 49);
         for(MapLocation loc : locsToCheck){
             if(Clock.getBytecodeNum()>10000){
                 debugString.append("Terminating closest SRP early");
                 return null;
             }
-            trySetIndicatorDot(loc, 255, 255, 0);
             if(rc.getLocation().distanceSquaredTo(loc) > GameConstants.RESOURCE_PATTERN_RADIUS_SQUARED || !rc.onTheMap(loc)){
                 continue;
             }
@@ -304,7 +331,7 @@ public class Soldier extends Unit {
                         if(checkLocInfo == null){
                             continue;
                         }
-                        if((checkLocInfo.getPaint() == PaintType.ALLY_SECONDARY ? 2 : 1) != mapData.resourcePattern[x+2][y+2]){
+                        if((checkLocInfo.getPaint() != (mapData.resourcePattern[x+2][y+2] == 2 ? PaintType.ALLY_SECONDARY : PaintType.ALLY_PRIMARY))){
                             finished = false;
                         }
                         if(checkLocInfo.getPaint().isEnemy()){
@@ -323,111 +350,9 @@ public class Soldier extends Unit {
                     return loc;
                 }
             }else{
-                trySetIndicatorDot(loc, 255, 0, 0);
 //                trySetIndicatorDot(loc, 0, 0, 0);
             }
         }
         return null;
     }
-
-//    static BigInteger mask1 = new BigInteger("111111111100111111111100111111111100111111111100111111111100111111111100111111111100111111111100", 2);
-//    static BigInteger mask2 = new BigInteger("001111111111001111111111001111111111001111111111001111111111001111111111001111111111001111111111", 2);
-//    public static BigInteger convolveBigInt(BigInteger map) {
-//        BigInteger leftShift = map.shiftLeft(2).and(mask1);
-//        BigInteger rightShift = map.shiftRight(2).and(mask2);
-//        BigInteger hShift = leftShift.or(rightShift).or(map);
-//
-//        return hShift.or(hShift.shiftRight(11)).or(hShift.shiftLeft(11));
-//    }
-//
-//    public long convolveLong(long map) {
-////        long leftShift = (map << 1) & 0b1111111011111110111111101111111011111110111111101111111011111110L;
-////        long rightShift = (map >> 1) & 0b0111111101111111011111110111111101111111011111110111111101111111L;
-//
-//        long leftShift  = (map << 2) & 0b1111110011111100111111001111110011111100111111001111110011111100L;
-//        long rightShift = (map >> 2) & 0b0011111100111111001111110011111100111111001111110011111100111111L;
-//
-//        long hShift = leftShift | rightShift | map;
-//
-//        return hShift | (hShift >> 8) | (hShift << 8) | (hShift >> 16) | (hShift << 16);
-//    }
-//
-//    public long precomputeGucciSquares() throws GameActionException{
-////        BigInteger enemyPaint = new BigInteger("0".repeat(121), 2);
-////        BigInteger emptyTiles = new BigInteger("0".repeat(121), 2);
-//        long enemyPaint = 0L;
-//        long emptyTiles = 0L;
-//        int bytecodes = Clock.getBytecodesLeft();
-//        for(int x = -3; x <= 3; x++){
-//            for(int y = -3; y <= 3; y++){
-//                int bytecode = Clock.getBytecodesLeft();
-//                if(!rc.onTheMap(rc.getLocation().translate(x, y))){
-//                    continue;
-//                }
-////                MapInfo info = mapData.getMapInfo(rc.getLocation().translate(x, y));
-//                MapInfo info = mapData.mapInfos[rc.getLocation().x + x][rc.getLocation().y + y];
-//                if(info == null){
-//                    continue;
-//                }
-//
-////                if(info.getPaint().isEnemy()) {
-////                    enemyPaint = enemyPaint.setBit((x + 5) * 11 + y + 5);
-////                }
-////                if(info.getPaint() == PaintType.EMPTY){
-////                    emptyTiles = emptyTiles.setBit((x + 5) * 11 + y + 5);
-////                }
-//
-//                if(info.getPaint().isEnemy()) {
-//                    enemyPaint = enemyPaint | (1L << ((x + 3) * 8 + y + 3));
-//                }
-//                if(info.getPaint() == PaintType.EMPTY){
-//                    emptyTiles = emptyTiles | (1L << ((x + 3) * 8 + y + 3));
-//                }
-//
-//                System.out.println("Bytecodes used for getMapInfo: " + (bytecode - Clock.getBytecodesLeft()));
-//            }
-//        }
-//        System.out.println("Bytecodes used for precompute: " + (bytecodes - Clock.getBytecodesLeft()));
-//
-//        enemyPaint = ~convolveLong(enemyPaint);
-//        emptyTiles = convolveLong(emptyTiles);
-//
-//        return enemyPaint & emptyTiles;
-//    }
-//
-//    private MapLocation closestCompletableSRP() throws GameActionException{
-//        mapData.ruins.updateIterable();
-//        mapData.SRPs.updateIterable();
-//        int startingBytecode = Clock.getBytecodesLeft();
-//        long gucciSquares = precomputeGucciSquares();
-//        System.out.println("Bytecodes used for gucci: " + (startingBytecode - Clock.getBytecodesLeft()));
-////        for(int x = -3; x <= 3; x++){
-////            for(int y = -3; y <= 3; y++){
-////                if(!rc.onTheMap(rc.getLocation().translate(x, y))){
-////                    continue;
-////                }
-////                int index = (x + 3) * 8 + y + 3;
-////                if(((gucciSquares & (1L << index)) != 0)){
-////                    trySetIndicatorDot(rc.getLocation().translate(x, y), 0, 255, 0);
-////                }else{
-////                    trySetIndicatorDot(rc.getLocation().translate(x, y), 255, 0, 0);
-////                }
-////            }
-////        }
-//
-//        for(MapLocation loc : mapLocationSpiral(rc.getLocation(), 3)){
-//            if(rc.getLocation().distanceSquaredTo(loc) > GameConstants.RESOURCE_PATTERN_RADIUS_SQUARED || !rc.onTheMap(loc)){
-//                continue;
-//            }
-//            int index = (loc.x - rc.getLocation().x + 3) * 8 + loc.y - rc.getLocation().y + 3;
-//            if(!mapData.SRPExclusionZone[loc.x][loc.y] && ((gucciSquares & (1L << index)) != 0) && rc.canMarkResourcePattern(loc)){
-//                return loc;
-//            }else{
-//                //trySetIndicatorDot(loc, 0, 0, 0);
-//            }
-//        }
-//        return null;
-//    }
-
-
 }

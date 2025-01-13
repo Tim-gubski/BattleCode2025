@@ -7,6 +7,8 @@ public class FastSetRobotInfo {
     RobotInfo[] arr;
     int size;
     int capacity;
+    public int paintTowers;
+    public int moneyTowers;
 
     public FastSetRobotInfo(int capacity) {
         this.capacity = capacity;
@@ -21,6 +23,11 @@ public class FastSetRobotInfo {
         }
         if(!contains(ri)) {
             arr[size++] = ri;
+            if(ri.type.getBaseType() == UnitType.LEVEL_ONE_PAINT_TOWER){
+                paintTowers++;
+            }else if(ri.type.getBaseType() == UnitType.LEVEL_ONE_MONEY_TOWER){
+                moneyTowers++;
+            }
             retChanged = true;
             return true;
         }
@@ -29,8 +36,15 @@ public class FastSetRobotInfo {
 
     public void remove(RobotInfo ri) {
         for (int i = 0; i < size; i++) {
-            if (arr[i].ID == ri.ID) {
+            if (arr[i].location.equals(ri.location) && arr[i].type.getBaseType().equals(ri.type.getBaseType())) {
                 arr[i] = arr[size-1];
+
+                if(ri.type.getBaseType() == UnitType.LEVEL_ONE_PAINT_TOWER){
+                    paintTowers--;
+                }else if(ri.type.getBaseType() == UnitType.LEVEL_ONE_MONEY_TOWER){
+                    moneyTowers--;
+                }
+
                 size--;
                 retChanged = true;
                 return;
@@ -40,7 +54,7 @@ public class FastSetRobotInfo {
 
     public boolean contains(RobotInfo ri) {
         for (int i = 0; i < size; i++) {
-            if (arr[i].ID == ri.ID) {
+            if (arr[i].location.equals(ri.location) && arr[i].type.getBaseType().equals(ri.type.getBaseType())) {
                 return true;
             }
         }
@@ -55,7 +69,7 @@ public class FastSetRobotInfo {
         return size;
     }
 
-    private RobotInfo[] retArr = null;
+    private RobotInfo[] retArr = new RobotInfo[0];
     private boolean retChanged = false;
     public RobotInfo[] getArray() {
         if(retChanged) {

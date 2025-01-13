@@ -38,7 +38,7 @@ public class MapData {
     }
 
 
-    int[] nearbyFriendlyTowersID = new int[10];
+    RobotInfo[] nearbyFriendlyTowers = new RobotInfo[10];
     int numNearbyFriendlyTowers = 0;
     public void updateLandmarks(MapLocation[] ruins, UnitType[] ruinTypes, RobotInfo[] allies, MapLocation currentLocation) throws GameActionException{
         // add new stuff
@@ -48,7 +48,7 @@ public class MapData {
         for(RobotInfo ally : allies){
             if(ally.type.isTowerType()){
                 markFriendlyTower(ally);
-                nearbyFriendlyTowersID[numNearbyFriendlyTowers++] = ally.ID;
+                nearbyFriendlyTowers[numNearbyFriendlyTowers++] = ally;
             }
         }
 
@@ -57,12 +57,14 @@ public class MapData {
             if(currentLocation.distanceSquaredTo(previousTower.location) < GameConstants.VISION_RADIUS_SQUARED){
                 boolean stillThere = false;
                 for(int i = 0; i < numNearbyFriendlyTowers; i++){
-                    if(previousTower.ID == nearbyFriendlyTowersID[i]){
+//                    rc.setIndicatorLine(rc.getLocation(), nearbyFriendlyTowers[i].location, 0, 0, 255);
+                    if(previousTower.getLocation().equals(nearbyFriendlyTowers[i].location) && previousTower.getType().getBaseType() == nearbyFriendlyTowers[i].type.getBaseType()){
                         stillThere = true;
                         break;
                     }
                 }
                 if(!stillThere){
+                    rc.setIndicatorLine(rc.getLocation(), previousTower.location, 255, 0, 0);
                     removeFriendlyTower(previousTower);
                 }
             }
@@ -81,10 +83,22 @@ public class MapData {
     public void markRuins(MapLocation[] locs, UnitType[] ruinTypes) throws GameActionException{
         for (int i = locs.length; --i >= 0;) {
             MapLocation loc = locs[i];
-            if(ruins.add(loc)){ // only mark and exclude if tower not finished
+            if(ruins.add(loc)){ // checks if ruin already added
+                // only mark pattern if tower not finished
                 if(!rc.canSenseRobotAtLocation(loc)) {
                     // mark pattern
                     markPattern(loc, ruinTypes[i]);
+                }
+
+                int newX, newY = 0;
+                for(int x = -4; x <= 4; x++){
+                    newX = loc.x + x;
+                    if(newX >= width || newX < 0) continue;
+                    for(int y = -4; y <= 4; y++){
+                        newY = loc.y + y;
+                        if(newY >= height || newY < 0) continue;
+                        SRPExclusionZoneInt[newX][newY]++;
+                    }
                 }
 
                 // mark that no srps should be built here
@@ -99,16 +113,7 @@ public class MapData {
 //                    endY = Math.min(height, loc.y + 5);
 //                    System.arraycopy(bigFillRow, 0, SRPExclusionZone[newX], startY, endY - startY);
 //                }
-                int newX, newY = 0;
-                for(int x = -4; x <= 4; x++){
-                    newX = loc.x + x;
-                    if(newX >= width || newX < 0) continue;
-                    for(int y = -4; y <= 4; y++){
-                        newY = loc.y + y;
-                        if(newY >= height || newY < 0) continue;
-                        SRPExclusionZoneInt[newX][newY]++;
-                    }
-                }
+
             }
         }
     }
@@ -154,19 +159,16 @@ public class MapData {
     }
 
 
-    public void markRuin(MapLocation loc) {
-        ruins.add(loc);
-    }
-
-    public boolean isRuins(MapLocation loc) {
-        return ruins.contains(loc);
-    }
-
-
     // FRIENDLY TOWER STUFF
-    public void markFriendlyTower(RobotInfo tower) {
+    public void markFriendlyTower(RobotInfo tower) throws GameActionException{
         if(friendlyTowers.add(tower)) {
-            // remove exclusion zone around it
+            if(!ruins.contains(tower.location)){
+                rc.setIndicatorLine(rc.getLocation(), tower.location, 255, 0, 255);
+                ruins.add(tower.location);
+                return;
+            }
+            rc.setIndicatorLine(rc.getLocation(), tower.location, 0, 255, 0);
+            // remove exclusion zone around it, ignore if we didnt have the ruin for this registered
             int newX, newY = 0;
             for (int x = -4; x <= 4; x++) {
                 newX = tower.location.x + x;
@@ -195,7 +197,7 @@ public class MapData {
     }
 
     public MapLocation[] getPaintTowers(){
-        MapLocation[] paintTowers = new MapLocation[friendlyTowers.size()];
+        MapLocation[] paintTowers = new MapLocation[friendlyTowers.paintTowers];
         int towerIndex = 0;
         for(RobotInfo tower : friendlyTowers.getArray()){
             if(tower.type.getBaseType() == UnitType.LEVEL_ONE_PAINT_TOWER){
@@ -236,14 +238,15 @@ public class MapData {
     }
 
     int[][] exclusionOffsets = new int[][]{
-            {-2, 3}, {0, 3}, {2, 3},
-            {-2, 4}, {-1, 4}, {1, 4}, {2, 4},
-            {-2, -3}, {0, -3}, {2, -3},
-            {-2, -4}, {-1, -4}, {1, -4}, {2, -4},
-            {3, -2}, {3, 0}, {3, 2},
-            {4, -2}, {4, -1}, {4, 1}, {4, 2},
-            {-3, -2}, {-3, 0}, {-3, 2},
-            {-4, -2}, {-4, -1}, {-4, 1}, {-4, 2},
+            {-4, -3}, {-4, -2}, {-4, -1}, {-4, 1}, {-4, 2}, {-4, 3},
+            {-3, -4}, {-3, -2}, {-3, 0}, {-3, 2}, {-3, 4},
+            {-2, -4}, {-2, -3}, {-2, 3}, {-2, 4},
+            {-1, -4}, {-1, 4},
+            {0, -3}, {0, 3},
+            {1, -4}, {1, 4},
+            {2, -4}, {2, -3}, {2, 3}, {2, 4},
+            {3, -4}, {3, -2}, {3, 0}, {3, 2}, {3, 4},
+            {4, -3}, {4, -2}, {4, -1}, {4, 1}, {4, 2}, {4, 3},
     };
     // binary =1010101010100010101010101
     public int[][] resourcePattern = new int[][]{

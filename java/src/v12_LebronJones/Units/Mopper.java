@@ -100,7 +100,9 @@ public class Mopper extends Unit {
     }
 
     private void stateInvariantActions() throws GameActionException {
-        refillAllies(rc.senseNearbyRobots(-1, rc.getTeam()));
+//        if(state != UnitState.COMBAT && state != UnitState.REFILLING) {
+            refillAllies(rc.senseNearbyRobots(-1, rc.getTeam()));
+//        }
 
         // confirm all tower patterns
         if(closestAnyRuin != null) {
@@ -136,11 +138,11 @@ public class Mopper extends Unit {
 
         RobotInfo[] friends = rc.senseNearbyRobots(-1,rc.getTeam());
         RobotInfo bestFriend = null;
-        for(RobotInfo friend : friends){
-            if(friend.getType() == UnitType.SOLDIER && (bestFriend == null || Math.abs(friend.getID()-rc.getID()) < Math.abs(bestFriend.getID()-rc.getID()))){
-                bestFriend = friend;
-            }
-        }
+//        for(RobotInfo friend : friends){
+//            if(friend.getType() == UnitType.SOLDIER && (bestFriend == null || Math.abs(friend.getID()-rc.getID()) < Math.abs(bestFriend.getID()-rc.getID()))){
+//                bestFriend = friend;
+//            }
+//        }
         if(bestFriend!=null){
             safeFuzzyMove(bestFriend.getLocation(), enemies);
         }else{

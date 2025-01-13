@@ -4,8 +4,22 @@ import v12_LebronJones.Unit;
 import battlecode.common.*;
 
 public class Splasher extends Unit {
+    Direction exploreDirection;
+
     public Splasher(RobotController robot) throws GameActionException {
         super(robot);
+
+        MapLocation closestTower = rc.getLocation();
+        int minDist = 999999;
+        for (RobotInfo r : rc.senseNearbyRobots(4,rc.getTeam())){
+            int dist = rc.getLocation().distanceSquaredTo(r.location);
+            if (dist < minDist && r.type.isTowerType()){
+                minDist = dist;
+                closestTower = r.location;
+            }
+        }
+        spawnTower = closestTower;
+        exploreDirection = closestTower.directionTo(rc.getLocation());
     }
 
     MapLocation returnLoc = null;
@@ -51,10 +65,9 @@ public class Splasher extends Unit {
 
     private void exploreState() throws GameActionException {
         // spray and pray
-        MapInfo[] attackableTilesInfo = rc.senseNearbyMapInfos(rc.getLocation(), -1);
         MapLocation bestTile = null;
         int[][] maxAdjacent = new int[9][9];
-        for (MapInfo info : attackableTilesInfo) {
+        for (MapInfo info : mapInfo) {
             if (isEnemyPaint(info.getPaint())){// || info.getPaint() == PaintType.EMPTY){
                 int x = info.getMapLocation().x - rc.getLocation().x + 4;
                 int y = info.getMapLocation().y - rc.getLocation().y + 4;
@@ -83,23 +96,9 @@ public class Splasher extends Unit {
         }
 
 
-        // check if enemy tower in range, attack
+        // check if enemy tower in range, evade
         RobotInfo tower = inEnemyTowerRange(rc.senseNearbyRobots(-1, rc.getTeam().opponent()));
         if (tower != null) {
-//            for (Direction dir : directions) {
-//                MapLocation newLocation = rc.getLocation().add(dir);
-//                int dist = newLocation.distanceSquaredTo(tower.getLocation());
-//                if (dist > tower.type.actionRadiusSquared && rc.canMove(dir) && !isEnemyPaint(rc.senseMapInfo(newLocation).getPaint())) {
-//                    rc.move(dir);
-//                    break;
-//                }
-//            }
-//            for (MapLocation loc : rc.getAllLocationsWithinRadiusSquared(tower.getLocation(), 4)) {
-//                if (rc.canAttack(loc)) {
-//                    rc.attack(loc);
-//                    break;
-//                }
-//            }
             // incase we're too close
             if (rc.getLocation().distanceSquaredTo(tower.getLocation()) <= tower.type.actionRadiusSquared) {
                 safeFuzzyMove(dirTo(tower.getLocation()).opposite(), enemies);
@@ -107,56 +106,35 @@ public class Splasher extends Unit {
             }
             // otherwise explore
         }
-//        else {
-            if (rc.isActionReady()) {
-                for (RobotInfo robot : rc.senseNearbyRobots(rc.getType().actionRadiusSquared, rc.getTeam().opponent())) {
-                    MapLocation enemyLoc = robot.getLocation();
-                    Direction enemyDir = rc.getLocation().directionTo(enemyLoc);
-                    MapLocation targetLoc = rc.getLocation().add(enemyDir).add(enemyDir);
-                    if ((!rc.senseMapInfo(targetLoc).getPaint().isAlly() && tryAttack(targetLoc)) || (!rc.senseMapInfo(enemyLoc).getPaint().isAlly() && tryAttack(enemyLoc))) {
-                        break;
-                    }
-                }
-            }
 
-            if (returnLoc != null) {
-                if (distTo(returnLoc) <= 8) {
-                    returnLoc = null;
-                } else {
-                    currentTargetLoc = returnLoc;
-                    safeFuzzyMove(returnLoc, enemies);
-                }
-            }
-
-            Direction enemyPaintDirection = getEnemyPaintDirection();
-            if (enemyPaintDirection != null) {
-                rc.setIndicatorLine(rc.getLocation(), rc.getLocation().add(enemyPaintDirection), 255, 0, 255);
-                if (isEnemyPaint(rc.senseMapInfo(rc.getLocation()).getPaint())) {
-                    safeFuzzyMove(enemyPaintDirection.opposite(), enemies);
-                }else{
-                    safeFuzzyMove(enemyPaintDirection, enemies);
-                }
-//                Direction startingDirection;
-//                if (RIGHT) {
-//                    startingDirection = enemyPaintDirection.rotateRight().rotateRight();
-//                } else {
-//                    startingDirection = enemyPaintDirection.rotateLeft().rotateLeft();
-//                }
-//
-//                for (Direction dir : fuzzyDirs(startingDirection)) {
-//                    MapLocation loc = rc.getLocation().add(dir);
-//                    if (rc.onTheMap(loc) && !isEnemyPaint(rc.senseMapInfo(loc).getPaint()) && rc.canMove(dir)) {
-//                        rc.move(dir);
-//                        break;
-//                    }
-//                }
-//                if (rc.isActionReady()) {
-//                    RIGHT = !RIGHT;
-//                }
+        if (returnLoc != null) {
+            if (distTo(returnLoc) <= 8) {
+                returnLoc = null;
             } else {
-                safeFuzzyMove(explorer.getExploreTarget(), enemies);
+                currentTargetLoc = returnLoc;
+                safeFuzzyMove(returnLoc, enemies);
             }
-//        }
+        }
+
+        Direction enemyPaintDirection = getEnemyPaintDirection();
+        if (enemyPaintDirection != null && enemyPaintDirection != Direction.CENTER) {
+            rc.setIndicatorLine(rc.getLocation(), rc.getLocation().add(enemyPaintDirection), 255, 0, 255);
+            if (isEnemyPaint(rc.senseMapInfo(rc.getLocation()).getPaint())) {
+                safeFuzzyMove(enemyPaintDirection.opposite(), enemies);
+                debugString.append(enemyPaintDirection);
+            }else{
+                safeFuzzyMove(enemyPaintDirection, enemies);
+                debugString.append(enemyPaintDirection);
+            }
+        } else {
+//            safeFuzzyMove(explorer.getExploreTarget(), enemies);
+//            debugString.append(explorer.getExploreTarget().toString());
+            if(!rc.onTheMap(rc.getLocation().add(exploreDirection).add(exploreDirection).add(exploreDirection))){
+                exploreDirection = randomDirection();
+            }
+            safeFuzzyMove(exploreDirection, enemies);
+
+        }
 
 
 

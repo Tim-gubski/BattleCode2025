@@ -5,13 +5,15 @@ import v12_LebronJones.Helpers.MapData;
 import v12_LebronJones.Util.Comms;
 import battlecode.common.*;
 
+import java.util.Arrays;
+
 public abstract class Unit extends Robot {
     // CONSTANTS
     public PaintType SRP_MARKER_COLOR = PaintType.ALLY_PRIMARY;
     public boolean SRP_MARKER_BOOL = false; // change these together ^
 
-    public MapData mapData;
-    public Explore explorer;
+    public MapLocation spawnTower = null;
+
     public MapLocation nearestPaintTower = null;
 
     public MapInfo[] mapInfo = null;
@@ -29,8 +31,6 @@ public abstract class Unit extends Robot {
     public boolean returningFromFight = false;
 
     protected MapLocation currentTargetLoc = null;
-
-    public MapLocation lastSeenTower = null;
     // enumerate states
     protected enum UnitState {
         REFILLING, // for when bot is actively refilling
@@ -51,8 +51,6 @@ public abstract class Unit extends Robot {
 
     public Unit(RobotController robot) throws GameActionException {
         super(robot);
-        mapData = new MapData(robot, width, height);
-        explorer = new Explore(rc, width, height, mapData);
     }
 
 
@@ -68,6 +66,8 @@ public abstract class Unit extends Robot {
 //        bytecode = Clock.getBytecodeNum() - bytecode;
 
         allies = rc.senseNearbyRobots(-1, rc.getTeam());
+        sendMapInfo();
+
         enemies = rc.senseNearbyRobots(-1, rc.getTeam().opponent());
         closestEnemyTower = inEnemyTowerRange(enemies);
 
@@ -83,6 +83,27 @@ public abstract class Unit extends Robot {
         }
 
         mapData.updateLandmarks(allRuins, ruinTypes, allies, rc.getLocation()); // usually low but i saw it spike to 7k???
+
+        for(RobotInfo tower : mapData.getFriendlyTowers()){
+            trySetIndicatorDot(tower.location, 255, 0, 255);
+        }
+    }
+
+    int towerIndex = 0;
+    public void sendMapInfo() throws GameActionException{
+        for(RobotInfo robot : allies){
+            if(robot.getType().isTowerType()){
+                if(rc.canSendMessage(robot.getLocation())){
+                    RobotInfo[] friendlyTowers = mapData.friendlyTowers.getArray();
+                    if(friendlyTowers.length==0){
+                        return;
+                    }
+                    rc.sendMessage(robot.location, communication.constructMessage(Comms.Codes.TOWER_LOC, friendlyTowers[towerIndex%friendlyTowers.length].getLocation(), friendlyTowers[towerIndex%friendlyTowers.length].type.getBaseType()));
+                    towerIndex++;
+                    break;
+                }
+            }
+        }
     }
 
 //    protected void confirmNearbyTowers() throws GameActionException {
@@ -264,7 +285,7 @@ public abstract class Unit extends Robot {
 
         if (returningFromFight && rc.canSendMessage(targetTower)){
             returningFromFight = false;
-            rc.sendMessage(targetTower, communication.constructMessage(Comms.Codes.FRONTLINE));
+            rc.sendMessage(targetTower, communication.constructMessage(Comms.Codes.FRONTLINE, returnLoc));
         }
 
         // if in range of tower, refill
@@ -283,6 +304,7 @@ public abstract class Unit extends Robot {
 
         // move to next tower if empty
         if (rc.canSenseRobotAtLocation(targetTower) && (rc.senseRobotAtLocation(targetTower).getPaintAmount() < 30 && paintTowers.length > 1)) {
+            debugString.append(Arrays.toString(paintTowers));
             if(closestPaintTower != null){
                 closestPaintTower = null;
             }else{
@@ -392,7 +414,7 @@ public abstract class Unit extends Robot {
         Direction bestDir = null;
         int bestDirScore = -9999;
         for(Direction dir : fuzzyDirs(dirTo(targetLoc))){
-            rc.setIndicatorDot(rc.getLocation().add(dir), 0, 100, 100);
+//            rc.setIndicatorDot(rc.getLocation().add(dir), 0, 100, 100);
             if(rc.getLocation().add(dir).distanceSquaredTo(targetLoc) <= dist && rc.canMove(dir)){
                 int score = paintToScore(mapData.getMapInfo(rc.getLocation().add(dir)).getPaint());
                 if(score > bestDirScore){
@@ -459,11 +481,7 @@ public abstract class Unit extends Robot {
         return false;
     }
 
-    public void trySetIndicatorDot(MapLocation loc, int r, int g, int b) throws GameActionException{
-        if (rc.onTheMap(loc)) {
-            rc.setIndicatorDot(loc, r, g, b);
-        }
-    }
+
 
     public boolean isPreviousLocation(MapLocation loc, MapLocation[] previous) {
         for (MapLocation prevLoc : previous) {
@@ -709,11 +727,10 @@ public abstract class Unit extends Robot {
     }
 
     public Direction getEnemyPaintDirection() throws GameActionException{
-        MapInfo[] infos = rc.senseNearbyMapInfos(-1);
         int x = 0;
         int y = 0;
         int enemyPaint = 0;
-        for(MapInfo info : infos){
+        for(MapInfo info : mapInfo){
             if(isEnemyPaint(info.getPaint())){
                 x += info.getMapLocation().x;
                 y += info.getMapLocation().y;

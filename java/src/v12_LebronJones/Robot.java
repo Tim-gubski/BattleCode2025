@@ -1,5 +1,7 @@
 package v12_LebronJones;
 
+import v12_LebronJones.Helpers.Explore;
+import v12_LebronJones.Helpers.MapData;
 import v12_LebronJones.Util.Symmetry;
 import v12_LebronJones.Util.Comms;
 import battlecode.common.*;
@@ -41,6 +43,9 @@ abstract public class Robot {
     public MapLocation returnLoc = null;
     public Symmetry symmetry;
 
+    public MapData mapData;
+    public Explore explorer;
+
     public boolean RIGHT;
 
     /**
@@ -58,6 +63,9 @@ abstract public class Robot {
         spawnLoc = rc.getLocation();
         rng = new Random(rc.getID());
         communication = new Comms(rc, this);
+        mapData = new MapData(robot, width, height);
+        explorer = new Explore(rc, width, height, mapData);
+        prevChip = 0;
     }
 
     abstract public void turn() throws Exception;
@@ -171,6 +179,11 @@ abstract public class Robot {
     }
     //=================================//
 
+    public void trySetIndicatorDot(MapLocation loc, int r, int g, int b) throws GameActionException{
+        if (rc.onTheMap(loc)) {
+            rc.setIndicatorDot(loc, r, g, b);
+        }
+    }
 
 
     // deterministic random function to determine what tower type goes here
@@ -188,7 +201,24 @@ abstract public class Robot {
        return UnitType.LEVEL_ONE_MONEY_TOWER;
     }
 
+    public UnitType determineTowerPattern2(MapLocation ruinLoc) {
+        if(getChipRate() < 20) {
+            return UnitType.LEVEL_ONE_MONEY_TOWER;
+        }
+        if ((ruinLoc.x * 17 + ruinLoc.y * 31) % 2 == 0) {
+            return UnitType.LEVEL_ONE_PAINT_TOWER;
+        } else {
+            return UnitType.LEVEL_ONE_MONEY_TOWER;
+        }
+    }
 
+    public int prevChip;
+    public int getChipRate() {
+        int delta = rc.getChips() - prevChip;
+        prevChip = rc.getChips();
+
+        return delta;
+    }
 
     public MapLocation getClosest(MapLocation[] locs) throws GameActionException{
         int closestDist = Integer.MAX_VALUE;
