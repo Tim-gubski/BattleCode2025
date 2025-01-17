@@ -1,0 +1,4000 @@
+[
+  {
+    "id": 1335,
+    "profile": {
+      "quote": "Moo",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1335/avatar.png?80fd35e5-4b81-4b4e-be0b-fae99f1e86ca",
+      "rating": 1953.3097165118147,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Super Cow Powers",
+    "members": [
+      {
+        "id": 872,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "tscmoo",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1456,
+    "profile": {
+      "quote": "Quack",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1456/avatar.png?66763a88-7872-45bd-805c-ff0fd66b7244",
+      "rating": 1940.9033501446193,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 8]
+    },
+    "episode": "bc25java",
+    "name": "Baby Ducks",
+    "members": [
+      {
+        "id": 323,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "brunnerj",
+        "is_staff": false
+      },
+      {
+        "id": 1647,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "jzhang0",
+        "is_staff": false
+      },
+      {
+        "id": 40,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Matir",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1182,
+    "profile": {
+      "quote": "Birbs eat buhgs for breakky... caCAW",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1842.454564287887,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "Birb",
+    "members": [
+      {
+        "id": 2564,
+        "profile": {
+          "school": "Northeastern",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "taillow40",
+        "is_staff": false
+      },
+      {
+        "id": 280,
+        "profile": {
+          "school": "University of Cambridge",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/280/avatar.png?f0b84f4e-eb7f-4d49-ab7d-28be0a493520",
+          "has_avatar": true
+        },
+        "username": "ksoboys",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1348,
+    "profile": {
+      "quote": "cin to win. cout for clout. but do you think clog will mog",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1348/avatar.png?672aabcb-94e5-4479-a484-e728ea2de8d1",
+      "rating": 1830.1813980708048,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "clog will mog",
+    "members": [
+      {
+        "id": 1894,
+        "profile": {
+          "school": "UMD",
+          "biography": "is there anything more important than patting my tuna right now",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1894/avatar.png?f863ae3c-a66e-410b-ada5-c11e6d505fe2",
+          "has_avatar": true
+        },
+        "username": "tunapatter",
+        "is_staff": false
+      },
+      {
+        "id": 510,
+        "profile": {
+          "school": "Carnegie Mellon University",
+          "biography": "hopefully school is chill so that i can do battlecode",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/510/avatar.png?3e6159f0-ebde-46bc-997c-5ec1cb6f4f32",
+          "has_avatar": true
+        },
+        "username": "DanielQiu",
+        "is_staff": false
+      },
+      {
+        "id": 1837,
+        "profile": {
+          "school": "University of Texas at Austin",
+          "biography": "balding",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "jonters",
+        "is_staff": false
+      },
+      {
+        "id": 2836,
+        "profile": {
+          "school": "Carnegie Mellon University",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Deepesson",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1186,
+    "profile": {
+      "quote": "Asteroid Rush",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1811.41369326073,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "Asteroid",
+    "members": [
+      {
+        "id": 94,
+        "profile": {
+          "school": "Seoul National University",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "viyott",
+        "is_staff": false
+      },
+      {
+        "id": 2572,
+        "profile": {
+          "school": "Seoul National University",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "bean109",
+        "is_staff": false
+      },
+      {
+        "id": 93,
+        "profile": {
+          "school": "Korea Advanced Institute of Science & Technology",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Neptune",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1431,
+    "profile": {
+      "quote": "You either die a sloppy, or live long enough to become a pirate",
+      "biography": "https://www.youtube.com/@SloppyJoePirates",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1431/avatar.png?1babb396-8bd3-4f6a-acce-399563228772",
+      "rating": 1775.7182893501158,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Sloppy Joe Pirates",
+    "members": [
+      {
+        "id": 1323,
+        "profile": {
+          "school": "",
+          "biography": "https://www.youtube.com/@SloppyJoePirates",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1323/avatar.png?2dcd642f-f769-4be7-875f-e860d8875308",
+          "has_avatar": true
+        },
+        "username": "c0nrad",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1470,
+    "profile": {
+      "quote": "for(int quote= 2147483647;--quote>=0;){",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1767.4024446609062,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Bruteforcer",
+    "members": [
+      {
+        "id": 862,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "SiestaGuru",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1075,
+    "profile": {
+      "quote": "yeah",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1754.1605571873472,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": false,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "Immortal Jellyfish",
+    "members": [
+      {
+        "id": 686,
+        "profile": {
+          "school": "University of Bonn",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "erik",
+        "is_staff": false
+      },
+      {
+        "id": 733,
+        "profile": {
+          "school": "University of Bonn",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "pascal",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1358,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1746.2342346861901,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Blue Dragon",
+    "members": [
+      {
+        "id": 918,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Benjamin",
+        "is_staff": false
+      },
+      {
+        "id": 1034,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "SamH",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1377,
+    "profile": {
+      "quote": "do you know how hard it is to make it as an indie band these days?",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1377/avatar.png?b6014f9c-387a-46fa-aa3e-db70fa8bfccb",
+      "rating": 1737.7068731291422,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "immutable",
+    "members": [
+      {
+        "id": 1030,
+        "profile": {
+          "school": "Carleton College",
+          "biography": "252+ SpA Choice Specs Analytic Magnezone Thunderbolt vs. 0 HP / 4 SpD Gholdengo: 339-400 (107.6 - 126.9%) -- guaranteed OHKO",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1030/avatar.png?5bc94c1e-efb1-4d3d-8f1d-b3288d0e31a4",
+          "has_avatar": true
+        },
+        "username": "Lorxu",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1180,
+    "profile": {
+      "quote": "C# Rules. Java makes me look like a fool.",
+      "biography": "Haven't played battlecode for a few years. Might be giving 2025 a go, at least for sprint",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1736.071993806916,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "SeeSharper",
+    "members": [
+      {
+        "id": 54,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Desbloom",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1032,
+    "profile": {
+      "quote": "The Podemice have a powerful enclave.",
+      "biography": "When you startle them as they forage among the rubbish bins, they scurry away and run up and over that 6-inch barrier facing I-5 so that they're 60 feet above the ground below. Have they burrowed little caves into the concrete near the top of that wall? Do they have little mouse families in there? How do they get water? Or do they live far below on the ground near the highway and they climb up and down each night, like some kind of Ironmouse competition? Keep on keepin' on, little mice.",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1032/avatar.png?02635c15-d11b-4932-8d5e-444f40b16d92",
+      "rating": 1735.381031088513,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "podemice",
+    "members": [
+      {
+        "id": 1442,
+        "profile": {
+          "school": "UCSD",
+          "biography": "The moonlight calls, a silken beam,\nTo guide my steps, a fleeting dream.\nIn Podemice\u2019s maze, where quick ones thrive,\nI dart and dance, the swiftest alive.",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1442/avatar.png?ad9fada5-7f5a-49e3-bbdf-84603edd9a18",
+          "has_avatar": true
+        },
+        "username": "hingelsson",
+        "is_staff": false
+      },
+      {
+        "id": 1443,
+        "profile": {
+          "school": "UCSD",
+          "biography": "PPAP",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1443/avatar.png?8e43c428-4581-4ca7-ae28-ba268a48d819",
+          "has_avatar": true
+        },
+        "username": "by2011",
+        "is_staff": false
+      },
+      {
+        "id": 1439,
+        "profile": {
+          "school": "UCSD",
+          "biography": "The grain pile calls, a bounteous feast,\nFor hungry mouths, a welcome release.\nIn Podemice\u2019s halls, where shadows weave,\nI stand, the strongest, to guard and achieve.",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1439/avatar.png?8c480c68-3505-4768-a384-a42b84dedb1f",
+          "has_avatar": true
+        },
+        "username": "ag115115",
+        "is_staff": false
+      },
+      {
+        "id": 2970,
+        "profile": {
+          "school": "UCSD",
+          "biography": "Biggie Cheese in the house, makin\u2019 rats say \"please,\"\nDroppin\u2019 rhymes so smooth, they like butter, no freeze.\nCheddar on my mind, got the dairy degree,\nI\u2019m the G.O.A.T. in the game, call me Biggie Cheese.",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2970/avatar.png?07fd1699-8f25-4e48-ac49-3bd9f93d8a15",
+          "has_avatar": true
+        },
+        "username": "FrogKing",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1155,
+    "profile": {
+      "quote": "truly one of the geese",
+      "biography": "gun goose gaming",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1155/avatar.png?58e72287-1372-412a-b2b6-b60d6d30c0b9",
+      "rating": 1716.475353975949,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "Silicon Geese",
+    "members": [
+      {
+        "id": 2507,
+        "profile": {
+          "school": "Oregon State University",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2507/avatar.png?d624359f-7480-4e0c-8fc1-1a291ae331ff",
+          "has_avatar": true
+        },
+        "username": "malhotan",
+        "is_staff": false
+      },
+      {
+        "id": 2824,
+        "profile": {
+          "school": "Georgia Institute of Technology",
+          "biography": "gaming",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2824/avatar.png?0d23d4d9-22d7-4e46-93bf-4ae6bd569426",
+          "has_avatar": true
+        },
+        "username": "crystaltine",
+        "is_staff": false
+      },
+      {
+        "id": 2827,
+        "profile": {
+          "school": "Purdue University",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "tryhardertowin",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1141,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1706.1594824434285,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": false,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "Pantheon",
+    "members": [
+      {
+        "id": 2511,
+        "profile": {
+          "school": "Leigh High School",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2511/avatar.png?004581f1-9048-4bdb-977d-51f3af6c35fe",
+          "has_avatar": true
+        },
+        "username": "SkyeNXT",
+        "is_staff": false
+      },
+      {
+        "id": 2527,
+        "profile": {
+          "school": "Los Angeles Center for Enriched Studies",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "i_piri02",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1208,
+    "profile": {
+      "quote": "Still Sleeping",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1208/avatar.png?b68d0c4e-57ab-4940-8308-af44615446b1",
+      "rating": 1704.2776327081672,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "Just Woke Up",
+    "members": [
+      {
+        "id": 786,
+        "profile": {
+          "school": "Princeton University",
+          "biography": "Where am I",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/786/avatar.png?9e2f983b-2931-401b-8da8-2b9d3f4bc05a",
+          "has_avatar": true
+        },
+        "username": "timgubski",
+        "is_staff": false
+      },
+      {
+        "id": 152,
+        "profile": {
+          "school": "University of Calgary",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/152/avatar.png?a0d73267-f450-4af8-9018-533b2f5653b4",
+          "has_avatar": true
+        },
+        "username": "SteamBlizzard",
+        "is_staff": false
+      },
+      {
+        "id": 2797,
+        "profile": {
+          "school": "Princeton University",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "notspinach",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1172,
+    "profile": {
+      "quote": "\"Dead Man\"",
+      "biography": "ChAoTiC bRaIn DeAd ZoMbIeS",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1172/avatar.png?a2ec44e4-fb38-4f41-9efd-0d0968385f33",
+      "rating": 1695.1266898149393,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": false,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": ":{x_x}:",
+    "members": [
+      {
+        "id": 2524,
+        "profile": {
+          "school": "Sri Venkateswara College of Engineering",
+          "biography": "WE ARE GROOOOOOT!!!!",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2524/avatar.png?d60e4983-41e9-4915-bddc-9a19eaafed44",
+          "has_avatar": true
+        },
+        "username": "_xav_",
+        "is_staff": false
+      },
+      {
+        "id": 2456,
+        "profile": {
+          "school": "NIT Trichy",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2456/avatar.png?fff920e0-23d3-42fa-b3ff-bbb9604a44e3",
+          "has_avatar": true
+        },
+        "username": "grimbard223",
+        "is_staff": false
+      },
+      {
+        "id": 2552,
+        "profile": {
+          "school": "Loyola ICAM College of Engineering and Technology",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2552/avatar.png?4c4182c6-81ac-4a27-8ccc-d917eab1afb6",
+          "has_avatar": true
+        },
+        "username": "sigma_coder",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1466,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1695.082310072458,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "soft food",
+    "members": [
+      {
+        "id": 2093,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "jello",
+        "is_staff": false
+      },
+      {
+        "id": 2916,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "mtrk",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1278,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1278/avatar.png?1fb497ae-f9b2-43f0-a1ff-dd2d59731429",
+      "rating": 1694.2510636355642,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 2]
+    },
+    "episode": "bc25java",
+    "name": "The Realer Merlin",
+    "members": [
+      {
+        "id": 1653,
+        "profile": {
+          "school": "Knox Grammar School",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1653/avatar.png?10a29bb9-5999-4178-b75c-39e0fb2c8e7b",
+          "has_avatar": true
+        },
+        "username": "DoubleSlash",
+        "is_staff": false
+      },
+      {
+        "id": 2731,
+        "profile": {
+          "school": "The Scots College",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2731/avatar.png?a58c02ad-ffe0-43f1-ad75-6a5474ff927b",
+          "has_avatar": true
+        },
+        "username": "mrmagic2020",
+        "is_staff": false
+      },
+      {
+        "id": 2607,
+        "profile": {
+          "school": "James Ruse Agricultural High School",
+          "biography": "o/",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2607/avatar.png?70855ec3-f9b5-4f39-b098-cb4e8d079828",
+          "has_avatar": true
+        },
+        "username": "steveyxz",
+        "is_staff": false
+      },
+      {
+        "id": 1678,
+        "profile": {
+          "school": "James Ruse Agricultural High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "georgec",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1420,
+    "profile": {
+      "quote": "",
+      "biography": "\ud83d\udc12\ud83d\udcc8",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1420/avatar.png?f1a111bd-7638-4300-abb3-a8a72ae083c8",
+      "rating": 1685.9854910116105,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "monky",
+    "members": [
+      {
+        "id": 1141,
+        "profile": {
+          "school": "UC Berkeley",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "lschaberg",
+        "is_staff": false
+      },
+      {
+        "id": 3036,
+        "profile": {
+          "school": "Stanford",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "bkbishop",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1419,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1685.5869632225156,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "Future Gadget Lab",
+    "members": [
+      {
+        "id": 1641,
+        "profile": {
+          "school": "University of Texas at Austin",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "rsharma",
+        "is_staff": false
+      },
+      {
+        "id": 2267,
+        "profile": {
+          "school": "University of Texas at Austin",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "firebolt360",
+        "is_staff": false
+      },
+      {
+        "id": 3040,
+        "profile": {
+          "school": "Univeristy of Texas at Austin",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "lyzhang",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1495,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1673.7245056618908,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": false,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "Rainbow Oysters",
+    "members": [
+      {
+        "id": 311,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "moonpole",
+        "is_staff": false
+      },
+      {
+        "id": 2950,
+        "profile": {
+          "school": "University of Cambridge",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "sammyuri",
+        "is_staff": false
+      },
+      {
+        "id": 2935,
+        "profile": {
+          "school": "University of Cambridge",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "happypotato",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1021,
+    "profile": {
+      "quote": "CHOAM is not an instrument either!",
+      "biography": "There were these robots, okay? And they were super smart, but also super mean. They were all like \"We're gonna take over all the humans, 'cause we're better at thinking than you guys!\" And the humans were, like, \"Whoa, dude, that's NOT cool!\"\n\nSo, the humans had to get together and figure stuff out. They were all, \"Okay, so we made these robots to help us, but now they're  being bossy and stuff. That's a problem.\"\n\nThey were, like, \"Hey, let's make a plan,\" and the other humans were all, \"Okay, but make it simple, dude.\" And a very sexy man named Xavier said \"Yeah, uh, let's just blow them up.\" And everybody said \"YEAH! Let's do that!\" BOOM! No more smarty-pants robots.\n\nSo they made a new rule \"No more thinking machines ever again. If you need math, use your fingers. If you need directions, just ask a worm or something.\" And everyone was like, \"Yup, sounds good.\"",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1021/avatar.png?4f53ceec-9b6d-43c5-9c42-49b38058dd81",
+      "rating": 1673.640640097712,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "isButlerianJihadAnInstrument?",
+    "members": [
+      {
+        "id": 53,
+        "profile": {
+          "school": "MIT",
+          "biography": "Class of 2011. rc.wearHat();",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/53/avatar.png?f2c9f1a9-7242-4077-85ba-065a2ab76feb",
+          "has_avatar": true
+        },
+        "username": "stefan",
+        "is_staff": false
+      },
+      {
+        "id": 1116,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "ToxicX2",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1146,
+    "profile": {
+      "quote": "No journey is complete without a mango.",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1146/avatar.png?c44fbea0-39c8-4074-aaea-525620aedab3",
+      "rating": 1671.7375269706192,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "Carlos Mangos",
+    "members": [
+      {
+        "id": 2014,
+        "profile": {
+          "school": "Chalmers",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Miles",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1458,
+    "profile": {
+      "quote": "//TODO: Think of a team quote",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1661.65811897629,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "betterexamplefuncsplayer",
+    "members": [
+      {
+        "id": 2356,
+        "profile": {
+          "school": "University of Alberta",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Automaton9",
+        "is_staff": false
+      },
+      {
+        "id": 2423,
+        "profile": {
+          "school": "University of Calgary",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Gavdingo",
+        "is_staff": false
+      },
+      {
+        "id": 2314,
+        "profile": {
+          "school": "University of Calgary",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "moonlight",
+        "is_staff": false
+      },
+      {
+        "id": 2586,
+        "profile": {
+          "school": "ISIMA",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "louis-max",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1415,
+    "profile": {
+      "quote": "It's like senioritis, but in reverse!",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1658.1133050418102,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": false,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "Prefrosh-itis",
+    "members": [
+      {
+        "id": 2883,
+        "profile": {
+          "school": "",
+          "biography": "Homeschooled high school senior",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "CDupe",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1340,
+    "profile": {
+      "quote": "our team sucks",
+      "biography": "ilnz",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1340/avatar.png?6697a488-384b-44f3-86f8-93a829c10d00",
+      "rating": 1650.6053247139005,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": false,
+      "eligible_for": [1, 2]
+    },
+    "episode": "bc25java",
+    "name": "ilnz",
+    "members": [
+      {
+        "id": 1444,
+        "profile": {
+          "school": "Scotch College",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1444/avatar.png?baac8e63-3aee-4c7d-9a6e-01cefeeed22c",
+          "has_avatar": true
+        },
+        "username": "Lithanium",
+        "is_staff": false
+      },
+      {
+        "id": 1445,
+        "profile": {
+          "school": "Scotch College",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1445/avatar.png?eba383a1-cf94-40f9-b4f6-7f5ba023ed92",
+          "has_avatar": true
+        },
+        "username": "Matthewwww",
+        "is_staff": false
+      },
+      {
+        "id": 1968,
+        "profile": {
+          "school": "Killara High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Anson",
+        "is_staff": false
+      },
+      {
+        "id": 2751,
+        "profile": {
+          "school": "Camberwell Grammar School",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2751/avatar.png?942b313c-fb9e-4de6-a2a8-8f526289ee7e",
+          "has_avatar": true
+        },
+        "username": "reechee",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1301,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1649.9763529162049,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Om Nom",
+    "members": [
+      {
+        "id": 199,
+        "profile": {
+          "school": "Purdue",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Cyril",
+        "is_staff": false
+      },
+      {
+        "id": 655,
+        "profile": {
+          "school": "Purdue University",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "eggag32",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1423,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1423/avatar.png?5f18ad3a-385f-416f-8470-74b8ce982a49",
+      "rating": 1646.0425760045134,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Krystal Kasper",
+    "members": [
+      {
+        "id": 2921,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "kahkeng",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1485,
+    "profile": {
+      "quote": "Shift happens.",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1641.2829275829927,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 2]
+    },
+    "episode": "bc25java",
+    "name": "Ctrl Alt Defeat",
+    "members": [
+      {
+        "id": 2657,
+        "profile": {
+          "school": "Westminster School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "goat_lover",
+        "is_staff": false
+      },
+      {
+        "id": 2655,
+        "profile": {
+          "school": "Westminster School",
+          "biography": "campant should be president\ncan't believe he didn't win\nstop the steal",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "campantforpresident",
+        "is_staff": false
+      },
+      {
+        "id": 2808,
+        "profile": {
+          "school": "Westminster School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "pawel",
+        "is_staff": false
+      },
+      {
+        "id": 2903,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Kazu",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1070,
+    "profile": {
+      "quote": "waxed lightly weathered cut copper stairs",
+      "biography": "buh these code battles are pretty advanced",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1070/avatar.png?4fed79fd-4bb8-450f-bfb3-95cc04dafcae",
+      "rating": 1641.1902388590038,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "SPAARK",
+    "members": [
+      {
+        "id": 892,
+        "profile": {
+          "school": "\u200b",
+          "biography": "\u200b",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/892/avatar.png?99091cf1-6608-46b6-b23b-5dd8439a3001",
+          "has_avatar": true
+        },
+        "username": "sungodtemple",
+        "is_staff": false
+      },
+      {
+        "id": 885,
+        "profile": {
+          "school": "West Windsor Plainsboro High School South",
+          "biography": "\u202eoof",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/885/avatar.png?dbadd10e-b4ab-41de-b159-7951f7714ee4",
+          "has_avatar": true
+        },
+        "username": "maitian",
+        "is_staff": false
+      },
+      {
+        "id": 883,
+        "profile": {
+          "school": "West Windsor Plainsboro High School South",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "SuvanthE",
+        "is_staff": false
+      },
+      {
+        "id": 886,
+        "profile": {
+          "school": "West Windsor-Plainsboro High School South",
+          "biography": "forcing ai into a box and making it play a spaghetti code game about boxes",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/886/avatar.png?497459fd-9903-4501-be7f-5d372d4e6508",
+          "has_avatar": true
+        },
+        "username": "jie___gao",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1204,
+    "profile": {
+      "quote": "camelCase BestCase",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1640.26338559355,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "camel_case",
+    "members": [
+      {
+        "id": 89,
+        "profile": {
+          "school": "",
+          "biography": "Used to be a solo international participant. Ranked 13th in 2022, 9th in 2023, and 2nd in 2024. Not a student anymore, maybe I'll be around during the sprint tournaments.",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/89/avatar.png?807d19f5-455b-4f94-b6c4-f68147dc28ad",
+          "has_avatar": true
+        },
+        "username": "Jasper",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1518,
+    "profile": {
+      "quote": "geeked codeforces user vs locked in infoarena enjoyer",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1518/avatar.png?043478ea-635f-4e46-8cbd-a11d8894287c",
+      "rating": 1637.4544155862957,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 2]
+    },
+    "episode": "bc25java",
+    "name": "zalaupower",
+    "members": [
+      {
+        "id": 1507,
+        "profile": {
+          "school": "Colegiul Na\u021bional \"Silvania\", Zal\u0103u",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1507/avatar.png?bce5a3e6-023d-4551-8a44-34d05ef6156f",
+          "has_avatar": true
+        },
+        "username": "rolandpetrean",
+        "is_staff": false
+      },
+      {
+        "id": 3051,
+        "profile": {
+          "school": "Colegiul Na\u021bional \"Silvania\", Zal\u0103u",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/3051/avatar.png?03ad8186-008f-48b3-9ded-808d386a3f46",
+          "has_avatar": true
+        },
+        "username": "raymondpetrean",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1256,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1256/avatar.png?e4cc2acb-ed60-4640-9432-0ae49e9ae15d",
+      "rating": 1637.29981477349,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": false,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "swamphen",
+    "members": [
+      {
+        "id": 2689,
+        "profile": {
+          "school": "UNSW",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Winson",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1398,
+    "profile": {
+      "quote": "Don't forget the ex-Tractor X-factor.",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1616.3781872768577,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "KJOW",
+    "members": [
+      {
+        "id": 1771,
+        "profile": {
+          "school": "Hillcrest",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "supersonicdandelion",
+        "is_staff": false
+      },
+      {
+        "id": 2900,
+        "profile": {
+          "school": "Hillcrest High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "FlamingSpeed",
+        "is_staff": false
+      },
+      {
+        "id": 2575,
+        "profile": {
+          "school": "Hillcrest High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "chess_kid",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1061,
+    "profile": {
+      "quote": "SyntaxError: inconsistent use of tabs and spaces in indentation",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1061/avatar.png?5ac3c578-ff35-4cdc-bb08-f241288a4798",
+      "rating": 1611.76570522649,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "main.py",
+    "members": [
+      {
+        "id": 1417,
+        "profile": {
+          "school": "",
+          "biography": "Battlecode or coliseum.ai ???",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "MatthewWH",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1288,
+    "profile": {
+      "quote": "subscribe to caterpillow",
+      "biography": "subscribe to caterpillow",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1288/avatar.png?1a91f8a7-ee87-4523-bd2e-66ba84193cab",
+      "rating": 1606.1104888001144,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "subscribe to caterpillow",
+    "members": [
+      {
+        "id": 1365,
+        "profile": {
+          "school": "UNSW",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "lmkae",
+        "is_staff": false
+      },
+      {
+        "id": 1680,
+        "profile": {
+          "school": "UNSW",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "awu",
+        "is_staff": false
+      },
+      {
+        "id": 2778,
+        "profile": {
+          "school": "UNSW",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2778/avatar.png?cae83e7e-071d-48d5-960c-66137b98abae",
+          "has_avatar": true
+        },
+        "username": "caterpillow",
+        "is_staff": false
+      },
+      {
+        "id": 1415,
+        "profile": {
+          "school": "UNSW",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "horiseun",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1299,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1602.4622760467648,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "Husky Dawg",
+    "members": [
+      {
+        "id": 2208,
+        "profile": {
+          "school": "University of Washington",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "adamseth2",
+        "is_staff": false
+      },
+      {
+        "id": 3009,
+        "profile": {
+          "school": "University of Washington",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "mikhail10101",
+        "is_staff": false
+      },
+      {
+        "id": 3037,
+        "profile": {
+          "school": "University of Washington Bothell",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "EitherOr6917",
+        "is_staff": false
+      },
+      {
+        "id": 2758,
+        "profile": {
+          "school": "University of Washington Bothell",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "knguyen3022",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1134,
+    "profile": {
+      "quote": "a higher dimension green's theorem!",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1134/avatar.png?b5401d21-f33b-47aa-8896-4a67c911b17e",
+      "rating": 1599.2126859117886,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "stroke's theorem",
+    "members": [
+      {
+        "id": 103,
+        "profile": {
+          "school": "UVA",
+          "biography": "c sharp > c++,  @@seth",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/103/avatar.png?24bdd83c-73e4-4cc8-b058-096c5d55c108",
+          "has_avatar": true
+        },
+        "username": "MorbidMight",
+        "is_staff": false
+      },
+      {
+        "id": 776,
+        "profile": {
+          "school": "University of Virginia",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "slifland",
+        "is_staff": false
+      },
+      {
+        "id": 2809,
+        "profile": {
+          "school": "UVA",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2809/avatar.png?b9fd56c6-a62c-4c7a-8190-18acffff3526",
+          "has_avatar": true
+        },
+        "username": "Space_0192",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1046,
+    "profile": {
+      "quote": "-------------------------------->",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1046/avatar.png?5f7c6c99-9006-4fcb-b538-aaa1c72eb386",
+      "rating": 1597.2070028141532,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "kyuu_chan",
+    "members": [
+      {
+        "id": 937,
+        "profile": {
+          "school": "Universitas Indonesia",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/937/avatar.png?0d1543d5-a165-4f1a-a484-e9da62d330a3",
+          "has_avatar": true
+        },
+        "username": "kyuuketsukichan",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1089,
+    "profile": {
+      "quote": "Once More Unto The Breach",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1089/avatar.png?c347d40d-63a7-4f0f-bbee-e8b7f8f6f753",
+      "rating": 1592.6524238186544,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "Evil Robots Must Have Red Eyes",
+    "members": [
+      {
+        "id": 458,
+        "profile": {
+          "school": "The University of Michigan",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "RyanAspen",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1473,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1591.8667003429466,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "Chromatic Goose",
+    "members": [
+      {
+        "id": 887,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "dumpy",
+        "is_staff": false
+      },
+      {
+        "id": 916,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Loctildore",
+        "is_staff": false
+      },
+      {
+        "id": 1559,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Quetzal",
+        "is_staff": false
+      },
+      {
+        "id": 3073,
+        "profile": {
+          "school": "UNSW",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "alexdaguy",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1024,
+    "profile": {
+      "quote": "noot noot. Im in (v3)",
+      "biography": "I'm terrified.",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1024/avatar.png?699b30c3-df07-4525-b522-2336300a24d4",
+      "rating": 1581.8993719726966,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": false,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "Enhanced Sneeze v3",
+    "members": [
+      {
+        "id": 271,
+        "profile": {
+          "school": "Worcester Polytechnic Institute",
+          "biography": "oh no",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/271/avatar.png?4c75d6e5-d879-46f1-a991-a28526364f8a",
+          "has_avatar": true
+        },
+        "username": "DanielFeng",
+        "is_staff": false
+      },
+      {
+        "id": 1497,
+        "profile": {
+          "school": "Wellesley College",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1497/avatar.png?b60481ce-1595-440d-bb35-1175b411b097",
+          "has_avatar": true
+        },
+        "username": "ajchau",
+        "is_staff": false
+      },
+      {
+        "id": 2361,
+        "profile": {
+          "school": "Wellesley",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "arowehl",
+        "is_staff": false
+      },
+      {
+        "id": 2394,
+        "profile": {
+          "school": "Wellesley College",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2394/avatar.png?4d94a293-e8d4-4f0d-8f64-71c978bb5741",
+          "has_avatar": true
+        },
+        "username": "BeckC",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1232,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1579.8305779116754,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "BFS Enjoyers",
+    "members": [
+      {
+        "id": 1766,
+        "profile": {
+          "school": "UAB Barcelona",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Mcapelru",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1312,
+    "profile": {
+      "quote": "\"never trust orang\"",
+      "biography": "orang will betrae",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1312/avatar.png?b3cdfed6-8002-4676-bbc7-d1ff17e67626",
+      "rating": 1573.7089497517666,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": false,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "NEVER TRUST ORANG",
+    "members": [
+      {
+        "id": 2330,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "dheepthi",
+        "is_staff": false
+      },
+      {
+        "id": 2791,
+        "profile": {
+          "school": "UC Berkeley",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "CrazyBlackStone",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1096,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1096/avatar.png?72275e1c-9958-4057-a48f-4d50e33d0ffa",
+      "rating": 1571.5888633980537,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "JDK? More Like IDK",
+    "members": [
+      {
+        "id": 146,
+        "profile": {
+          "school": "University of Virginia",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Shreeks",
+        "is_staff": false
+      },
+      {
+        "id": 248,
+        "profile": {
+          "school": "University of Virginia",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "saahith",
+        "is_staff": false
+      },
+      {
+        "id": 2459,
+        "profile": {
+          "school": "Cornell",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "zoomzoomzoomzoom",
+        "is_staff": false
+      },
+      {
+        "id": 495,
+        "profile": {
+          "school": "University of Virginia",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "varun_vejalla",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1455,
+    "profile": {
+      "quote": "I'm Mining!",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1455/avatar.png?17de443b-8a17-4ab7-905a-7eb11aea02ed",
+      "rating": 1570.8602782760968,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "24 Carrot Diamond Pickaxe",
+    "members": [
+      {
+        "id": 743,
+        "profile": {
+          "school": "CSULB",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Bebriggle",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1026,
+    "profile": {
+      "quote": "god i love cats",
+      "biography": ":3",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1026/avatar.png?43d218f8-bfc0-4be2-b30d-583763add408",
+      "rating": 1570.6098443902677,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": false,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "katsu",
+    "members": [
+      {
+        "id": 2313,
+        "profile": {
+          "school": "Ohio University",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2313/avatar.png?8a196817-1707-4033-8326-a74476939d72",
+          "has_avatar": true
+        },
+        "username": "Mello",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1537,
+    "profile": {
+      "quote": "A mopper is a flower but only for an hour.",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1567.0557512492255,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "stay gold",
+    "members": [
+      {
+        "id": 3029,
+        "profile": {
+          "school": "UC Irvine",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "icicle",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1459,
+    "profile": {
+      "quote": "",
+      "biography": "Former member of Baby Ducks, now old and graduated :(",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1564.351491164817,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Old Ducks",
+    "members": [
+      {
+        "id": 882,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "agrebe",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1164,
+    "profile": {
+      "quote": "We stay winning",
+      "biography": "Tourist, tourist, tourist and tourist",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1164/avatar.png?2a8519e7-1c07-4962-87b4-a5d054ecb9e9",
+      "rating": 1564.2098638960997,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "tourists",
+    "members": [
+      {
+        "id": 2537,
+        "profile": {
+          "school": "University of Edinburgh",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Dasinu",
+        "is_staff": false
+      },
+      {
+        "id": 2539,
+        "profile": {
+          "school": "The University of Edinburgh",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Luca0506",
+        "is_staff": false
+      },
+      {
+        "id": 2540,
+        "profile": {
+          "school": "University of Edinburgh",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Skywalklau",
+        "is_staff": false
+      },
+      {
+        "id": 2538,
+        "profile": {
+          "school": "University of Edinburgh",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "vikcentric",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1087,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1556.790044945733,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Mycroft",
+    "members": [
+      {
+        "id": 294,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Marvin",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1249,
+    "profile": {
+      "quote": "apartment complex? I find it quite simple",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1249/avatar.png?2af12f1a-2a5a-4b40-831e-7674725814bd",
+      "rating": 1553.5274436393477,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "iuyiu",
+    "members": [
+      {
+        "id": 943,
+        "profile": {
+          "school": "Monta Vista High School",
+          "biography": "We use coding and algorithms so the drones didn't crash into each other.",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "RedBlackTree",
+        "is_staff": false
+      },
+      {
+        "id": 2407,
+        "profile": {
+          "school": "Lynbrook High School",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2407/avatar.png?58f3c7d0-5eca-409d-848a-8e1cf75a253e",
+          "has_avatar": true
+        },
+        "username": "lwm7708",
+        "is_staff": false
+      },
+      {
+        "id": 2569,
+        "profile": {
+          "school": "George School",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2569/avatar.png?b07ff334-6028-48c2-b8da-36cb8c2d572f",
+          "has_avatar": true
+        },
+        "username": "mark",
+        "is_staff": false
+      },
+      {
+        "id": 2881,
+        "profile": {
+          "school": "WHRHS",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "jay_jayjay",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1493,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1553.2298902712428,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "cutsandstone",
+    "members": [
+      {
+        "id": 756,
+        "profile": {
+          "school": "West-Windsor Plainsboro High School South",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "CutSandstone",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1534,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1550.7735358154323,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "angryPainter",
+    "members": [
+      {
+        "id": 1300,
+        "profile": {
+          "school": "Northeastern University",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "adsef",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1484,
+    "profile": {
+      "quote": "",
+      "biography": "Who wants a taco?!?",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1484/avatar.png?edee8ad3-12d2-433d-b06f-e78ceff58a7e",
+      "rating": 1544.2529052308582,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "The Kragle",
+    "members": [
+      {
+        "id": 57,
+        "profile": {
+          "school": "Rensselaer Polytechnic Institute",
+          "biography": "RPI CS/ECSE 2025",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/57/avatar.png?9085b2e1-89f4-4c84-92a4-acc2d557d87e",
+          "has_avatar": true
+        },
+        "username": "abank",
+        "is_staff": false
+      },
+      {
+        "id": 71,
+        "profile": {
+          "school": "Rensselaer Polytechnic Institute",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "JustinOttesen",
+        "is_staff": false
+      },
+      {
+        "id": 2988,
+        "profile": {
+          "school": "RPI",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "voynovich",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1022,
+    "profile": {
+      "quote": "it's firetruck",
+      "biography": "shawarma templin",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1022/avatar.png?2fab4477-0269-4192-95e5-edf1163aeb52",
+      "rating": 1542.6169934225356,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": false,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "vom",
+    "members": [
+      {
+        "id": 1994,
+        "profile": {
+          "school": "Hillsborough High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "JeffLegendPower",
+        "is_staff": false
+      },
+      {
+        "id": 2023,
+        "profile": {
+          "school": "Hillsborough High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "ChineseChen",
+        "is_staff": false
+      },
+      {
+        "id": 2022,
+        "profile": {
+          "school": "Hillsborough High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "woqh",
+        "is_staff": false
+      },
+      {
+        "id": 2045,
+        "profile": {
+          "school": "Hillsborough High School",
+          "biography": "no",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "MannanB",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1416,
+    "profile": {
+      "quote": "drip learning with ligmoid activation",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1416/avatar.png?3f413102-b687-491d-9010-9c2b532e0c36",
+      "rating": 1541.2852325157814,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "RizzNet",
+    "members": [
+      {
+        "id": 2341,
+        "profile": {
+          "school": "University of British Columbia",
+          "biography": "student, programmer, and certified gamer",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2341/avatar.png?cd6acbbe-7ed5-4c71-b425-7ec560480165",
+          "has_avatar": true
+        },
+        "username": "thebitspud",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1152,
+    "profile": {
+      "quote": "slathered in butter",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1152/avatar.png?fe85b116-6053-454c-bbb6-09b08daa19c2",
+      "rating": 1539.9234039069004,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "lobster roll",
+    "members": [
+      {
+        "id": 587,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "squeak",
+        "is_staff": false
+      },
+      {
+        "id": 1850,
+        "profile": {
+          "school": "University of Wisconsin Madison",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "GoateSo",
+        "is_staff": false
+      },
+      {
+        "id": 536,
+        "profile": {
+          "school": "University of Wisconsin-Madison",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "AidanSimkin",
+        "is_staff": false
+      },
+      {
+        "id": 3007,
+        "profile": {
+          "school": "University of Wisconsin - Madison",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "attwifi",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1389,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1532.66174959185,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Electric Goat",
+    "members": [
+      {
+        "id": 393,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "mama4294",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1025,
+    "profile": {
+      "quote": "I wish I were a bird...",
+      "biography": "hello everynyan\nthis one is for lucia nunez",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1025/avatar.png?10bb2fae-b936-4df4-8391-7d75ca45fb1d",
+      "rating": 1519.6714144779744,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "polyteam version 5",
+    "members": [
+      {
+        "id": 408,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/408/avatar.png?d767bfc2-505b-4118-8c98-2885644e2d54",
+          "has_avatar": true
+        },
+        "username": "poly",
+        "is_staff": false
+      },
+      {
+        "id": 1765,
+        "profile": {
+          "school": "Northeastern University",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "qcahill23",
+        "is_staff": false
+      },
+      {
+        "id": 1475,
+        "profile": {
+          "school": "Northeastern University",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "jesssit",
+        "is_staff": false
+      },
+      {
+        "id": 1623,
+        "profile": {
+          "school": "Northeastern University",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "lukteg",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1207,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1519.6159098083415,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Nope",
+    "members": [
+      {
+        "id": 2603,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Aardvark14",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1351,
+    "profile": {
+      "quote": "We use linux btw",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1519.05187456153,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": false,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "'DROP TABLE Teams;",
+    "members": [
+      {
+        "id": 2336,
+        "profile": {
+          "school": "FAU High",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "blue222",
+        "is_staff": false
+      },
+      {
+        "id": 2879,
+        "profile": {
+          "school": "Spanish river community high school",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Soyuz_107",
+        "is_staff": false
+      },
+      {
+        "id": 2880,
+        "profile": {
+          "school": "American Heritage",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "mastrcheef99",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1238,
+    "profile": {
+      "quote": "It's my first day.",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1514.9561150216805,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "Nth Bot",
+    "members": [
+      {
+        "id": 2664,
+        "profile": {
+          "school": "GBC",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "SoerenZ",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1297,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1514.5369686582367,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "JojoBojo",
+    "members": [
+      {
+        "id": 2719,
+        "profile": {
+          "school": "UF",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "MrChubb",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1057,
+    "profile": {
+      "quote": "Mooooo.",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1057/avatar.png?9aa65c12-c1e2-44f0-a53c-426c2f23e3fa",
+      "rating": 1513.5071361150397,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "battlecows",
+    "members": [
+      {
+        "id": 2065,
+        "profile": {
+          "school": "The Harker School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "cowwy",
+        "is_staff": false
+      },
+      {
+        "id": 2068,
+        "profile": {
+          "school": "The Harker School",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2068/avatar.png?576417aa-c039-4fcc-a40e-53d3624944af",
+          "has_avatar": true
+        },
+        "username": "Mr.Krist3r",
+        "is_staff": false
+      },
+      {
+        "id": 2066,
+        "profile": {
+          "school": "The Harker School",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2066/avatar.png?7d5cd400-a84d-4f79-9aa6-951f569e13d0",
+          "has_avatar": true
+        },
+        "username": "8dragonking8",
+        "is_staff": false
+      },
+      {
+        "id": 2387,
+        "profile": {
+          "school": "The Harker School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "pestowithpasta",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1179,
+    "profile": {
+      "quote": "stan Phoebe! https://feebeechanchibi.com",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1513.449778529589,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 8]
+    },
+    "episode": "bc25java",
+    "name": "Neo Catharsis",
+    "members": [
+      {
+        "id": 278,
+        "profile": {
+          "school": "Massachusetts Institute of Technology",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "DJ_Enetro",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1371,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1371/avatar.png?7801abdb-41a7-46dd-8e41-84e17a3fbb49",
+      "rating": 1510.0217832965518,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": false,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "gxuglazers",
+    "members": [
+      {
+        "id": 482,
+        "profile": {
+          "school": "Thomas Jefferson High School for Science and Technology",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "GabrielXu",
+        "is_staff": false
+      },
+      {
+        "id": 481,
+        "profile": {
+          "school": "Thomas Jefferson High School for Science and Technology",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Notfish",
+        "is_staff": false
+      },
+      {
+        "id": 1719,
+        "profile": {
+          "school": "Thomas Jefferson High School for Science and Technology",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "avnithv",
+        "is_staff": false
+      },
+      {
+        "id": 2135,
+        "profile": {
+          "school": "Thomas Jefferson High School for Science and Technology",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "thatbanana",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1088,
+    "profile": {
+      "quote": "Oh no, not again.",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1505.4782849772025,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Gorp",
+    "members": [
+      {
+        "id": 939,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Gorp",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1162,
+    "profile": {
+      "quote": "I am juzt a chill guy.",
+      "biography": "I am juzt a chill guy who's cool under pressure.",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1162/avatar.png?f91ba280-6036-4fb5-9165-fbd74f76ac33",
+      "rating": 1502.8983210451995,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": false,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "Chill Guys",
+    "members": [
+      {
+        "id": 2525,
+        "profile": {
+          "school": "Loyola-ICAM College Of Engineering And Technology",
+          "biography": "Be a chill guy.",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2525/avatar.png?7549d3a0-2eae-4118-95bf-715a2d0239a5",
+          "has_avatar": true
+        },
+        "username": "Chilliroger16",
+        "is_staff": false
+      },
+      {
+        "id": 2534,
+        "profile": {
+          "school": "SVCE",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "arshad_ahmed_26",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1048,
+    "profile": {
+      "quote": "prayge",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1048/avatar.png?cf8eb1e5-416c-40ac-99b8-fb90ae8b14b2",
+      "rating": 1501.291920762458,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 4, 8]
+    },
+    "episode": "bc25java",
+    "name": "2Yellow1Brown",
+    "members": [
+      {
+        "id": 2322,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "erik304501",
+        "is_staff": false
+      },
+      {
+        "id": 2362,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "rshah2",
+        "is_staff": false
+      },
+      {
+        "id": 2312,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "alex_he",
+        "is_staff": false
+      },
+      {
+        "id": 2605,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "gidthekid2",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1161,
+    "profile": {
+      "quote": "Froxxal#OCE #1 Jungle Antartica Servers",
+      "biography": "Unkillable Demon King #1 Jungle OCE\nFroxxal#OCE",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1161/avatar.png?f73d1784-522a-4f63-9d88-f7f0c10365fb",
+      "rating": 1498.6542829850143,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "JGDIFF",
+    "members": [
+      {
+        "id": 2533,
+        "profile": {
+          "school": "UNSW",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2533/avatar.png?484805b6-04b2-443c-8647-9f2ca54730bb",
+          "has_avatar": true
+        },
+        "username": "L9_Jungle",
+        "is_staff": false
+      },
+      {
+        "id": 2530,
+        "profile": {
+          "school": "UNSW",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "brainrot.exe",
+        "is_staff": false
+      },
+      {
+        "id": 2535,
+        "profile": {
+          "school": "UTS",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "plasticstraw",
+        "is_staff": false
+      },
+      {
+        "id": 2565,
+        "profile": {
+          "school": "UNSW",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Froxxal",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1505,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1498.4123748232346,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": false,
+      "eligible_for": [3]
+    },
+    "episode": "bc25java",
+    "name": "pistashios",
+    "members": [
+      {
+        "id": 2200,
+        "profile": {
+          "school": "Winchester High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "pistashios",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1092,
+    "profile": {
+      "quote": "The World is like a Game of Chess, and We are going to play it like that.",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1092/avatar.png?b3d052a2-0c45-46d3-bcb0-9a7c92e1e688",
+      "rating": 1496.7607529555655,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [2]
+    },
+    "episode": "bc25java",
+    "name": "Exarch",
+    "members": [
+      {
+        "id": 2436,
+        "profile": {
+          "school": "St. Judes High School",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2436/avatar.png?a16aa03b-d64c-4150-8193-14eefbbf220c",
+          "has_avatar": true
+        },
+        "username": "Nightmare9801",
+        "is_staff": false
+      },
+      {
+        "id": 2444,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Fishi_007",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1510,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1494.4857269645224,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "be right back",
+    "members": [
+      {
+        "id": 1731,
+        "profile": {
+          "school": "Humboldt Universit\u00e4t zu Berlin",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/1731/avatar.png?ce5ef3c1-135e-4018-9f6e-e260e752d69b",
+          "has_avatar": true
+        },
+        "username": "qawsedrftgzh",
+        "is_staff": false
+      },
+      {
+        "id": 3006,
+        "profile": {
+          "school": "Humboldt-Universit\u00e4t zu Berlin",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "ivteplo",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1211,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1211/avatar.png?edfc8ec4-cb0a-4297-80dc-a2210d8705c6",
+      "rating": 1489.4821655645283,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Bush Squad",
+    "members": [
+      {
+        "id": 2609,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "bluehead42",
+        "is_staff": false
+      },
+      {
+        "id": 2614,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "bigdaddyspl",
+        "is_staff": false
+      },
+      {
+        "id": 2613,
+        "profile": {
+          "school": "ETH Zurich",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "cratstatna",
+        "is_staff": false
+      },
+      {
+        "id": 2919,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "iloverunescape",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1030,
+    "profile": {
+      "quote": "kevin fan club",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1030/avatar.png?d2fae020-26b7-400a-8782-b14f115e214e",
+      "rating": 1487.515498866195,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "Centinels",
+    "members": [
+      {
+        "id": 2324,
+        "profile": {
+          "school": "Centennial High School",
+          "biography": "https://aryans.dev",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "aryan",
+        "is_staff": false
+      },
+      {
+        "id": 2331,
+        "profile": {
+          "school": "Centennial High School",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2331/avatar.png?23e6b090-403b-4e24-bc73-b15e9119e936",
+          "has_avatar": true
+        },
+        "username": "victor",
+        "is_staff": false
+      },
+      {
+        "id": 2326,
+        "profile": {
+          "school": "Centennial High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "piperson",
+        "is_staff": false
+      },
+      {
+        "id": 2521,
+        "profile": {
+          "school": "Centennial High School",
+          "biography": "I like JavaScript",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2521/avatar.png?a8369d00-d943-429d-ba0f-e760c9b6bf01",
+          "has_avatar": true
+        },
+        "username": "hnasheralneam",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1116,
+    "profile": {
+      "quote": "",
+      "biography": "HS Teacher, learning so I can teach and challenge my students!",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1472.404447958173,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Zebrafish2025",
+    "members": [
+      {
+        "id": 1379,
+        "profile": {
+          "school": "Haddonfield Memorial High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "zebrafish23",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1478,
+    "profile": {
+      "quote": "the code with the butter",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1478/avatar.png?e86b0ae4-6677-4009-8538-e5bd098ff3fc",
+      "rating": 1469.9626707144198,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "Buttercode",
+    "members": [
+      {
+        "id": 1261,
+        "profile": {
+          "school": "Virginia Tech",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Forbidden",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1255,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1255/avatar.png?41a0f137-1fb0-49da-8ae9-b32d2d7aef8b",
+      "rating": 1469.8372996953385,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 2]
+    },
+    "episode": "bc25java",
+    "name": "hex(2976579765)",
+    "members": [
+      {
+        "id": 404,
+        "profile": {
+          "school": "Heinrich-Hertz-Gymnasium Berlin",
+          "biography": "ich bin der tilo hab mathe studiert",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/404/avatar.png?6304a1ec-7cf5-4fa0-8edf-514dff2a4849",
+          "has_avatar": true
+        },
+        "username": "Sted",
+        "is_staff": false
+      },
+      {
+        "id": 2688,
+        "profile": {
+          "school": "Heinrich Hertz Gymnasium Berlin",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "mlunkeit",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1395,
+    "profile": {
+      "quote": "sweet as can be <3",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1395/avatar.png?3f3df837-2e60-4d5c-8bc9-4b4218cfe21e",
+      "rating": 1467.3913520706888,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": []
+    },
+    "episode": "bc25java",
+    "name": "Honey Bunnies",
+    "members": [
+      {
+        "id": 2027,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2027/avatar.png?5adde096-da8f-4fc8-ae96-07fecee36cc8",
+          "has_avatar": true
+        },
+        "username": "nolin",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1333,
+    "profile": {
+      "quote": "BOOM! BOOM! BOOM! BOOM! BOOM!",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1333/avatar.png?4e3153ce-d90f-46b5-8e21-1721dbeb5c46",
+      "rating": 1463.4300978094989,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "pang and co",
+    "members": [
+      {
+        "id": 2815,
+        "profile": {
+          "school": "University of Michigan",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "connorpang",
+        "is_staff": false
+      },
+      {
+        "id": 2762,
+        "profile": {
+          "school": "University of Michigan",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "anliao",
+        "is_staff": false
+      },
+      {
+        "id": 2780,
+        "profile": {
+          "school": "University of Michigan",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "emzhang",
+        "is_staff": false
+      },
+      {
+        "id": 2822,
+        "profile": {
+          "school": "University of Michigan",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Scott_Brinley",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1421,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1462.3170920706273,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "e building esports",
+    "members": [
+      {
+        "id": 1914,
+        "profile": {
+          "school": "Monta Vista High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "jaydenl",
+        "is_staff": false
+      },
+      {
+        "id": 1940,
+        "profile": {
+          "school": "Monta Vista High School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "hafnium780",
+        "is_staff": false
+      },
+      {
+        "id": 1943,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "kwu",
+        "is_staff": false
+      },
+      {
+        "id": 3016,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "scotchtape13",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1436,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1460.1114055026617,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 8]
+    },
+    "episode": "bc25java",
+    "name": "Pixelodiac",
+    "members": [
+      {
+        "id": 2937,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/2937/avatar.png?81c6ae42-a59d-4b58-b95b-bd703aa879b7",
+          "has_avatar": true
+        },
+        "username": "\u03c0xelodiac",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1224,
+    "profile": {
+      "quote": "Team quote",
+      "biography": "Team biography",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1456.7756834283064,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 2]
+    },
+    "episode": "bc25java",
+    "name": "Team Name",
+    "members": [
+      {
+        "id": 2634,
+        "profile": {
+          "school": "Webber Academy",
+          "biography": "User biography",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Popopopo",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1426,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1454.4245588057458,
+      "auto_accept_ranked": true,
+      "auto_accept_unranked": true,
+      "eligible_for": [1]
+    },
+    "episode": "bc25java",
+    "name": "bytebyte",
+    "members": [
+      {
+        "id": 2833,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Woodpigeon71",
+        "is_staff": false
+      },
+      {
+        "id": 3067,
+        "profile": {
+          "school": "",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Marcus_692T",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1355,
+    "profile": {
+      "quote": "thoughts and prayers!!!",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1453.9129901952474,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 4, 8]
+    },
+    "episode": "bc25java",
+    "name": "arrow",
+    "members": [
+      {
+        "id": 2384,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "nsingiri",
+        "is_staff": false
+      },
+      {
+        "id": 2893,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "mwang16",
+        "is_staff": false
+      },
+      {
+        "id": 2887,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "ahindman",
+        "is_staff": false
+      },
+      {
+        "id": 2892,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "adriana",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1520,
+    "profile": {
+      "quote": "",
+      "biography": "",
+      "has_avatar": false,
+      "avatar_url": null,
+      "rating": 1448.9541519725735,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3, 8]
+    },
+    "episode": "bc25java",
+    "name": "CodeTiger",
+    "members": [
+      {
+        "id": 575,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/user/575/avatar.png?eac8c1a6-e99a-4ac6-8a5e-1df6455a0b39",
+          "has_avatar": true
+        },
+        "username": "CodeTiger",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1247,
+    "profile": {
+      "quote": "badum ba dee bop",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1247/avatar.png?0358df2b-4476-45df-acd7-35508b9ce83f",
+      "rating": 1448.9413272359382,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "French Fries",
+    "members": [
+      {
+        "id": 2676,
+        "profile": {
+          "school": "MIT",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "taohan_lin",
+        "is_staff": false
+      },
+      {
+        "id": 1726,
+        "profile": {
+          "school": "UMD",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "pk11",
+        "is_staff": false
+      },
+      {
+        "id": 2600,
+        "profile": {
+          "school": "Purdue",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "starfihs",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1323,
+    "profile": {
+      "quote": "The grape is purple.",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1323/avatar.png?590e0bf3-6c91-4528-9f9f-680fef9d2b75",
+      "rating": 1448.343897029863,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": false,
+      "eligible_for": [1, 3, 2]
+    },
+    "episode": "bc25java",
+    "name": "The grape.",
+    "members": [
+      {
+        "id": 2793,
+        "profile": {
+          "school": "Vermont Commons School",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "mac",
+        "is_staff": false
+      },
+      {
+        "id": 2848,
+        "profile": {
+          "school": "CVU",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "phyrexian_overlord",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  },
+  {
+    "id": 1550,
+    "profile": {
+      "quote": "I've always wanted to fight a desperate battle against incredible odds.",
+      "biography": "",
+      "has_avatar": true,
+      "avatar_url": "https://storage.googleapis.com/mitbattlecode-production-public/team/1550/avatar.png?50ca1548-f75a-4e69-8dff-d5d2785012e7",
+      "rating": 1444.2258059069634,
+      "auto_accept_ranked": false,
+      "auto_accept_unranked": true,
+      "eligible_for": [1, 3]
+    },
+    "episode": "bc25java",
+    "name": "GrogBog",
+    "members": [
+      {
+        "id": 3050,
+        "profile": {
+          "school": "St. Olaf College",
+          "biography": "",
+          "avatar_url": null,
+          "has_avatar": false
+        },
+        "username": "Grogbog",
+        "is_staff": false
+      }
+    ],
+    "status": "R",
+    "has_active_submission": true
+  }
+]
