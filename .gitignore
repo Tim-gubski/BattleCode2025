@@ -6,4 +6,6 @@
 **/client
 
 **/venv
+**/.env
+.env
 
