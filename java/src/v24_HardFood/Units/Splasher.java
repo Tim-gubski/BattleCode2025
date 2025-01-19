@@ -1,23 +1,39 @@
-package v22_YCircle.Units;
+package v24_HardFood.Units;
 
-import v22_YCircle.Unit;
+import v24_HardFood.Unit;
 import battlecode.common.*;
 
 public class Splasher extends Unit {
-    Direction exploreDirection;
+//    Direction exploreDirection;
+    MapLocation exploreLocation;
 
     public Splasher(RobotController robot) throws GameActionException {
         super(robot);
-        exploreDirection = spawnTower.directionTo(rc.getLocation());
+        Direction exploreDirection = spawnTower.directionTo(rc.getLocation());
+        exploreLocation = extendLocToEdge(rc.getLocation(), exploreDirection);
+    }
+
+    public MapLocation extendLocToEdge(MapLocation loc, Direction dir) throws GameActionException {
+        MapLocation newLoc = loc;
+        while(rc.onTheMap(newLoc.add(dir))){
+            if(rc.getID()== 13547){
+                System.out.println("extending: " + loc);
+            }
+            newLoc = newLoc.add(dir);
+        }
+        return newLoc;
     }
 
     MapLocation returnLoc = null;
 
     public void turn() throws Exception {
+        debugString.append("h1");
         senseNearby(); // perform all scans
 
+        debugString.append("h2");
         previousState = state;
         state = determineState();
+        debugString.append("Currently in state: ").append(state.toString());
 
         switch (state) {
             case UnitState.EXPLORE -> {
@@ -34,7 +50,7 @@ public class Splasher extends Unit {
             rc.setIndicatorDot(currentTargetLoc, 255, 125, 0);
             rc.setIndicatorLine(rc.getLocation(), currentTargetLoc, 125, 0, 125);
         }
-        debugString.append("Currently in state: ").append(state.toString());
+
     }
 
     private UnitState determineState() throws GameActionException {
@@ -51,12 +67,27 @@ public class Splasher extends Unit {
         return;
     }
 
+    public boolean reachableFrom(MapLocation loc, MapLocation target) throws GameActionException {
+        MapLocation checkLoc = loc;
+        int i = 0;
+        while(!checkLoc.equals(target)){
+            if(rc.getID() == 13547){
+                System.out.println("Start: " + loc + " target: "+ target + " Current: " + checkLoc + " i: " + i++);
+            }
+            if(!rc.onTheMap(checkLoc) || rc.senseMapInfo(checkLoc).isWall()){
+                return false;
+            }
+            checkLoc = checkLoc.add(checkLoc.directionTo(target));
+        }
+        return true;
+    }
+
     private void exploreState() throws GameActionException {
         // spray and pray
         MapLocation bestTile = null;
         int[][] maxAdjacent = new int[9][9];
         for (MapInfo info : mapInfo) {
-            if (isEnemyPaint(info.getPaint())){// || info.getPaint() == PaintType.EMPTY){
+            if (info.getPaint().isEnemy()){// || info.getPaint() == PaintType.EMPTY){
                 int x = info.getMapLocation().x - rc.getLocation().x + 4;
                 int y = info.getMapLocation().y - rc.getLocation().y + 4;
                 maxAdjacent[x][y]++;
@@ -74,7 +105,7 @@ public class Splasher extends Unit {
         for(MapLocation loc : rc.getAllLocationsWithinRadiusSquared(rc.getLocation(), 4)){
             int x = loc.x - rc.getLocation().x + 4;
             int y = loc.y - rc.getLocation().y + 4;
-            if(maxAdjacent[x][y] > max && rc.canAttack(loc)){
+            if(maxAdjacent[x][y] > max && rc.canAttack(loc) && reachableFrom(rc.getLocation(), loc)){
                 max = maxAdjacent[x][y];
                 bestTile = loc;
             }
@@ -140,11 +171,10 @@ public class Splasher extends Unit {
         } else {
 //            safeFuzzyMove(explorer.getExploreTarget(), enemies);
 //            debugString.append(explorer.getExploreTarget().toString());
-            if(!rc.onTheMap(rc.getLocation().add(exploreDirection).add(exploreDirection).add(exploreDirection))){
-                exploreDirection = randomDirection();
+            if(distTo(exploreLocation) <= 8){
+                exploreLocation = extendLocToEdge(rc.getLocation(), randomDirection());
             }
-            safeFuzzyMove(exploreDirection, enemies);
-
+            bugNav(exploreLocation);
         }
 
 

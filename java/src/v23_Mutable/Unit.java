@@ -1,6 +1,7 @@
-package v22_YCircle;
+package v23_Mutable;
 
-import v22_YCircle.Util.Comms;
+import v23_Mutable.Helpers.Fast.FastIntSet;
+import v23_Mutable.Util.Comms;
 import battlecode.common.*;
 
 import java.util.Arrays;
@@ -683,7 +684,7 @@ public abstract class Unit extends Robot {
         }
 
         // pop directions off of the stack
-        while(bugStackIndex != 0 && rc.canMove(bugStack[bugStackIndex-1])){
+        while(bugStackIndex != 0 && (rc.canMove(bugStack[bugStackIndex-1]) || (bugStackIndex > 1 && rc.canMove(bugStack[bugStackIndex-2])))){
             bugStackIndex--;
         }
 
@@ -709,14 +710,11 @@ public abstract class Unit extends Robot {
             locCheck = rc.getLocation().add(dirToTarget.rotateRight());
             boolean checkRightRobot = rc.onTheMap(locCheck) && rc.canSenseRobotAtLocation(locCheck);
             if(checkFrontRobot && checkLeftRobot && checkRightRobot){
-//                stuckTurns++;
                 fuzzyMove(dirToTarget.opposite());
                 return;
             }
-//            stuckTurns = 0;
 
-
-            bugStack[bugStackIndex] = dirToTarget.rotateRight();
+            bugStack[bugStackIndex] = RIGHT ? dirToTarget.rotateLeft() : dirToTarget.rotateRight();
             bugStackIndex++;
         }
         // add subsequent directions if cant move towards the target
@@ -724,6 +722,12 @@ public abstract class Unit extends Robot {
             Direction dir = bugStack[bugStackIndex - 1].rotateRight();
             for (int i = 0; i < 8; i++) {
                 if (!rc.canMove(dir)) {
+                    if(!rc.onTheMap(rc.getLocation().add(dir))){
+                        bugStack = new Direction[MAX_STACK_SIZE];
+                        bugStackIndex = 0;
+                        RIGHT = !RIGHT;
+                        break;
+                    }
                     bugStack[bugStackIndex] = dir;
                     bugStackIndex++;
                 } else {
@@ -736,6 +740,12 @@ public abstract class Unit extends Robot {
             Direction dir = bugStack[bugStackIndex - 1].rotateLeft();
             for (int i = 0; i < 8; i++) {
                 if (!rc.canMove(dir)) {
+                    if(!rc.onTheMap(rc.getLocation().add(dir))){
+                        bugStack = new Direction[MAX_STACK_SIZE];
+                        bugStackIndex = 0;
+                        RIGHT = !RIGHT;
+                        break;
+                    }
                     bugStack[bugStackIndex] = dir;
                     bugStackIndex++;
                 } else {
@@ -744,6 +754,85 @@ public abstract class Unit extends Robot {
                 }
                 dir = dir.rotateLeft();
             }
+        }
+    }
+
+    static boolean isDirAdj(Direction dir, Direction dir2) {
+        switch (dir) {
+            case NORTH:
+                switch (dir2) {
+                    case NORTH:
+                    case NORTHEAST:
+                    case NORTHWEST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case NORTHEAST:
+                switch (dir2) {
+                    case NORTH:
+                    case NORTHEAST:
+                    case EAST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case EAST:
+                switch (dir2) {
+                    case NORTHEAST:
+                    case EAST:
+                    case SOUTHEAST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case SOUTHEAST:
+                switch (dir2) {
+                    case EAST:
+                    case SOUTHEAST:
+                    case SOUTH:
+                        return true;
+                    default:
+                        return false;
+                }
+            case SOUTH:
+                switch (dir2) {
+                    case SOUTHEAST:
+                    case SOUTH:
+                    case SOUTHWEST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case SOUTHWEST:
+                switch (dir2) {
+                    case SOUTH:
+                    case SOUTHWEST:
+                    case WEST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case WEST:
+                switch (dir2) {
+                    case SOUTHWEST:
+                    case WEST:
+                    case NORTHWEST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case NORTHWEST:
+                switch (dir2) {
+                    case WEST:
+                    case NORTHWEST:
+                    case NORTH:
+                        return true;
+                    default:
+                        return false;
+                }
+            default:
+                return false;
         }
     }
 

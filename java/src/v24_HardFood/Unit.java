@@ -1,6 +1,6 @@
-package v22_YCircle;
+package v24_HardFood;
 
-import v22_YCircle.Util.Comms;
+import v24_HardFood.Util.Comms;
 import battlecode.common.*;
 
 import java.util.Arrays;
@@ -166,6 +166,8 @@ public abstract class Unit extends Robot {
         return newNearbyRuins;
     }
 
+
+    public int paintLeftForCompletableRuin = 0;
     public MapLocation[] senseNearbyCompletableTowerlessRuins() throws GameActionException{
         MapLocation[] nearbyRuins = rc.senseNearbyRuins(-1);
         int toRemove = 0;
@@ -176,7 +178,7 @@ public abstract class Unit extends Robot {
                 continue;
             }
             int correctPaint = 0;
-            int sensable = -1;
+            int sensable = -1; // includes ruin itself
             // Enemy Paint around it, Ignore it
             RobotInfo[] workingFriends = rc.senseNearbyRobots(nearbyRuins[i], 8, rc.getTeam());
             boolean haveMoppers = false;
@@ -219,6 +221,7 @@ public abstract class Unit extends Robot {
                 nearbyRuins[i] = null;
                 toRemove++;
             }
+            paintLeftForCompletableRuin = sensable - correctPaint;
         }
         MapLocation[] newNearbyRuins = new MapLocation[nearbyRuins.length - toRemove];
         int j = 0;
@@ -665,6 +668,7 @@ public abstract class Unit extends Robot {
     Direction[] bugStack = new Direction[MAX_STACK_SIZE];
     int bugStackIndex = 0;
     MapLocation lastTargetLocation = null;
+    MapLocation lastLocation;
     int stuckTurns = 0;
     public void bugNav(MapLocation loc) throws GameActionException{
         rc.setIndicatorLine(rc.getLocation(),loc,0,255,0);
@@ -677,15 +681,18 @@ public abstract class Unit extends Robot {
             bugStack = new Direction[MAX_STACK_SIZE];
             bugStackIndex = 0;
             lastTargetLocation = loc;
+            lastLocation = rc.getLocation();
         }
         if(lastTargetLocation != null && lastTargetLocation.distanceSquaredTo(loc) <= 8){
             lastTargetLocation = loc;
         }
 
         // pop directions off of the stack
-        while(bugStackIndex != 0 && rc.canMove(bugStack[bugStackIndex-1])){
+        while(bugStackIndex != 0 && (rc.canMove(bugStack[bugStackIndex-1]) || (bugStackIndex > 1 && rc.canMove(bugStack[bugStackIndex-2]) && !rc.getLocation().add(bugStack[bugStackIndex-2]).equals(lastLocation)))){
             bugStackIndex--;
         }
+
+        lastLocation = rc.getLocation();
 
         // going directly to the target
         if(bugStackIndex == 0){
@@ -709,14 +716,11 @@ public abstract class Unit extends Robot {
             locCheck = rc.getLocation().add(dirToTarget.rotateRight());
             boolean checkRightRobot = rc.onTheMap(locCheck) && rc.canSenseRobotAtLocation(locCheck);
             if(checkFrontRobot && checkLeftRobot && checkRightRobot){
-//                stuckTurns++;
                 fuzzyMove(dirToTarget.opposite());
                 return;
             }
-//            stuckTurns = 0;
 
-
-            bugStack[bugStackIndex] = dirToTarget.rotateRight();
+            bugStack[bugStackIndex] = RIGHT ? dirToTarget.rotateLeft() : dirToTarget.rotateRight();
             bugStackIndex++;
         }
         // add subsequent directions if cant move towards the target
@@ -724,6 +728,12 @@ public abstract class Unit extends Robot {
             Direction dir = bugStack[bugStackIndex - 1].rotateRight();
             for (int i = 0; i < 8; i++) {
                 if (!rc.canMove(dir)) {
+                    if(!rc.onTheMap(rc.getLocation().add(dir))){
+                        bugStack = new Direction[MAX_STACK_SIZE];
+                        bugStackIndex = 0;
+                        RIGHT = !RIGHT;
+                        break;
+                    }
                     bugStack[bugStackIndex] = dir;
                     bugStackIndex++;
                 } else {
@@ -736,6 +746,12 @@ public abstract class Unit extends Robot {
             Direction dir = bugStack[bugStackIndex - 1].rotateLeft();
             for (int i = 0; i < 8; i++) {
                 if (!rc.canMove(dir)) {
+                    if(!rc.onTheMap(rc.getLocation().add(dir))){
+                        bugStack = new Direction[MAX_STACK_SIZE];
+                        bugStackIndex = 0;
+                        RIGHT = !RIGHT;
+                        break;
+                    }
                     bugStack[bugStackIndex] = dir;
                     bugStackIndex++;
                 } else {
@@ -744,6 +760,85 @@ public abstract class Unit extends Robot {
                 }
                 dir = dir.rotateLeft();
             }
+        }
+    }
+
+    static boolean isDirAdj(Direction dir, Direction dir2) {
+        switch (dir) {
+            case NORTH:
+                switch (dir2) {
+                    case NORTH:
+                    case NORTHEAST:
+                    case NORTHWEST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case NORTHEAST:
+                switch (dir2) {
+                    case NORTH:
+                    case NORTHEAST:
+                    case EAST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case EAST:
+                switch (dir2) {
+                    case NORTHEAST:
+                    case EAST:
+                    case SOUTHEAST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case SOUTHEAST:
+                switch (dir2) {
+                    case EAST:
+                    case SOUTHEAST:
+                    case SOUTH:
+                        return true;
+                    default:
+                        return false;
+                }
+            case SOUTH:
+                switch (dir2) {
+                    case SOUTHEAST:
+                    case SOUTH:
+                    case SOUTHWEST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case SOUTHWEST:
+                switch (dir2) {
+                    case SOUTH:
+                    case SOUTHWEST:
+                    case WEST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case WEST:
+                switch (dir2) {
+                    case SOUTHWEST:
+                    case WEST:
+                    case NORTHWEST:
+                        return true;
+                    default:
+                        return false;
+                }
+            case NORTHWEST:
+                switch (dir2) {
+                    case WEST:
+                    case NORTHWEST:
+                    case NORTH:
+                        return true;
+                    default:
+                        return false;
+                }
+            default:
+                return false;
         }
     }
 

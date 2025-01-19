@@ -8,10 +8,10 @@ load_dotenv()
 
 
 
-def get_teams(pages=1):
+def get_teams(start_page=1, end_page=1):
     page = 1
     teams = []
-    for i in range(1, pages+1):
+    for i in range(start_page, end_page+1):
         url = f"https://api.battlecode.org/api/team/bc25java/t/?ordering=-rating%2Cname&page={i}"
         response = requests.get(url)
         data = response.json()
@@ -29,21 +29,6 @@ def get_map_names():
     maps = get_maps()
     return [m['name'] for m in maps]
 
-# json_data = get_teams()
-# with open('teams.json', 'w') as f:
-#     json.dump(json_data, f)
-
-# url = "https://api.battlecode.org/api/token/"
-# payload = {
-#     "username": "timgubski",
-#     "password": os.getenv('BC_PASSWORD')
-# }
-# response = requests.post(url, data=payload)
-# token = response.json()['access']
-
-# url = "https://api.battlecode.org/api/compete/bc25java/request/"
-# payload = {"is_ranked":False,"requested_to":1335,"player_order":"?","map_names":["MoneyTower","DefaultSmall","catface"]}
-
 if __name__ == "__main__":
     url = "https://api.battlecode.org/api/token/"
     payload = {
@@ -53,7 +38,7 @@ if __name__ == "__main__":
     response = requests.post(url, data=payload)
     token = response.json()['access']
 
-    teams = get_teams(1)
+    teams = get_teams(1, 1)
     print(teams)
     map_names = random.sample(get_map_names(), 10)
     print(map_names)

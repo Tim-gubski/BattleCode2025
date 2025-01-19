@@ -1,7 +1,6 @@
-package v22_YCircle.Units;
+package v23_Mutable.Units;
 
-import v22_YCircle.Helpers.DPPathFinder;
-import v22_YCircle.Unit;
+import v23_Mutable.Unit;
 import battlecode.common.*;
 
 // TODO: Dont go into tower range, attack towers maybe?, moppers attack enemy units
@@ -10,7 +9,7 @@ public class Soldier extends Unit {
 
     Direction lastEnemyPaintDirection = null;
     final int ATTACK_HEALTH_THRESHOLD = 50;
-    final int SRP_TOWER_THRESHOLD = (int)Math.round(6 - rc.getMapWidth()/10.0);
+    final int SRP_TOWER_THRESHOLD = Math.max(2,(int)Math.round(6 - rc.getMapWidth()/10.0));
 
     public Soldier(RobotController robot) throws GameActionException {
         super(robot);
@@ -73,7 +72,13 @@ public class Soldier extends Unit {
             }
         }
 
-        if(closestEnemyTower != null && rc.getHealth() > ATTACK_HEALTH_THRESHOLD && allies.length > 0){
+        int numSoldiers = 0;
+        for(RobotInfo ally : allies){
+            if(ally.type == UnitType.SOLDIER && distTo(ally.location) <= 8){
+                numSoldiers++;
+            }
+        }
+        if(closestEnemyTower != null && rc.getHealth() > ATTACK_HEALTH_THRESHOLD && numSoldiers > 0){
             return UnitState.COMBAT;
         }
 
@@ -83,7 +88,7 @@ public class Soldier extends Unit {
 //        int startByte = Clock.getBytecodesLeft();
         completableSRP = closestCompletableSRP();
 //        System.out.println("Bytecodes used for finding srp: " + (startByte - Clock.getBytecodesLeft()));
-        if (completableSRP != null && rc.getNumberTowers() >= SRP_TOWER_THRESHOLD){
+        if (completableSRP != null && mapData.friendlyTowers.size() >= SRP_TOWER_THRESHOLD){
             return UnitState.BUILDSRP;
         }
 
@@ -106,7 +111,7 @@ public class Soldier extends Unit {
             }
         }
         // dont fill stuff if youre low
-        if(state != UnitState.REFILLING && (mapData.friendlyTowers.paintTowers != 0 || state == UnitState.BUILD)) {
+        if(state != UnitState.REFILLING && (mapData.friendlyTowers.paintTowers != 0 || state == UnitState.BUILD || state == UnitState.BUILDSRP)) {
             // fill underneath yourself
             if (!checkAndPaintTile(rc.getLocation()) && rc.isActionReady()) {
                 // then fill other stuff
@@ -145,7 +150,7 @@ public class Soldier extends Unit {
         }
 
         // confirm all resource patterns
-        if(rc.getNumberTowers() >= SRP_TOWER_THRESHOLD) {
+        if(mapData.friendlyTowers.size() >= SRP_TOWER_THRESHOLD) {
             mapData.SRPs.updateIterable();
             for (int i = mapData.SRPs.size; --i >= 0; ) {
                 if (tryConfirmResourcePattern(mapData.SRPs.locs[i])) {

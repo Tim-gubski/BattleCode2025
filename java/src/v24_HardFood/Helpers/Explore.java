@@ -1,4 +1,4 @@
-package v22_YCircle.Helpers;
+package v24_HardFood.Helpers;
 
 import battlecode.common.GameConstants;
 import battlecode.common.MapLocation;

@@ -1,6 +1,6 @@
-package v22_YCircle.Units;
+package v24_HardFood.Units;
 
-import v22_YCircle.Unit;
+import v24_HardFood.Unit;
 import battlecode.common.*;
 
 public class Mopper extends Unit {
@@ -144,6 +144,29 @@ public class Mopper extends Unit {
                 rc.setIndicatorDot(mapData.SRPs.locs[i], 0, 255, 0);
                 System.out.println("Resource pattern confirmed at " + mapData.SRPs.locs[i] + "!");
             }
+        }
+
+        MapLocation attackTarget = null;
+        RobotInfo[] attackableEnemies = rc.senseNearbyRobots(rc.getType().actionRadiusSquared, rc.getTeam().opponent());
+        if (attackableEnemies.length > 0) {
+            int lowestHealth = 9999;
+            for (RobotInfo enemy : attackableEnemies) {
+                if (enemy.health < lowestHealth) {
+                    attackTarget = enemy.getLocation();
+                    lowestHealth = enemy.health;
+                }
+            }
+        }
+
+        if (attackTarget == null) {
+            for (MapInfo info : rc.senseNearbyMapInfos(rc.getType().actionRadiusSquared)) {
+                if (info.getPaint().isEnemy()) {
+                    tryAttack(info.getMapLocation());
+                    break;
+                }
+            }
+        } else {
+            tryAttack(attackTarget);
         }
     }
 
@@ -303,6 +326,31 @@ public class Mopper extends Unit {
                 safeFuzzyMove(rc.getLocation().directionTo(targetEnemy.getLocation()), enemies);
             }
             tryAttack(targetEnemy.getLocation());
+        }
+
+        if(rc.isActionReady()){
+            int xOff = targetEnemy.getLocation().x - rc.getLocation().x;
+            int yOff = targetEnemy.getLocation().y - rc.getLocation().y;
+            if(xOff < 0 && xOff >= -2 && yOff <=1 && yOff >= -1){
+                if(rc.canMopSwing(Direction.WEST)){
+                    rc.mopSwing(Direction.WEST);
+                }
+            }
+            if(yOff > 0 && yOff <= 2 && xOff <=1 && xOff >= -1){
+                if(rc.canMopSwing(Direction.NORTH)){
+                    rc.mopSwing(Direction.NORTH);
+                }
+            }
+            if(xOff > 0 && xOff <= 2 && yOff <=1 && yOff >= -1){
+                if(rc.canMopSwing(Direction.EAST)){
+                    rc.mopSwing(Direction.EAST);
+                }
+            }
+            if(yOff < 0 && yOff >= -2 && xOff <=1 && xOff >= -1){
+                if(rc.canMopSwing(Direction.SOUTH)){
+                    rc.mopSwing(Direction.SOUTH);
+                }
+            }
         }
     }
 
