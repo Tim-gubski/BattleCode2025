@@ -39,9 +39,7 @@ if __name__ == "__main__":
     token = response.json()['access']
 
     teams = get_teams(1, 1)
-    print(teams)
     map_names = random.sample(get_map_names(), 10)
-    print(map_names)
     srim_url = "https://api.battlecode.org/api/compete/bc25java/request/"
     for team in teams:
         payload = {"is_ranked":False,"requested_to":team['id'],"player_order":"?","map_names":map_names}
