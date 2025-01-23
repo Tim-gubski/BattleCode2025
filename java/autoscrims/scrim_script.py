@@ -17,7 +17,12 @@ def get_teams(start_page=1, end_page=1):
         data = response.json()
         page += 1
         teams += data['results']
+    #filter for US teams
     return teams
+
+def get_us_teams(start_page=1, end_page=1):
+    return [team for team in get_teams(start_page, end_page) if 3 in team['profile']['eligible_for'] and 2 not in team['profile']['eligible_for']]
+    
 
 def get_maps():
     url = "https://api.battlecode.org/api/episode/bc25java/map/"
@@ -39,6 +44,9 @@ if __name__ == "__main__":
     token = response.json()['access']
 
     teams = get_teams(1, 1)
+    # teams = get_us_teams(1, 4)
+    for team in teams:
+        print(team['name'])
     map_names = random.sample(get_map_names(), 10)
     srim_url = "https://api.battlecode.org/api/compete/bc25java/request/"
     for team in teams:
