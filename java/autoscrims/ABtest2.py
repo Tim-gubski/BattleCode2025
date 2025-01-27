@@ -252,41 +252,79 @@ def main() -> None:
 
     # Based on ENGINE_BUILTIN_MAP_NAMES in https://github.com/battlecode/battlecode24/blob/master/client/src/constants.ts
     maps = """
+      AlarmClock
       Barcode
+      BatSignal
+      Brat
       Bread
+      Bunny
       BunnyGame
+      Castle
+      CastleDefense
+      Circuit
+      Crab
       DefaultLarge
       DefaultMedium
       DefaultSmall
+      Dominoes
+      DonkeyKong
       Filter
       Flower
       Fossil
+      FourCorners
       Gears
+      HungerGames
+      Jail
       Justice
+      Leaf
       Mirage
       Money
       MoneyTower
+      Oasis
+      Paintball
+      Parking_lot
       Piglets2
+      PlumberGame
+      Portal
       Racetrack
       Restart
+      Rose
       SaltyPepper
+      SandyBeach
       Snowglobe
+      Snowman
       TargetPractice
+      Terminal
+      TheBest
       Thirds
       UglySweater
       UnderTheSea
+      box
+      boxofchocolates
       catface
+      defensetower
       fix
       galaxy
       gardenworld
       giver
       gridworld
+      headphones
       leavemealone
+      lighthouse
+      maze
       memstore
+      mit
       quack
+      rain
+      roads
       sayhi
+      shell
       sierpinski
-      windmill""".split()
+      starburst
+      sunrise
+      walalilongla
+      windmill
+      yearofthesnake""".split()
     
 
     console = Console(highlight=False)

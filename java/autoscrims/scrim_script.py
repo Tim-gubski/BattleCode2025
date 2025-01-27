@@ -43,8 +43,8 @@ if __name__ == "__main__":
     response = requests.post(url, data=payload)
     token = response.json()['access']
 
-    teams = get_teams(1, 1)
-    # teams = get_us_teams(1, 4)
+    # teams = get_teams(1, 1)
+    teams = get_us_teams(1, 3)
     for team in teams:
         print(team['name'])
     map_names = random.sample(get_map_names(), 10)

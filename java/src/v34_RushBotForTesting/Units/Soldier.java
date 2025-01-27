@@ -279,7 +279,7 @@ public class Soldier extends Unit {
     }
 
     private UnitState exploreState() throws GameActionException {
-        MapLocation target = new MapLocation(width - spawnTower.x, spawnTower.y -2);
+        MapLocation target = new MapLocation(width - spawnTower.x, height - spawnTower.y);
         bugNav(target);
 //        // otherwise explore
 //        if(rc.isMovementReady()){
