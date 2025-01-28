@@ -1,6 +1,6 @@
-package v46_MOAFplusplus;
+package v47_GodSlayer;
 
-import v46_MOAFplusplus.Util.Comms;
+import v47_GodSlayer.Util.Comms;
 import battlecode.common.*;
 
 import java.util.Arrays;

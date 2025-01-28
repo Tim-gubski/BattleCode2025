@@ -1,8 +1,8 @@
-package v46_MOAFplusplus.Helpers;
+package v47_GodSlayer.Helpers;
 
 import battlecode.common.*;
-import v46_MOAFplusplus.Helpers.Fast.FastIterableLocSet;
-import v46_MOAFplusplus.Robot;
+import v47_GodSlayer.Helpers.Fast.FastIterableLocSet;
+import v47_GodSlayer.Robot;
 
 import java.util.HashMap;
 import java.util.Map;

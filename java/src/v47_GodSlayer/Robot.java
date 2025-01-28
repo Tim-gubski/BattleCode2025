@@ -1,9 +1,9 @@
-package v46_MOAFplusplus;
+package v47_GodSlayer;
 
-import v46_MOAFplusplus.Helpers.Explore;
-import v46_MOAFplusplus.Helpers.MapData;
-import v46_MOAFplusplus.Util.Symmetry;
-import v46_MOAFplusplus.Util.Comms;
+import v47_GodSlayer.Helpers.Explore;
+import v47_GodSlayer.Helpers.MapData;
+import v47_GodSlayer.Util.Symmetry;
+import v47_GodSlayer.Util.Comms;
 import battlecode.common.*;
 
 import java.util.*;

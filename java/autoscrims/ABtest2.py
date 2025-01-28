@@ -221,7 +221,6 @@ def run_match(state: State, map: str, reverse: bool) -> None:
         f"-Pmaps={map}",
         f"-PreplayPath={replay_name}"
     ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=str(Path(__file__).parent.parent))
-
     stdout = process.stdout.decode("utf-8")
 
     if process.returncode != 0:
@@ -338,7 +337,7 @@ def main() -> None:
         for reverse in [False, True]:
             matches.append((state, map, reverse))
 
-    with ThreadPool(6) as pool:
+    with ThreadPool(8) as pool:
         pool.starmap(run_match, matches)
 
 if __name__ == "__main__":

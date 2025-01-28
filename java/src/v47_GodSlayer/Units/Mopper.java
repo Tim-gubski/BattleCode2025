@@ -1,6 +1,6 @@
-package v46_MOAFplusplus.Units;
+package v47_GodSlayer.Units;
 
-import v46_MOAFplusplus.Unit;
+import v47_GodSlayer.Unit;
 import battlecode.common.*;
 
 public class Mopper extends Unit {
