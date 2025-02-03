@@ -116,7 +116,7 @@ public abstract class Unit extends Robot {
         for(RobotInfo robot : allies){
             if(robot.getType().isTowerType()){
                 if(rc.canSendMessage(robot.getLocation())){
-                    if(needMoppers != null && rc.getType() != UnitType.MOPPER){
+                    if(needMoppers != null && rc.getType() != UnitType.MOPPER && (robot.type.getBaseType() == UnitType.LEVEL_ONE_PAINT_TOWER || robot.paintAmount > UnitType.MOPPER.paintCost)){
                         rc.sendMessage(robot.location, communication.constructMessage(Comms.Codes.MOPPER_LOC, needMoppers));
                         rc.setIndicatorLine(rc.getLocation(), robot.location, 0, 0, 255);
                         rc.setIndicatorLine(robot.location, needMoppers, 0, 0, 255);
@@ -984,7 +984,7 @@ public abstract class Unit extends Robot {
         int targetColorInt = mapData.tileColors[info.getMapLocation().x][info.getMapLocation().y] - 1;
         boolean targetColor = targetColorInt == 1;
         if ((info.getPaint() == PaintType.EMPTY
-                || (targetColorInt != -1 && info.getPaint() != boolToColor(targetColor)))
+                || (targetColorInt != -1 && info.getPaint() != boolToColor(targetColor)) && !info.getPaint().isEnemy())
                 && rc.canAttack(info.getMapLocation())
                 && !info.hasRuin() //&& info.getMark() == PaintType.EMPTY
                 //&& (closestAnyRuin == null || info.getMapLocation().distanceSquaredTo(closestAnyRuin) > 8)

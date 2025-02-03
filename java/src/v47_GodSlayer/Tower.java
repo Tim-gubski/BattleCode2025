@@ -33,7 +33,16 @@ public abstract class Tower extends Robot {
     final int MOPPER_COOLDOWN = 25;
     int mopperCount = 0;
     boolean nearbyPaintFound = false;
+    int lastTurnTowerCount = 2;
+    int currentTurnTowerCount = 2;
+    int lastTowerDeathTurn = -100;
     public void turn() throws GameActionException {
+        lastTurnTowerCount = currentTurnTowerCount;
+        currentTurnTowerCount = rc.getNumberTowers();
+        if(lastTurnTowerCount > currentTurnTowerCount){
+            lastTowerDeathTurn = rc.getRoundNum();
+        }
+
         if(mapData.friendlyTowers.size() < rc.getNumberTowers()) {
             communication.parseMessages();
         }
@@ -93,17 +102,27 @@ public abstract class Tower extends Robot {
 
         // look for nearby enemy paint
         MapInfo[] nearbyTiles = rc.senseNearbyMapInfos(-1);
-//        boolean enemyPaint = false;
+        boolean enemyPaint = false;
         if(!nearbyPaintFound) {
             for (MapInfo tile : nearbyTiles) {
                 if (tile.getPaint().isEnemy() && reachableFrom(rc.getLocation(), tile.getMapLocation())) {
-//                enemyPaint = true;
+                    enemyPaint = true;
                     needMoppers = tile.getMapLocation();
                     debugString.append("Enemy Paint Found\n");
                     nearbyPaintFound = true;
                     break;
                 }
             }
+        }
+
+        // kill self if rich
+        if(rc.getType().getBaseType() == UnitType.LEVEL_ONE_MONEY_TOWER
+                && rc.getChips()>10000
+                && rc.getRoundNum() - lastTowerDeathTurn > 50
+                && !enemyPaint
+                && rc.senseNearbyRobots(8, rc.getTeam()).length > 0
+                && rc.senseNearbyRobots(-1, rc.getTeam().opponent()).length == 0){
+            rc.disintegrate();
         }
 
         // emergency moppers
@@ -136,6 +155,7 @@ public abstract class Tower extends Robot {
         debugString.append("\nspawnTurn: " + (spawnTurn - startSpawnTurn));
         // spawner logic
         if(rc.getType().getBaseType() == UnitType.LEVEL_ONE_PAINT_TOWER || firstTower) {
+            // spawning need moppers code
             if(needMoppers != null && spawnTurn - startSpawnTurn >= 2 && rc.getRoundNum()-emergencyMopperTurn > MOPPER_COOLDOWN){
                 if(trySummon(UnitType.MOPPER)){
                     emergencyMopperTurn = rc.getRoundNum();

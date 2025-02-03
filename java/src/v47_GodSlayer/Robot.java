@@ -230,7 +230,7 @@ abstract public class Robot {
 //            return UnitType.LEVEL_ONE_DEFENSE_TOWER;
 //        }
         double ratio = mapData.friendlyTowers.moneyTowers < 6 ? 2.5 : 1.5;
-        if(mapData.friendlyTowers.moneyTowers < Math.max(1, mapData.friendlyTowers.paintTowers)*ratio){// || (mapData.friendlyTowers.paintTowers==0 && spawnTurn == 4)){
+        if(mapData.friendlyTowers.moneyTowers < Math.max(1, mapData.friendlyTowers.paintTowers)*ratio && rc.getChips() < 4000){// || (mapData.friendlyTowers.paintTowers==0 && spawnTurn == 4)){
             return UnitType.LEVEL_ONE_MONEY_TOWER;
         }else{
             return UnitType.LEVEL_ONE_PAINT_TOWER;

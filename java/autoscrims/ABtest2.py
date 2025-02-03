@@ -113,10 +113,12 @@ class State:
                     if match is None:
                         row.append("")
                     elif match.player1_wins != reverse:
-                        row.append(f"[green][link={self.get_viewer_url(match.replay_name)}]{match.win_condition_short}[/][/]")
+                        # row.append(f"[green][link={self.get_viewer_url(match.replay_name)}]{match.win_condition_short}[/][/]")
+                        row.append(f"[green]{match.win_condition_short}[/]")
                         wins += 1
                     else:
-                        row.append(f"[red][link={self.get_viewer_url(match.replay_name)}]{match.win_condition_short}[/][/]")
+                        # row.append(f"[red][link={self.get_viewer_url(match.replay_name)}]{match.win_condition_short}[/][/]")
+                        row.append(f"[red]{match.win_condition_short}[/]")
                         losses += 1
 
                 if wins == 2:
@@ -275,7 +277,6 @@ def main() -> None:
       HungerGames
       Jail
       Justice
-      Leaf
       Mirage
       Money
       MoneyTower
